@@ -22,9 +22,9 @@ import type {
 } from "@/lib/types";
 
 const DEFAULT_FOUNDER: Founder = {
-  name: "Nitheesh R.",
-  role: "Founder & Principal Engineer",
-  handle: "setupsworks",
+  name: "Nitheesh Rajendran",
+  role: "Founder ",
+  handle: "nitheesh.rajendran",
   status: "Available",
   photo: "",
   quote:
