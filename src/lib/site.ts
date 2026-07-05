@@ -10,7 +10,10 @@ export const siteConfig = {
   location: "Chennai",
   ogImage: "/opengraph-image",
   links: {
+    twitter: "https://x.com/setupsworks",
+    github: "https://github.com/nitheeshdr",
     linkedin: "https://linkedin.com/company/setups-works",
+    dribbble: "",
     instagram: "https://instagram.com/setups.works",
   },
   keywords: [
