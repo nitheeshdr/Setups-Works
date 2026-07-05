@@ -55,6 +55,7 @@ const ProductSchema = new Schema(
     slug: { type: String, required: true, unique: true, index: true },
     tagline: { type: String, default: "" },
     description: { type: String, required: true },
+    content: { type: String, default: "" },
     logo: { type: String, default: "" },
     banner: { type: String, default: "" },
     screenshots: { type: [String], default: [] },

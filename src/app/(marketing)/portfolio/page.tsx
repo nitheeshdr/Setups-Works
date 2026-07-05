@@ -11,6 +11,7 @@ import {
 } from "@/lib/content";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portfolio" },
   title: "Portfolio",
   description:
     "Selected work from Setups Works — web apps, AI products, e-commerce, mobile apps, and marketing sites built for clients worldwide.",

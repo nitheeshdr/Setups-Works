@@ -14,6 +14,7 @@ import { CTASection } from "@/components/sections/cta";
 import { jobOpenings, benefits } from "@/data/site-content";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/careers" },
   title: "Careers",
   description:
     "Join Setups Works — a remote-first team of designers, engineers, and strategists building premium digital products. See our open roles.",

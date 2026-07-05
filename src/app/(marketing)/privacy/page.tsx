@@ -4,6 +4,7 @@ import { Container, Section } from "@/components/section";
 import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/privacy" },
   title: "Privacy Policy",
   description:
     "How Setups Works collects, uses, and protects your personal data.",

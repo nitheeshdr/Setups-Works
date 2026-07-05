@@ -20,21 +20,8 @@ import RotatingText from "@/components/reactbits/RotatingText";
 import ShinyText from "@/components/reactbits/ShinyText";
 import GradientText from "@/components/reactbits/GradientText";
 import TextType from "@/components/reactbits/TextType";
-import CountUp from "@/components/reactbits/CountUp";
 
 const easeOut = [0.22, 1, 0.36, 1] as const;
-
-const miniStats = [
-  { label: "Projects", value: 240, suffix: "+" },
-  { label: "Clients", value: 120, suffix: "+" },
-  { label: "Rating", value: 4.9, suffix: "" },
-];
-
-const rows = [
-  { name: "Fintech dashboard", pct: 92 },
-  { name: "AI writing tool", pct: 78 },
-  { name: "Mobile app", pct: 64 },
-];
 
 export function Hero() {
   return (
@@ -153,96 +140,6 @@ export function Hero() {
             from 120+ happy clients
           </motion.div>
         </div>
-
-        {/* Dashboard panel below */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.8, ease: easeOut }}
-          className="relative mx-auto mt-16 w-full max-w-4xl"
-        >
-          <div className="relative overflow-hidden rounded-3xl glass p-5 shadow-2xl shadow-brand-500/10 sm:p-7">
-            <div className="flex items-center gap-2">
-              <span className="size-3 rounded-full bg-red-400/80" />
-              <span className="size-3 rounded-full bg-amber-400/80" />
-              <span className="size-3 rounded-full bg-emerald-400/80" />
-              <span className="ml-2 font-mono text-xs text-muted-foreground">
-                setupsworks.studio
-              </span>
-            </div>
-
-            <div className="mt-5 grid gap-5 lg:grid-cols-[auto_1fr] lg:items-center">
-              {/* stats */}
-              <div>
-                <div className="flex items-center justify-between gap-6">
-                  <span className="text-xs font-semibold uppercase tracking-widest text-brand-500">
-                    Live projects
-                  </span>
-                  <span className="flex items-center gap-1.5 text-xs text-emerald-500">
-                    <span className="size-1.5 animate-glow rounded-full bg-emerald-500" />
-                    All systems go
-                  </span>
-                </div>
-                <div className="mt-4 grid grid-cols-3 gap-3">
-                  {miniStats.map((s) => (
-                    <div
-                      key={s.label}
-                      className="rounded-xl border border-border/50 bg-surface-2/40 p-3 text-center"
-                    >
-                      <div className="font-display text-2xl font-bold tracking-tight">
-                        <CountUp
-                          to={s.value}
-                          duration={2}
-                          className="inline"
-                          separator=","
-                        />
-                        {s.suffix}
-                      </div>
-                      <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
-                        {s.label}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* progress rows */}
-              <div className="space-y-3 lg:border-l lg:border-border/50 lg:pl-6">
-                {rows.map((row) => (
-                  <div key={row.name}>
-                    <div className="mb-1 flex justify-between text-xs">
-                      <span className="text-foreground/80">{row.name}</span>
-                      <span className="text-muted-foreground">{row.pct}%</span>
-                    </div>
-                    <div className="h-1.5 overflow-hidden rounded-full bg-border/60">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${row.pct}%` }}
-                        viewport={{ once: true }}
-                        transition={{
-                          duration: 1.2,
-                          delay: 0.4,
-                          ease: easeOut,
-                        }}
-                        className="h-full rounded-full bg-gradient-to-r from-brand-400 to-brand-600"
-                      />
-                    </div>
-                  </div>
-                ))}
-                <div className="flex items-center gap-2 pt-1 text-xs">
-                  <span className="grid size-7 place-items-center rounded-lg bg-brand-500/15 text-brand-500">
-                    <FontAwesomeIcon icon={faBolt} className="size-3.5" />
-                  </span>
-                  <div>
-                    <p className="font-semibold text-foreground">Ships fast</p>
-                    <p className="text-muted-foreground">Weekly releases</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
       </Container>
     </section>
   );

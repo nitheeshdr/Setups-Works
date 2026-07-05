@@ -30,6 +30,7 @@ export interface Product {
   slug: string;
   tagline: string;
   description: string;
+  content?: string;
   logo: string;
   banner: string;
   screenshots: string[];

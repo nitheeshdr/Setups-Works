@@ -28,11 +28,20 @@ export async function generateMetadata({
   return {
     title: blog.seoTitle || blog.title,
     description: blog.seoDescription || blog.excerpt,
+    alternates: { canonical: `/blog/${blog.slug}` },
+    keywords: blog.tags,
+    authors: [{ name: blog.author }],
     openGraph: {
       type: "article",
+      title: blog.seoTitle || blog.title,
+      description: blog.seoDescription || blog.excerpt,
+      url: `/blog/${blog.slug}`,
       images: [blog.ogImage || blog.featuredImage],
       publishedTime: blog.publishedAt,
+      modifiedTime: blog.updatedAt ?? blog.publishedAt,
       authors: [blog.author],
+      tags: blog.tags,
+      section: blog.category,
     },
     twitter: { card: "summary_large_image", images: [blog.ogImage || blog.featuredImage] },
   };

@@ -10,7 +10,7 @@ import { Container, Section } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
 import { PortfolioCard } from "@/components/cards";
 import { CTASection } from "@/components/sections/cta";
-import { JsonLd, breadcrumbSchema } from "@/components/seo/json-ld";
+import { JsonLd, breadcrumbSchema, portfolioSchema } from "@/components/seo/json-ld";
 import { getPortfolio, getPortfolioBySlug } from "@/lib/content";
 
 export async function generateStaticParams() {
@@ -29,7 +29,14 @@ export async function generateMetadata({
   return {
     title: project.title,
     description: project.summary,
-    openGraph: { images: [project.coverImage] },
+    alternates: { canonical: `/portfolio/${project.slug}` },
+    openGraph: {
+      title: project.title,
+      description: project.summary,
+      url: `/portfolio/${project.slug}`,
+      images: [project.coverImage],
+    },
+    twitter: { card: "summary_large_image", images: [project.coverImage] },
   };
 }
 
@@ -55,10 +62,13 @@ export default async function PortfolioDetailPage({
   return (
     <>
       <JsonLd
-        data={breadcrumbSchema([
-          { name: "Portfolio", url: "/portfolio" },
-          { name: project.title, url: `/portfolio/${project.slug}` },
-        ])}
+        data={[
+          portfolioSchema(project),
+          breadcrumbSchema([
+            { name: "Portfolio", url: "/portfolio" },
+            { name: project.title, url: `/portfolio/${project.slug}` },
+          ]),
+        ]}
       />
       <PageHeader
         eyebrow={project.category}

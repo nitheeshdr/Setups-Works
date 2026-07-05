@@ -9,6 +9,7 @@ import { FAQSection } from "@/components/sections/faq";
 import { services, serviceCategories } from "@/data/services";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/services" },
   title: "Services",
   description:
     "From web and mobile development to AI, design, and growth — explore the 19 services Setups Works offers to build and scale your product.",

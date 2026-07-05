@@ -380,3 +380,11 @@
 .glow-border.glow-hover::after { opacity: 0; }
 .glow-border.glow-hover:hover::before { opacity: 1; }
 .glow-border.glow-hover:hover::after { opacity: 0.5; }
+
+/* Constrain ReactBits ProfileCard so it fits nicely (esp. mobile) */
+.founder-card > div > section {
+  height: auto !important;
+  width: 100% !important;
+  max-height: none !important;
+  aspect-ratio: 0.74 !important;
+}

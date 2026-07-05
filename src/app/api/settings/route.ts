@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import { requireDB } from "@/lib/db";
 import { Settings } from "@/models";
 import { ok, requireAuth, serverError } from "@/lib/api-utils";
@@ -33,6 +34,7 @@ export async function PUT(req: Request) {
       { ...body, key: "site" },
       { new: true, upsert: true },
     ).lean();
+    revalidatePath("/", "layout");
     return ok(serialize(doc));
   } catch (err) {
     console.error("[settings.PUT]", err);

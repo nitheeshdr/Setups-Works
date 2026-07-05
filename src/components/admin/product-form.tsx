@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { toast } from "sonner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,11 +20,24 @@ import { useResourceMutations } from "@/lib/admin/hooks";
 import { slugify } from "@/lib/helpers";
 import type { Product } from "@/lib/types";
 
+const RichEditor = dynamic(
+  () => import("@/components/admin/rich-editor").then((m) => m.RichEditor),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="grid h-64 place-items-center rounded-xl border border-border/60 bg-surface-2/60 text-sm text-muted-foreground">
+        Loading editor…
+      </div>
+    ),
+  },
+);
+
 const empty: Partial<Product> = {
   name: "",
   slug: "",
   tagline: "",
   description: "",
+  content: "",
   logo: "",
   banner: "",
   screenshots: [],
@@ -96,8 +110,12 @@ export function ProductForm({ initial }: { initial?: Product }) {
           <Field label="Tagline">
             <TextInput value={form.tagline} onChange={(e) => set("tagline", e.target.value)} />
           </Field>
-          <Field label="Description">
-            <TextArea rows={4} value={form.description} onChange={(e) => set("description", e.target.value)} />
+          <Field label="Short description" hint="Plain text, shown in cards & meta">
+            <TextArea rows={3} value={form.description} onChange={(e) => set("description", e.target.value)} />
+          </Field>
+
+          <Field label="Full details" hint="Rich text — shown on the product page">
+            <RichEditor value={form.content ?? ""} onChange={(html) => set("content", html)} />
           </Field>
 
           <div className="space-y-3 rounded-2xl border border-border/60 bg-card/50 p-5">

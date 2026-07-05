@@ -10,6 +10,7 @@ import { CTASection } from "@/components/sections/cta";
 import { getPortfolio } from "@/lib/content";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/case-studies" },
   title: "Case Studies",
   description:
     "In-depth case studies on how Setups Works solved real problems for clients — the challenge, the approach, and the measurable results.",

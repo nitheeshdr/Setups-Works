@@ -28,10 +28,18 @@ export async function generateMetadata({
   const { slug } = await params;
   const product = await getProductBySlug(slug);
   if (!product) return { title: "Product not found" };
+  const desc = product.tagline || product.description;
   return {
     title: product.name,
-    description: product.tagline || product.description,
-    openGraph: { images: [product.banner] },
+    description: desc,
+    alternates: { canonical: `/products/${product.slug}` },
+    openGraph: {
+      title: product.name,
+      description: desc,
+      url: `/products/${product.slug}`,
+      images: [product.banner],
+    },
+    twitter: { card: "summary_large_image", images: [product.banner] },
   };
 }
 
@@ -123,6 +131,20 @@ export default async function ProductDetailPage({
           </Reveal>
         </Container>
       </Section>
+
+      {/* Rich details */}
+      {product.content && (
+        <Section className="py-12">
+          <Container className="max-w-3xl">
+            <Reveal>
+              <div
+                className="article-content"
+                dangerouslySetInnerHTML={{ __html: product.content }}
+              />
+            </Reveal>
+          </Container>
+        </Section>
+      )}
 
       {/* Features */}
       <Section>

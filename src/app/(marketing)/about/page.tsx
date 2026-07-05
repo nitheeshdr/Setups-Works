@@ -8,10 +8,17 @@ import { StatsSection } from "@/components/sections/stats";
 import { TechStackSection } from "@/components/sections/tech-stack";
 import { CTASection } from "@/components/sections/cta";
 import { FounderCard } from "@/components/founder-card";
+import {
+  JsonLd,
+  personSchema,
+  organizationSchema,
+  breadcrumbSchema,
+} from "@/components/seo/json-ld";
 import { companyValues } from "@/data/site-content";
 import { getFounder, getTimeline } from "@/lib/content";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/about" },
   title: "About",
   description:
     "Setups Works is a premium digital agency of designers, engineers, and strategists building software that moves businesses forward. Meet the team and our story.",
@@ -24,6 +31,13 @@ export default async function AboutPage() {
 
   return (
     <>
+      <JsonLd
+        data={[
+          organizationSchema(),
+          personSchema(founder),
+          breadcrumbSchema([{ name: "About", url: "/about" }]),
+        ]}
+      />
       <PageHeader
         eyebrow="Our story"
         title="We build software that moves businesses forward"

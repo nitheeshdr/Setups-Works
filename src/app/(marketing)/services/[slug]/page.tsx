@@ -8,8 +8,9 @@ import { Container, Section } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
 import { ServiceCard } from "@/components/cards";
 import { CTASection } from "@/components/sections/cta";
-import { JsonLd, breadcrumbSchema } from "@/components/seo/json-ld";
+import { JsonLd, breadcrumbSchema, serviceSchema } from "@/components/seo/json-ld";
 import { services, getService } from "@/data/services";
+import { siteConfig } from "@/lib/site";
 
 export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
@@ -26,6 +27,12 @@ export async function generateMetadata({
   return {
     title: service.title,
     description: service.description,
+    alternates: { canonical: `/services/${service.slug}` },
+    openGraph: {
+      title: `${service.title} · ${siteConfig.name}`,
+      description: service.description,
+      url: `/services/${service.slug}`,
+    },
   };
 }
 
@@ -45,10 +52,13 @@ export default async function ServiceDetailPage({
   return (
     <>
       <JsonLd
-        data={breadcrumbSchema([
-          { name: "Services", url: "/services" },
-          { name: service.title, url: `/services/${service.slug}` },
-        ])}
+        data={[
+          serviceSchema(service),
+          breadcrumbSchema([
+            { name: "Services", url: "/services" },
+            { name: service.title, url: `/services/${service.slug}` },
+          ]),
+        ]}
       />
       <PageHeader
         eyebrow={service.category}

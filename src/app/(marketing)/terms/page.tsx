@@ -4,6 +4,7 @@ import { Container, Section } from "@/components/section";
 import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/terms" },
   title: "Terms of Service",
   description:
     "The terms and conditions governing your use of the Setups Works website and services.",

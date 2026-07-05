@@ -27,10 +27,18 @@ export async function generateMetadata({
   const { slug } = await params;
   const project = await getPortfolioBySlug(slug);
   if (!project) return { title: "Case study not found" };
+  const desc = project.caseStudy || project.summary;
   return {
     title: `${project.title} — Case Study`,
-    description: project.caseStudy || project.summary,
-    openGraph: { images: [project.coverImage] },
+    description: desc,
+    alternates: { canonical: `/case-studies/${project.slug}` },
+    openGraph: {
+      title: `${project.title} — Case Study`,
+      description: desc,
+      url: `/case-studies/${project.slug}`,
+      images: [project.coverImage],
+    },
+    twitter: { card: "summary_large_image", images: [project.coverImage] },
   };
 }
 

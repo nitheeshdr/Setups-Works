@@ -1,62 +1,77 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site";
 import { services } from "@/data/services";
-import { getAllBlogSlugs, getPortfolio, getProducts } from "@/lib/content";
+import { getBlogs, getPortfolio, getProducts } from "@/lib/content";
+
+export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteConfig.url;
   const now = new Date();
 
-  const staticRoutes = [
-    "",
-    "/about",
-    "/services",
-    "/products",
-    "/portfolio",
-    "/case-studies",
-    "/blog",
-    "/careers",
-    "/contact",
-    "/search",
-    "/privacy",
-    "/terms",
-  ].map((path) => ({
+  const staticRoutes: MetadataRoute.Sitemap = [
+    { path: "", priority: 1, freq: "daily" as const },
+    { path: "/about", priority: 0.9, freq: "monthly" as const },
+    { path: "/services", priority: 0.9, freq: "monthly" as const },
+    { path: "/products", priority: 0.9, freq: "weekly" as const },
+    { path: "/portfolio", priority: 0.9, freq: "weekly" as const },
+    { path: "/case-studies", priority: 0.8, freq: "weekly" as const },
+    { path: "/blog", priority: 0.9, freq: "daily" as const },
+    { path: "/careers", priority: 0.7, freq: "weekly" as const },
+    { path: "/contact", priority: 0.8, freq: "monthly" as const },
+    { path: "/privacy", priority: 0.3, freq: "yearly" as const },
+    { path: "/terms", priority: 0.3, freq: "yearly" as const },
+  ].map(({ path, priority, freq }) => ({
     url: `${base}${path}`,
     lastModified: now,
-    changeFrequency: "weekly" as const,
-    priority: path === "" ? 1 : 0.8,
+    changeFrequency: freq,
+    priority,
   }));
 
-  const serviceRoutes = services.map((s) => ({
+  const serviceRoutes: MetadataRoute.Sitemap = services.map((s) => ({
     url: `${base}/services/${s.slug}`,
     lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
+    changeFrequency: "monthly",
+    priority: 0.7,
   }));
 
-  const [blogSlugs, portfolio, products] = await Promise.all([
-    getAllBlogSlugs(),
+  const [{ items: blogs }, portfolio, products] = await Promise.all([
+    getBlogs({ limit: 1000 }),
     getPortfolio(),
     getProducts(),
   ]);
 
-  const blogRoutes = blogSlugs.map((slug) => ({
-    url: `${base}/blog/${slug}`,
-    lastModified: now,
-    changeFrequency: "weekly" as const,
+  const blogRoutes: MetadataRoute.Sitemap = blogs.map((b) => ({
+    url: `${base}/blog/${b.slug}`,
+    lastModified: new Date(b.updatedAt || b.publishedAt || now),
+    changeFrequency: "weekly",
     priority: 0.7,
   }));
 
-  const portfolioRoutes = portfolio.flatMap((p) => [
-    { url: `${base}/portfolio/${p.slug}`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.6 },
-    ...(p.caseStudy ? [{ url: `${base}/case-studies/${p.slug}`, lastModified: now, changeFrequency: "monthly" as const, priority: 0.6 }] : []),
+  const portfolioRoutes: MetadataRoute.Sitemap = portfolio.flatMap((p) => [
+    {
+      url: `${base}/portfolio/${p.slug}`,
+      lastModified: new Date(p.createdAt || now),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    ...(p.caseStudy
+      ? [
+          {
+            url: `${base}/case-studies/${p.slug}`,
+            lastModified: new Date(p.createdAt || now),
+            changeFrequency: "monthly" as const,
+            priority: 0.7,
+          },
+        ]
+      : []),
   ]);
 
-  const productRoutes = products.map((p) => ({
+  const productRoutes: MetadataRoute.Sitemap = products.map((p) => ({
     url: `${base}/products/${p.slug}`,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
+    lastModified: new Date(p.updatedAt || p.createdAt || now),
+    changeFrequency: "weekly",
+    priority: 0.7,
   }));
 
   return [

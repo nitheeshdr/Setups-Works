@@ -46,16 +46,16 @@ export function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50">
       <div
         className={cn(
-          "mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 transition-all duration-300 sm:px-8",
+          "mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 transition-all duration-300 sm:px-8",
           scrolled
             ? "my-2 rounded-2xl border border-border/60 bg-background/70 py-2.5 backdrop-blur-xl sm:my-3"
             : "border border-transparent py-4",
         )}
       >
-        <Logo priority />
+        <Logo priority className="justify-self-start" />
 
-        {/* Desktop nav */}
-        <nav className="hidden items-center gap-1 lg:flex">
+        {/* Desktop nav (centered) */}
+        <nav className="hidden items-center gap-1 justify-self-center lg:flex">
           {mainNav.map((link) =>
             link.label === "Services" ? (
               <div
@@ -110,7 +110,7 @@ export function Navbar() {
         </nav>
 
         {/* Right actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 justify-self-end">
           <button
             type="button"
             onClick={openCommand}

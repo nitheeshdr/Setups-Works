@@ -11,6 +11,7 @@ export function FounderCard({ founder }: { founder: Founder }) {
   const router = useRouter();
   return (
     <ProfileCard
+      className="founder-card mx-auto w-full max-w-[320px]"
       name={founder.name}
       title={founder.role}
       handle={founder.handle || "setupsworks"}
@@ -19,6 +20,7 @@ export function FounderCard({ founder }: { founder: Founder }) {
       contactText="Get in touch"
       showUserInfo
       enableTilt
+      enableMobileTilt={false}
       behindGlowEnabled
       behindGlowColor="#4D86F7"
       onContactClick={() => router.push("/contact")}

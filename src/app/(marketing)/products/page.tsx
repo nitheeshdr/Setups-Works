@@ -7,6 +7,7 @@ import { CTASection } from "@/components/sections/cta";
 import { getProducts } from "@/lib/content";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/products" },
   title: "Products",
   description:
     "Beyond client work, Setups Works builds its own products — starting with CodeForge AI, an AI-powered development platform.",

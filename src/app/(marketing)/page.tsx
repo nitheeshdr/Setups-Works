@@ -11,7 +11,14 @@ import { TestimonialsSection } from "@/components/sections/testimonials";
 import { BlogPreview } from "@/components/sections/blog-preview";
 import { FAQSection } from "@/components/sections/faq";
 import { CTASection } from "@/components/sections/cta";
-import { JsonLd, organizationSchema, websiteSchema } from "@/components/seo/json-ld";
+import {
+  JsonLd,
+  organizationSchema,
+  websiteSchema,
+  localBusinessSchema,
+  siteNavigationSchema,
+} from "@/components/seo/json-ld";
+import { mainNav } from "@/data/nav";
 import {
   getFeaturedBlogs,
   getPortfolio,
@@ -33,7 +40,16 @@ export default async function HomePage() {
 
   return (
     <>
-      <JsonLd data={[organizationSchema(), websiteSchema()]} />
+      <JsonLd
+        data={[
+          organizationSchema(),
+          localBusinessSchema(),
+          websiteSchema(),
+          siteNavigationSchema(
+            mainNav.map((l) => ({ name: l.label, url: l.href })),
+          ),
+        ]}
+      />
       <Hero />
       <ClientsMarquee logos={logos} />
       <StatsSection />

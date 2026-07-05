@@ -1,5 +1,6 @@
 import type { Model } from "mongoose";
 import { z, type ZodType } from "zod";
+import { revalidatePath } from "next/cache";
 import { requireDB } from "@/lib/db";
 import {
   ok,
@@ -97,6 +98,7 @@ export function createResource<T>(opts: ResourceOptions<T>) {
       let payload = transform ? transform({ ...data }) : { ...data };
       payload = await ensureSlug(payload);
       const doc = await model.create(payload as never);
+      revalidatePath("/", "layout");
       return created(serialize(doc));
     } catch (err) {
       console.error("[crud.create]", err);
@@ -136,6 +138,7 @@ export function createResource<T>(opts: ResourceOptions<T>) {
         runValidators: true,
       }).lean();
       if (!doc) return notFoundResponse();
+      revalidatePath("/", "layout");
       return ok(serialize(doc));
     } catch (err) {
       console.error("[crud.update]", err);
@@ -150,6 +153,7 @@ export function createResource<T>(opts: ResourceOptions<T>) {
     try {
       await requireDB();
       await model.findByIdAndDelete(id);
+      revalidatePath("/", "layout");
       return ok({ success: true });
     } catch (err) {
       console.error("[crud.remove]", err);
@@ -186,6 +190,7 @@ export const productCreateSchema = z.object({
   slug: z.string().optional(),
   tagline: z.string().default(""),
   description: z.string().min(1),
+  content: z.string().default(""),
   logo: z.string().default(""),
   banner: z.string().default(""),
   screenshots: z.array(z.string()).default([]),
