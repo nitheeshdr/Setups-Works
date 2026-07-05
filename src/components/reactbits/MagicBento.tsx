@@ -6,11 +6,15 @@ export interface BentoCardProps {
   title?: string;
   description?: string;
   label?: string;
+  icon?: React.ReactNode;
+  href?: string;
+  className?: string;
   textAutoHide?: boolean;
   disableAnimations?: boolean;
 }
 
 export interface BentoProps {
+  cards?: BentoCardProps[];
   textAutoHide?: boolean;
   enableStars?: boolean;
   enableSpotlight?: boolean;
@@ -516,6 +520,7 @@ const useMobileDetection = () => {
 };
 
 const MagicBento: React.FC<BentoProps> = ({
+  cards,
   textAutoHide = true,
   enableStars = true,
   enableSpotlight = true,
@@ -674,10 +679,10 @@ const MagicBento: React.FC<BentoProps> = ({
 
       <BentoCardGrid gridRef={gridRef}>
         <div className="card-responsive grid gap-2">
-          {cardData.map((card, index) => {
+          {(cards ?? cardData).map((card, index) => {
             const baseClassName = `card flex flex-col justify-between relative aspect-[4/3] min-h-[200px] w-full max-w-full p-5 rounded-[20px] border border-solid font-light overflow-hidden transition-colors duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${
               enableBorderGlow ? 'card--border-glow' : ''
-            }`;
+            } ${card.className ?? ''}`;
 
             const cardStyle = {
               backgroundColor: card.color || 'var(--background-dark)',
@@ -703,6 +708,7 @@ const MagicBento: React.FC<BentoProps> = ({
                   enableMagnetism={enableMagnetism}
                 >
                   <div className="card__header flex justify-between gap-3 relative text-white">
+                    {card.icon ? <span className="card__icon">{card.icon}</span> : null}
                     <span className="card__label text-base">{card.label}</span>
                   </div>
                   <div className="card__content flex flex-col relative text-white">
@@ -715,6 +721,9 @@ const MagicBento: React.FC<BentoProps> = ({
                       {card.description}
                     </p>
                   </div>
+                  {card.href ? (
+                    <a href={card.href} aria-label={card.title} className="absolute inset-0 z-20" />
+                  ) : null}
                 </ParticleCard>
               );
             }
@@ -835,6 +844,7 @@ const MagicBento: React.FC<BentoProps> = ({
                 }}
               >
                 <div className="card__header flex justify-between gap-3 relative text-white">
+                  {card.icon ? <span className="card__icon">{card.icon}</span> : null}
                   <span className="card__label text-base">{card.label}</span>
                 </div>
                 <div className="card__content flex flex-col relative text-white">
@@ -845,6 +855,9 @@ const MagicBento: React.FC<BentoProps> = ({
                     {card.description}
                   </p>
                 </div>
+                {card.href ? (
+                  <a href={card.href} aria-label={card.title} className="absolute inset-0 z-20" />
+                ) : null}
               </div>
             );
           })}

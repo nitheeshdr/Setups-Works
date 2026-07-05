@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Container, Section } from "@/components/section";
 import { AuroraBackground } from "@/components/backgrounds";
-import { MagneticButton } from "@/components/interactive";
+import { PremiumButton } from "@/components/premium-button";
 import SplitText from "@/components/reactbits/SplitText";
 
 export function CTASection() {
@@ -32,15 +32,12 @@ export function CTASection() {
             we&apos;d love to hear it. Book a free, no-pressure consultation.
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <MagneticButton href="/contact" size="lg" icon={faArrowRight}>
+            <PremiumButton href="/contact" size="lg" icon={faArrowRight}>
               Start a project
-            </MagneticButton>
-            <Link
-              href="/portfolio"
-              className="rounded-xl border border-border/60 bg-background/50 px-6 py-3 font-semibold backdrop-blur-sm transition-colors hover:border-brand-500/40"
-            >
+            </PremiumButton>
+            <PremiumButton href="/portfolio" variant="glass" size="lg">
               Explore our work
-            </Link>
+            </PremiumButton>
           </div>
         </div>
       </Container>

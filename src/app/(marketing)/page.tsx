@@ -1,8 +1,8 @@
 import { Hero } from "@/components/sections/hero";
 import { ClientsMarquee } from "@/components/sections/marquee";
 import { StatsSection } from "@/components/sections/stats";
-import { ServicesPreview } from "@/components/sections/services-preview";
-import { ProcessSection } from "@/components/sections/process";
+import { BentoServices } from "@/components/sections/bento-services";
+import { ScrollShowcase } from "@/components/sections/scroll-showcase";
 import { FeaturedProduct } from "@/components/sections/featured-product";
 import { PortfolioPreview } from "@/components/sections/portfolio-preview";
 import { TechStackSection } from "@/components/sections/tech-stack";
@@ -38,8 +38,8 @@ export default async function HomePage() {
       <Hero />
       <ClientsMarquee logos={logos} />
       <StatsSection />
-      <ServicesPreview />
-      <ProcessSection />
+      <BentoServices />
+      <ScrollShowcase />
       {codeforge && <FeaturedProduct product={codeforge} />}
       <PortfolioPreview projects={portfolio} />
       <TechStackSection />

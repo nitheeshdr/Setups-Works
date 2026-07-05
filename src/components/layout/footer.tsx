@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Logo } from "@/components/logo";
 import { Container } from "@/components/section";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
+import { FooterWordmark } from "@/components/layout/footer-wordmark";
 import { footerNav } from "@/data/nav";
 import { siteConfig } from "@/lib/site";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -100,7 +101,11 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-8 text-sm text-muted-foreground sm:flex-row">
+        <div className="mt-16">
+          <FooterWordmark />
+        </div>
+
+        <div className="mt-6 flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-8 text-sm text-muted-foreground sm:flex-row">
           <p>
             © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
           </p>
