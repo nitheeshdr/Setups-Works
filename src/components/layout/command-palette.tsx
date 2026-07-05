@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useState, createContext, useContext, type ReactNode } from "react";
+import {
+  useEffect,
+  useState,
+  createContext,
+  useContext,
+  type ReactNode,
+} from "react";
 import { useRouter } from "next/navigation";
 import {
   CommandDialog,
@@ -68,14 +74,26 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
   return (
     <CommandCtx.Provider value={{ open: () => setOpen(true) }}>
       {children}
-      <CommandDialog open={open} onOpenChange={setOpen} title="Search" description="Search SETUPS WORKS">
+      <CommandDialog
+        open={open}
+        onOpenChange={setOpen}
+        title="Search"
+        description="Search Setups Works"
+      >
         <CommandInput placeholder="Search pages, services, actions…" />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           <CommandGroup heading="Pages">
             {pages.map((p) => (
-              <CommandItem key={p.href} onSelect={() => go(p.href)} value={p.label}>
-                <FontAwesomeIcon icon={p.icon} className="size-3.5 text-brand-500" />
+              <CommandItem
+                key={p.href}
+                onSelect={() => go(p.href)}
+                value={p.label}
+              >
+                <FontAwesomeIcon
+                  icon={p.icon}
+                  className="size-3.5 text-brand-500"
+                />
                 {p.label}
               </CommandItem>
             ))}
@@ -87,14 +105,20 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
                 onSelect={() => go(`/services/${s.slug}`)}
                 value={`service ${s.title}`}
               >
-                <FontAwesomeIcon icon={s.icon} className="size-3.5 text-brand-500" />
+                <FontAwesomeIcon
+                  icon={s.icon}
+                  className="size-3.5 text-brand-500"
+                />
                 {s.title}
               </CommandItem>
             ))}
           </CommandGroup>
           <CommandGroup heading="Links">
             <CommandItem onSelect={() => go("/blog")} value="blog articles">
-              <FontAwesomeIcon icon={faBlog} className="size-3.5 text-brand-500" />
+              <FontAwesomeIcon
+                icon={faBlog}
+                className="size-3.5 text-brand-500"
+              />
               Read the blog
             </CommandItem>
             <CommandItem
@@ -104,17 +128,26 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
               }}
               value="github"
             >
-              <FontAwesomeIcon icon={faGithub} className="size-3.5 text-brand-500" />
+              <FontAwesomeIcon
+                icon={faGithub}
+                className="size-3.5 text-brand-500"
+              />
               GitHub
             </CommandItem>
             <CommandItem
               onSelect={() => {
                 setOpen(false);
-                window.open("https://linkedin.com/company/setupsworks", "_blank");
+                window.open(
+                  "https://linkedin.com/company/setupsworks",
+                  "_blank",
+                );
               }}
               value="linkedin"
             >
-              <FontAwesomeIcon icon={faLinkedin} className="size-3.5 text-brand-500" />
+              <FontAwesomeIcon
+                icon={faLinkedin}
+                className="size-3.5 text-brand-500"
+              />
               LinkedIn
             </CommandItem>
           </CommandGroup>

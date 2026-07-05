@@ -63,7 +63,7 @@ export function AdminShell({
       <div className="flex h-16 items-center gap-2 px-5">
         <LogoMark className="size-9 text-sm" />
         <span className="font-display text-sm font-bold tracking-tight">
-          SETUPS WORKS
+          Setups Works
         </span>
       </div>
       <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
@@ -134,7 +134,10 @@ export function AdminShell({
             onClick={() => setMobileOpen(true)}
             className="inline-grid size-9 place-items-center rounded-lg border border-border/60 lg:hidden"
           >
-            <FontAwesomeIcon icon={mobileOpen ? faXmark : faBars} className="size-4" />
+            <FontAwesomeIcon
+              icon={mobileOpen ? faXmark : faBars}
+              className="size-4"
+            />
           </button>
           <div className="flex-1" />
           <ThemeToggle />

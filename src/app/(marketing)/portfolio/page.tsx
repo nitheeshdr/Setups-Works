@@ -4,12 +4,16 @@ import { Container, Section } from "@/components/section";
 import { PortfolioGrid } from "@/components/filter-grid";
 import { TestimonialsSection } from "@/components/sections/testimonials";
 import { CTASection } from "@/components/sections/cta";
-import { getPortfolio, getPortfolioCategories, getTestimonials } from "@/lib/content";
+import {
+  getPortfolio,
+  getPortfolioCategories,
+  getTestimonials,
+} from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Portfolio",
   description:
-    "Selected work from SETUPS WORKS — web apps, AI products, e-commerce, mobile apps, and marketing sites built for clients worldwide.",
+    "Selected work from Setups Works — web apps, AI products, e-commerce, mobile apps, and marketing sites built for clients worldwide.",
 };
 
 export const revalidate = 300;

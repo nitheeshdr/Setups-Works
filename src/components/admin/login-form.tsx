@@ -7,7 +7,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLock, faEnvelope, faSpinner, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faLock,
+  faEnvelope,
+  faSpinner,
+  faArrowRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { Logo } from "@/components/logo";
 import { api } from "@/lib/admin/api";
 import { cn } from "@/lib/utils";
@@ -48,8 +53,14 @@ export function LoginForm() {
 
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-6">
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 grid-bg mask-fade-b" />
-      <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/3 -z-10 size-[500px] -translate-x-1/2 rounded-full bg-brand-500/15 blur-[130px]" />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 grid-bg mask-fade-b"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/3 -z-10 size-[500px] -translate-x-1/2 rounded-full bg-brand-500/15 blur-[130px]"
+      />
 
       <div className="w-full max-w-md">
         <div className="mb-8 flex flex-col items-center gap-4 text-center">
@@ -71,19 +82,42 @@ export function LoginForm() {
           <div>
             <label className="mb-1.5 block text-sm font-medium">Email</label>
             <div className="relative">
-              <FontAwesomeIcon icon={faEnvelope} className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-              <input {...register("email")} className={field} placeholder="admin@setupsworks.com" />
+              <FontAwesomeIcon
+                icon={faEnvelope}
+                className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+              />
+              <input
+                {...register("email")}
+                className={field}
+                placeholder="admin@setupsworks.com"
+              />
             </div>
-            {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email.message}</p>}
+            {errors.email && (
+              <p className="mt-1 text-xs text-destructive">
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
           <div>
             <label className="mb-1.5 block text-sm font-medium">Password</label>
             <div className="relative">
-              <FontAwesomeIcon icon={faLock} className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-              <input {...register("password")} type="password" className={field} placeholder="••••••••" />
+              <FontAwesomeIcon
+                icon={faLock}
+                className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+              />
+              <input
+                {...register("password")}
+                type="password"
+                className={field}
+                placeholder="••••••••"
+              />
             </div>
-            {errors.password && <p className="mt-1 text-xs text-destructive">{errors.password.message}</p>}
+            {errors.password && (
+              <p className="mt-1 text-xs text-destructive">
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
           <button
@@ -91,13 +125,16 @@ export function LoginForm() {
             disabled={loading}
             className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-brand-500 px-6 py-3.5 font-semibold text-white transition-all hover:bg-brand-600 disabled:opacity-60"
           >
-            <FontAwesomeIcon icon={loading ? faSpinner : faArrowRight} className={cn("size-4", loading && "animate-spin")} />
+            <FontAwesomeIcon
+              icon={loading ? faSpinner : faArrowRight}
+              className={cn("size-4", loading && "animate-spin")}
+            />
             {loading ? "Signing in…" : "Sign in"}
           </button>
         </form>
 
         <p className="mt-6 text-center text-xs text-muted-foreground">
-          Protected area · SETUPS WORKS CMS
+          Protected area · Setups Works CMS
         </p>
       </div>
     </main>

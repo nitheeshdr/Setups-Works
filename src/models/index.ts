@@ -26,7 +26,7 @@ const BlogSchema = new Schema(
     category: { type: String, required: true, index: true },
     tags: { type: [String], default: [] },
     featuredImage: { type: String, default: "" },
-    author: { type: String, default: "SETUPS WORKS" },
+    author: { type: String, default: "Setups Works" },
     authorRole: String,
     authorAvatar: String,
     seoTitle: String,
@@ -149,7 +149,7 @@ const SubscriberSchema = new Schema(
 const SettingsSchema = new Schema(
   {
     key: { type: String, default: "site", unique: true },
-    siteName: { type: String, default: "SETUPS WORKS" },
+    siteName: { type: String, default: "Setups Works" },
     tagline: { type: String, default: "The Digital Agency." },
     description: String,
     email: String,

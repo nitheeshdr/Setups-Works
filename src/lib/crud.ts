@@ -165,7 +165,7 @@ export const blogCreateSchema = z.object({
   category: z.string().min(1),
   tags: z.array(z.string()).default([]),
   featuredImage: z.string().default(""),
-  author: z.string().default("SETUPS WORKS"),
+  author: z.string().default("Setups Works"),
   authorRole: z.string().optional(),
   authorAvatar: z.string().optional(),
   seoTitle: z.string().optional(),

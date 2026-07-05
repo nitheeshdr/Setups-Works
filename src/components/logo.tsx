@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-/** Full SETUPS WORKS wordmark — swaps between light/dark variants via CSS. */
+/** Full Setups Works wordmark — swaps between light/dark variants via CSS. */
 export function Logo({
   className,
   priority,
@@ -16,7 +16,7 @@ export function Logo({
     <>
       <Image
         src="/black.png"
-        alt="SETUPS WORKS — The Digital Agency"
+        alt="Setups Works — The Digital Agency"
         width={200}
         height={72}
         priority={priority}
@@ -24,7 +24,7 @@ export function Logo({
       />
       <Image
         src="/white.png"
-        alt="SETUPS WORKS — The Digital Agency"
+        alt="Setups Works — The Digital Agency"
         width={200}
         height={72}
         priority={priority}
@@ -35,14 +35,16 @@ export function Logo({
 
   if (href === null) {
     return (
-      <span className={cn("inline-flex items-center", className)}>{content}</span>
+      <span className={cn("inline-flex items-center", className)}>
+        {content}
+      </span>
     );
   }
 
   return (
     <Link
       href={href}
-      aria-label="SETUPS WORKS home"
+      aria-label="Setups Works home"
       className={cn(
         "inline-flex items-center transition-opacity hover:opacity-80",
         className,

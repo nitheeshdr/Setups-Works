@@ -5,7 +5,8 @@ import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
-  description: "How SETUPS WORKS collects, uses, and protects your personal data.",
+  description:
+    "How Setups Works collects, uses, and protects your personal data.",
 };
 
 export default function PrivacyPage() {
@@ -34,8 +35,9 @@ export default function PrivacyPage() {
             <h2>How we use your information</h2>
             <p>
               We use your information to respond to inquiries, send newsletters
-              you&apos;ve opted into, improve our services, and comply with legal
-              obligations. We never sell your personal data to third parties.
+              you&apos;ve opted into, improve our services, and comply with
+              legal obligations. We never sell your personal data to third
+              parties.
             </p>
             <h2>Cookies</h2>
             <p>
@@ -45,15 +47,15 @@ export default function PrivacyPage() {
             </p>
             <h2>Data retention</h2>
             <p>
-              We keep your data only as long as necessary to provide our services
-              and meet legal requirements. You can request deletion of your data
-              at any time.
+              We keep your data only as long as necessary to provide our
+              services and meet legal requirements. You can request deletion of
+              your data at any time.
             </p>
             <h2>Your rights</h2>
             <p>
               You have the right to access, correct, or delete your personal
-              data, and to opt out of marketing communications. To exercise these
-              rights, email us at{" "}
+              data, and to opt out of marketing communications. To exercise
+              these rights, email us at{" "}
               <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.
             </p>
             <h2>Contact</h2>

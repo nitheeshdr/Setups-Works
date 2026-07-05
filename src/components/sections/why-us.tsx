@@ -20,7 +20,7 @@ export function WhyUsSection() {
         <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-center">
           <div>
             <Reveal>
-              <Eyebrow>Why SETUPS WORKS</Eyebrow>
+              <Eyebrow>Why Setups Works</Eyebrow>
             </Reveal>
             <Reveal delay={0.05}>
               <h2 className="mt-5 font-display text-3xl font-bold tracking-tight text-balance sm:text-4xl md:text-5xl">

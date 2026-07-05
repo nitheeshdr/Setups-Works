@@ -1,7 +1,17 @@
 import type { Metadata } from "next";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faPhone, faLocationDot, faClock } from "@fortawesome/free-solid-svg-icons";
-import { faXTwitter, faGithub, faLinkedinIn, faDribbble } from "@fortawesome/free-brands-svg-icons";
+import {
+  faEnvelope,
+  faPhone,
+  faLocationDot,
+  faClock,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faXTwitter,
+  faGithub,
+  faLinkedinIn,
+  faDribbble,
+} from "@fortawesome/free-brands-svg-icons";
 import { PageHeader } from "@/components/page-header";
 import { Container, Section } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
@@ -12,12 +22,22 @@ import { siteConfig } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Contact",
   description:
-    "Tell us about your project. SETUPS WORKS replies within one business day. Start a conversation about your website, app, or AI product today.",
+    "Tell us about your project. Setups Works replies within one business day. Start a conversation about your website, app, or AI product today.",
 };
 
 const details = [
-  { icon: faEnvelope, label: "Email", value: siteConfig.email, href: `mailto:${siteConfig.email}` },
-  { icon: faPhone, label: "Phone", value: siteConfig.phone, href: `tel:${siteConfig.phone.replace(/\s/g, "")}` },
+  {
+    icon: faEnvelope,
+    label: "Email",
+    value: siteConfig.email,
+    href: `mailto:${siteConfig.email}`,
+  },
+  {
+    icon: faPhone,
+    label: "Phone",
+    value: siteConfig.phone,
+    href: `tel:${siteConfig.phone.replace(/\s/g, "")}`,
+  },
   { icon: faLocationDot, label: "Location", value: siteConfig.location },
   { icon: faClock, label: "Response time", value: "Within 1 business day" },
 ];
@@ -58,7 +78,10 @@ export default function ContactPage() {
                           {d.label}
                         </p>
                         {d.href ? (
-                          <a href={d.href} className="font-medium transition-colors hover:text-brand-500">
+                          <a
+                            href={d.href}
+                            className="font-medium transition-colors hover:text-brand-500"
+                          >
                             {d.value}
                           </a>
                         ) : (

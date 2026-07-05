@@ -34,7 +34,7 @@ async function main() {
   await User.findOneAndUpdate(
     { email: ADMIN_EMAIL.toLowerCase() },
     {
-      name: "SETUPS WORKS Admin",
+      name: "Setups Works Admin",
       email: ADMIN_EMAIL.toLowerCase(),
       password: hash,
       role: "admin",
@@ -64,10 +64,10 @@ async function main() {
     { key: "site" },
     {
       key: "site",
-      siteName: "SETUPS WORKS",
+      siteName: "Setups Works",
       tagline: "The Digital Agency.",
       description:
-        "SETUPS WORKS is a premium digital agency crafting high-performance websites, apps, AI products, and brands.",
+        "Setups Works is a premium digital agency crafting high-performance websites, apps, AI products, and brands.",
       email: "hello@setupsworks.com",
       phone: "+1 (415) 555-0142",
       location: "Remote · Worldwide",

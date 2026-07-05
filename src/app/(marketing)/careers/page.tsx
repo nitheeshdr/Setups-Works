@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faCheck, faLocationDot, faBriefcase } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRight,
+  faCheck,
+  faLocationDot,
+  faBriefcase,
+} from "@fortawesome/free-solid-svg-icons";
 import { PageHeader } from "@/components/page-header";
 import { Container, Section, SectionHeading } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
@@ -11,7 +16,7 @@ import { jobOpenings, benefits } from "@/data/site-content";
 export const metadata: Metadata = {
   title: "Careers",
   description:
-    "Join SETUPS WORKS — a remote-first team of designers, engineers, and strategists building premium digital products. See our open roles.",
+    "Join Setups Works — a remote-first team of designers, engineers, and strategists building premium digital products. See our open roles.",
 };
 
 export default function CareersPage() {
@@ -50,7 +55,11 @@ export default function CareersPage() {
       {/* Openings */}
       <Section>
         <Container>
-          <SectionHeading align="left" eyebrow="Open roles" title="Positions we're hiring for" />
+          <SectionHeading
+            align="left"
+            eyebrow="Open roles"
+            title="Positions we're hiring for"
+          />
           <div className="mt-10 space-y-4">
             {jobOpenings.map((job, i) => (
               <Reveal key={job.slug} delay={i * 0.06}>
@@ -69,11 +78,17 @@ export default function CareersPage() {
                     </p>
                     <div className="mt-3 flex flex-wrap gap-4 text-xs text-muted-foreground">
                       <span className="flex items-center gap-1.5">
-                        <FontAwesomeIcon icon={faBriefcase} className="size-3" />
+                        <FontAwesomeIcon
+                          icon={faBriefcase}
+                          className="size-3"
+                        />
                         {job.type}
                       </span>
                       <span className="flex items-center gap-1.5">
-                        <FontAwesomeIcon icon={faLocationDot} className="size-3" />
+                        <FontAwesomeIcon
+                          icon={faLocationDot}
+                          className="size-3"
+                        />
                         {job.location}
                       </span>
                     </div>
@@ -83,7 +98,10 @@ export default function CareersPage() {
                     className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-brand-500 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-600"
                   >
                     Apply
-                    <FontAwesomeIcon icon={faArrowRight} className="size-3 transition-transform group-hover:translate-x-1" />
+                    <FontAwesomeIcon
+                      icon={faArrowRight}
+                      className="size-3 transition-transform group-hover:translate-x-1"
+                    />
                   </Link>
                 </div>
               </Reveal>
@@ -96,7 +114,10 @@ export default function CareersPage() {
               <p className="mt-1 text-sm text-muted-foreground">
                 We&apos;re always looking for exceptional people. Send us your
                 portfolio at{" "}
-                <a href="mailto:careers@setupsworks.com" className="text-brand-500">
+                <a
+                  href="mailto:careers@setupsworks.com"
+                  className="text-brand-500"
+                >
                   careers@setupsworks.com
                 </a>
               </p>

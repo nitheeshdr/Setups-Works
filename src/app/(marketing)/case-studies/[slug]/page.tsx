@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUpRightFromSquare, faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowUpRightFromSquare,
+  faQuoteLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import { PageHeader } from "@/components/page-header";
 import { Container, Section } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
@@ -59,7 +62,10 @@ export default async function CaseStudyDetailPage({
         eyebrow={`${project.category} · ${project.client}`}
         title={project.title}
         description={project.summary}
-        crumbs={[{ label: "Case Studies", href: "/case-studies" }, { label: project.title }]}
+        crumbs={[
+          { label: "Case Studies", href: "/case-studies" },
+          { label: project.title },
+        ]}
       >
         {project.liveDemo && (
           <a
@@ -69,7 +75,10 @@ export default async function CaseStudyDetailPage({
             className="mt-8 inline-flex items-center gap-2 rounded-xl bg-brand-500 px-6 py-3.5 font-semibold text-white transition-colors hover:bg-brand-600"
           >
             Visit live site
-            <FontAwesomeIcon icon={faArrowUpRightFromSquare} className="size-3.5" />
+            <FontAwesomeIcon
+              icon={faArrowUpRightFromSquare}
+              className="size-3.5"
+            />
           </a>
         )}
       </PageHeader>
@@ -78,7 +87,14 @@ export default async function CaseStudyDetailPage({
         <Container>
           <Reveal>
             <div className="relative aspect-[16/8] w-full overflow-hidden rounded-3xl border border-border/60">
-              <Image src={project.coverImage} alt={project.title} fill priority sizes="100vw" className="object-cover" />
+              <Image
+                src={project.coverImage}
+                alt={project.title}
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover"
+              />
             </div>
           </Reveal>
 
@@ -102,15 +118,19 @@ export default async function CaseStudyDetailPage({
                 <p>{project.caseStudy}</p>
                 <h2>Our approach</h2>
                 <p>
-                  We ran a focused discovery sprint, designed a system from first
-                  principles, and shipped in weekly increments — keeping {project.client}
-                  {" "}involved at every step. The stack ({project.techStack.join(", ")})
-                  was chosen for speed, maintainability, and scale.
+                  We ran a focused discovery sprint, designed a system from
+                  first principles, and shipped in weekly increments — keeping{" "}
+                  {project.client} involved at every step. The stack (
+                  {project.techStack.join(", ")}) was chosen for speed,
+                  maintainability, and scale.
                 </p>
                 <blockquote>
-                  <FontAwesomeIcon icon={faQuoteLeft} className="mr-2 size-4 text-brand-500" />
-                  Working with SETUPS WORKS felt like adding a senior product team
-                  overnight. They delivered beyond what we imagined.
+                  <FontAwesomeIcon
+                    icon={faQuoteLeft}
+                    className="mr-2 size-4 text-brand-500"
+                  />
+                  Working with Setups Works felt like adding a senior product
+                  team overnight. They delivered beyond what we imagined.
                 </blockquote>
                 <h2>The results</h2>
                 <p>
@@ -126,7 +146,13 @@ export default async function CaseStudyDetailPage({
                 {project.images.map((src, i) => (
                   <Reveal key={src} delay={i * 0.06}>
                     <div className="relative aspect-video overflow-hidden rounded-2xl border border-border/60">
-                      <Image src={src} alt={`${project.title} ${i + 1}`} fill sizes="100vw" className="object-cover" />
+                      <Image
+                        src={src}
+                        alt={`${project.title} ${i + 1}`}
+                        fill
+                        sizes="100vw"
+                        className="object-cover"
+                      />
                     </div>
                   </Reveal>
                 ))}
@@ -134,7 +160,10 @@ export default async function CaseStudyDetailPage({
             )}
 
             <Reveal className="mt-10 text-center">
-              <Link href="/portfolio" className="text-sm font-semibold text-brand-500">
+              <Link
+                href="/portfolio"
+                className="text-sm font-semibold text-brand-500"
+              >
                 ← Back to all work
               </Link>
             </Reveal>

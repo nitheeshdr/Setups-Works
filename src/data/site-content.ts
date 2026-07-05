@@ -245,7 +245,7 @@ export const journey: TimelineItem[] = [
     year: "2017",
     title: "The beginning",
     description:
-      "SETUPS WORKS started as a two-person studio building websites for local businesses out of a tiny apartment.",
+      "Setups Works started as a two-person studio building websites for local businesses out of a tiny apartment.",
   },
   {
     year: "2019",

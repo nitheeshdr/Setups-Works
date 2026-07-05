@@ -11,7 +11,7 @@ import { services, serviceCategories } from "@/data/services";
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "From web and mobile development to AI, design, and growth — explore the 19 services SETUPS WORKS offers to build and scale your product.",
+    "From web and mobile development to AI, design, and growth — explore the 19 services Setups Works offers to build and scale your product.",
 };
 
 export default function ServicesPage() {

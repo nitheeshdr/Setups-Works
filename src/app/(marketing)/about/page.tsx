@@ -13,7 +13,7 @@ import { companyValues, journey } from "@/data/site-content";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "SETUPS WORKS is a premium digital agency of designers, engineers, and strategists building software that moves businesses forward. Meet the team and our story.",
+    "Setups Works is a premium digital agency of designers, engineers, and strategists building software that moves businesses forward. Meet the team and our story.",
 };
 
 export default function AboutPage() {
@@ -22,7 +22,7 @@ export default function AboutPage() {
       <PageHeader
         eyebrow="Our story"
         title="We build software that moves businesses forward"
-        description="SETUPS WORKS began as two people with a laptop and a belief: that digital products should be as beautiful as they are fast. Today we're a distributed team shipping that belief worldwide."
+        description="Setups Works began as two people with a laptop and a belief: that digital products should be as beautiful as they are fast. Today we're a distributed team shipping that belief worldwide."
         crumbs={[{ label: "About" }]}
       />
 
@@ -85,10 +85,10 @@ export default function AboutPage() {
                   Founder&apos;s note
                 </p>
                 <blockquote className="mt-4 font-display text-xl font-medium leading-relaxed tracking-tight sm:text-2xl">
-                  &ldquo;I started SETUPS WORKS because I was tired of seeing great
-                  ideas ruined by mediocre execution. We treat every project like
-                  it&apos;s our own product — because that&apos;s the only way to
-                  build something remarkable.&rdquo;
+                  &ldquo;I started Setups Works because I was tired of seeing
+                  great ideas ruined by mediocre execution. We treat every
+                  project like it&apos;s our own product — because that&apos;s
+                  the only way to build something remarkable.&rdquo;
                 </blockquote>
                 <div className="mt-6">
                   <p className="font-semibold">Nitheesh R.</p>
@@ -117,7 +117,9 @@ export default function AboutPage() {
                 <Reveal key={item.year} delay={0.05}>
                   <div
                     className={`relative flex flex-col gap-2 pl-12 sm:w-1/2 sm:pl-0 ${
-                      i % 2 === 0 ? "sm:pr-12 sm:text-right" : "sm:ml-auto sm:pl-12"
+                      i % 2 === 0
+                        ? "sm:pr-12 sm:text-right"
+                        : "sm:ml-auto sm:pl-12"
                     }`}
                   >
                     <span

@@ -7,7 +7,8 @@ import { getBlogs, getPortfolio, getProducts } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Search",
-  description: "Search across services, articles, projects, and products at SETUPS WORKS.",
+  description:
+    "Search across services, articles, projects, and products at Setups Works.",
   robots: { index: false },
 };
 

@@ -3,7 +3,11 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faStar, faPlay } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRight,
+  faStar,
+  faPlay,
+} from "@fortawesome/free-solid-svg-icons";
 import { Container } from "@/components/section";
 import { AuroraBackground, GridGlow } from "@/components/backgrounds";
 import { MagneticButton } from "@/components/interactive";
@@ -33,7 +37,11 @@ export function Hero() {
               <span className="rounded-full bg-brand-500 px-2.5 py-0.5 text-xs font-semibold text-white">
                 New
               </span>
-              <ShinyText text="Introducing CodeForge AI" speed={4} className="font-medium" />
+              <ShinyText
+                text="Introducing CodeForge AI"
+                speed={4}
+                className="font-medium"
+              />
               <FontAwesomeIcon
                 icon={faArrowRight}
                 className="size-3 text-muted-foreground transition-transform group-hover:translate-x-0.5"
@@ -70,7 +78,7 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.3, ease: easeOut }}
             className="mx-auto mt-7 max-w-2xl text-lg text-muted-foreground text-balance"
           >
-            SETUPS WORKS is a premium digital agency crafting high-performance
+            Setups Works is a premium digital agency crafting high-performance
             websites, web &amp; mobile apps, and AI products — engineered for
             speed, designed to be unforgettable.
           </motion.p>

@@ -12,7 +12,7 @@ import { getPortfolio } from "@/lib/content";
 export const metadata: Metadata = {
   title: "Case Studies",
   description:
-    "In-depth case studies on how SETUPS WORKS solved real problems for clients — the challenge, the approach, and the measurable results.",
+    "In-depth case studies on how Setups Works solved real problems for clients — the challenge, the approach, and the measurable results.",
 };
 
 export const revalidate = 300;
@@ -38,7 +38,9 @@ export default async function CaseStudiesPage() {
                   href={`/case-studies/${p.slug}`}
                   className="group grid gap-6 overflow-hidden rounded-3xl border border-border/60 bg-card/50 transition-colors hover:border-brand-500/40 md:grid-cols-2"
                 >
-                  <div className={`relative aspect-[16/10] overflow-hidden md:aspect-auto ${i % 2 ? "md:order-2" : ""}`}>
+                  <div
+                    className={`relative aspect-[16/10] overflow-hidden md:aspect-auto ${i % 2 ? "md:order-2" : ""}`}
+                  >
                     <Image
                       src={p.coverImage}
                       alt={p.title}
@@ -59,7 +61,10 @@ export default async function CaseStudiesPage() {
                     </p>
                     <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-brand-500">
                       Read case study
-                      <FontAwesomeIcon icon={faArrowRight} className="size-3 transition-transform group-hover:translate-x-1" />
+                      <FontAwesomeIcon
+                        icon={faArrowRight}
+                        className="size-3 transition-transform group-hover:translate-x-1"
+                      />
                     </span>
                   </div>
                 </Link>

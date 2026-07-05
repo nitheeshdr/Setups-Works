@@ -1,9 +1,9 @@
 export const siteConfig = {
-  name: "SETUPS WORKS",
+  name: "Setups Works",
   shortName: "Setups Works",
   tagline: "The Digital Agency.",
   description:
-    "SETUPS WORKS is a premium digital agency crafting high-performance websites, web & mobile apps, AI products, and brand experiences that move businesses forward.",
+    "Setups Works is a premium digital agency crafting high-performance websites, web & mobile apps, AI products, and brand experiences that move businesses forward.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   email: "info@setups.works",
   phone: "+91 6383984698",

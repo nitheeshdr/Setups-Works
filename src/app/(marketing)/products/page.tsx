@@ -9,7 +9,7 @@ import { getProducts } from "@/lib/content";
 export const metadata: Metadata = {
   title: "Products",
   description:
-    "Beyond client work, SETUPS WORKS builds its own products — starting with CodeForge AI, an AI-powered development platform.",
+    "Beyond client work, Setups Works builds its own products — starting with CodeForge AI, an AI-powered development platform.",
 };
 
 export const revalidate = 300;

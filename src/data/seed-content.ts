@@ -68,7 +68,7 @@ ${sections
   )
   .join("\n")}
 <blockquote>Great software isn't built by accident — it's the result of relentless craft, tight feedback loops, and a team that cares.</blockquote>
-<p>At <strong>SETUPS WORKS</strong>, this is the philosophy behind everything we ship. If you're building something ambitious, we'd love to help.</p>
+<p>At <strong>Setups Works</strong>, this is the philosophy behind everything we ship. If you're building something ambitious, we'd love to help.</p>
 `;
 
 export const seedBlogs: Blog[] = [
@@ -338,7 +338,7 @@ export const seedTestimonials: Testimonial[] = [
     photo: img("1494790108377-be9c29b29330", 200),
     rating: 5,
     review:
-      "SETUPS WORKS delivered beyond our expectations. The platform they built cut our support load in half and our customers constantly compliment the design. A genuine partner.",
+      "Setups Works delivered beyond our expectations. The platform they built cut our support load in half and our customers constantly compliment the design. A genuine partner.",
     showOnHome: true,
   },
   {
@@ -368,7 +368,7 @@ export const seedTestimonials: Testimonial[] = [
     photo: img("1633332755192-727a05c4013d", 200),
     rating: 5,
     review:
-      "As a technical founder I'm hard to impress. SETUPS WORKS impressed me — clean architecture, thoughtful decisions, and a site that developers actually love.",
+      "As a technical founder I'm hard to impress. Setups Works impressed me — clean architecture, thoughtful decisions, and a site that developers actually love.",
     showOnHome: true,
   },
   {

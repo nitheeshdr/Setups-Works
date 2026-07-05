@@ -7,7 +7,7 @@ import { getBlogs, getBlogCategories } from "@/lib/content";
 export const metadata: Metadata = {
   title: "Blog",
   description:
-    "Deep dives on engineering, design, AI, and building great digital products from the team at SETUPS WORKS.",
+    "Deep dives on engineering, design, AI, and building great digital products from the team at Setups Works.",
 };
 
 export const revalidate = 300;
