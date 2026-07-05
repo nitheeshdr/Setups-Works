@@ -1,11 +1,16 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "fs/promises";
+import { join } from "path";
 import { siteConfig } from "@/lib/site";
 
 export const alt = `${siteConfig.name} — ${siteConfig.tagline}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OGImage() {
+export default async function OGImage() {
+  const logo = await readFile(join(process.cwd(), "public", "white.png"));
+  const logoData = `data:image/png;base64,${logo.toString("base64")}`;
+
   return new ImageResponse(
     (
       <div
@@ -22,33 +27,16 @@ export default function OGImage() {
           fontFamily: "sans-serif",
         }}
       >
-        <div
+        <img
+          src={logoData}
+          width={320}
+          height={90}
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 20,
-            marginBottom: 40,
+            objectFit: "contain",
+            marginBottom: 50,
           }}
-        >
-          <div
-            style={{
-              width: 72,
-              height: 72,
-              borderRadius: 20,
-              background: "linear-gradient(135deg, #6D99FB, #2F66E8)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 34,
-              fontWeight: 800,
-            }}
-          >
-            SW
-          </div>
-          <div style={{ fontSize: 30, fontWeight: 700, letterSpacing: -1 }}>
-            SETUPS WORKS
-          </div>
-        </div>
+        />
+
         <div
           style={{
             fontSize: 76,
@@ -60,16 +48,17 @@ export default function OGImage() {
         >
           We design & build digital products that win.
         </div>
+
         <div
           style={{
             marginTop: 32,
             fontSize: 30,
             color: "#99a2b3",
-            display: "flex",
           }}
         >
           The Digital Agency · Web · Mobile · AI
         </div>
+
         <div
           style={{
             position: "absolute",
@@ -82,6 +71,6 @@ export default function OGImage() {
         />
       </div>
     ),
-    { ...size },
+    size
   );
 }
