@@ -172,6 +172,21 @@ const SettingsSchema = new Schema(
       googleAnalyticsId: String,
       searchConsoleId: String,
     },
+    founder: {
+      name: { type: String, default: "Nitheesh R." },
+      role: { type: String, default: "Founder & Principal Engineer" },
+      handle: { type: String, default: "setupsworks" },
+      status: { type: String, default: "Available" },
+      photo: { type: String, default: "" },
+      quote: {
+        type: String,
+        default:
+          "I started Setups Works because I was tired of seeing great ideas ruined by mediocre execution. We treat every project like it's our own product.",
+      },
+      bio: { type: String, default: "" },
+      twitter: String,
+      linkedin: String,
+    },
   },
   { timestamps: true },
 );
@@ -189,8 +204,22 @@ const ClientLogoSchema = new Schema(
   { timestamps: true },
 );
 
+/* ------------------------------------------------------------------ *
+ *  Milestone (About page journey timeline)
+ * ------------------------------------------------------------------ */
+const MilestoneSchema = new Schema(
+  {
+    year: { type: String, required: true },
+    title: { type: String, required: true },
+    description: { type: String, default: "" },
+    order: { type: Number, default: 0 },
+  },
+  { timestamps: true },
+);
+
 export const User = models.User || model("User", UserSchema);
 export const ClientLogo = models.ClientLogo || model("ClientLogo", ClientLogoSchema);
+export const Milestone = models.Milestone || model("Milestone", MilestoneSchema);
 export const Blog = models.Blog || model("Blog", BlogSchema);
 export const Product = models.Product || model("Product", ProductSchema);
 export const Portfolio = models.Portfolio || model("Portfolio", PortfolioSchema);

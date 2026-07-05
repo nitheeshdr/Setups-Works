@@ -219,6 +219,14 @@ export const portfolioCreateSchema = z.object({
 });
 export const portfolioUpdateSchema = portfolioCreateSchema.partial();
 
+export const milestoneCreateSchema = z.object({
+  year: z.string().min(1),
+  title: z.string().min(1),
+  description: z.string().default(""),
+  order: z.number().default(0),
+});
+export const milestoneUpdateSchema = milestoneCreateSchema.partial();
+
 export const clientLogoCreateSchema = z.object({
   name: z.string().min(1),
   logo: z.string().default(""),

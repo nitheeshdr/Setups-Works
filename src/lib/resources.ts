@@ -1,4 +1,4 @@
-import { Blog, Product, Portfolio, Testimonial, ClientLogo } from "@/models";
+import { Blog, Product, Portfolio, Testimonial, ClientLogo, Milestone } from "@/models";
 import {
   createResource,
   blogCreateSchema,
@@ -11,6 +11,8 @@ import {
   testimonialUpdateSchema,
   clientLogoCreateSchema,
   clientLogoUpdateSchema,
+  milestoneCreateSchema,
+  milestoneUpdateSchema,
 } from "@/lib/crud";
 import { readingTime } from "@/lib/helpers";
 
@@ -58,5 +60,13 @@ export const clientLogoHandlers = createResource({
   createSchema: clientLogoCreateSchema,
   updateSchema: clientLogoUpdateSchema,
   searchFields: ["name"],
+  defaultSort: "order",
+});
+
+export const milestoneHandlers = createResource({
+  model: Milestone,
+  createSchema: milestoneCreateSchema,
+  updateSchema: milestoneUpdateSchema,
+  searchFields: ["year", "title"],
   defaultSort: "order",
 });

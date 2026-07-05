@@ -1,13 +1,35 @@
 import { connectDB } from "@/lib/db";
-import { Blog, Product, Portfolio, Testimonial, ClientLogo } from "@/models";
+import {
+  Blog,
+  Product,
+  Portfolio,
+  Testimonial,
+  ClientLogo,
+  Settings,
+  Milestone,
+} from "@/models";
+import { journey as defaultJourney } from "@/data/site-content";
 import type {
   Blog as TBlog,
   Product as TProduct,
   Portfolio as TPortfolio,
   Testimonial as TTestimonial,
   ClientLogo as TClientLogo,
+  Milestone as TMilestone,
+  SiteSettings,
+  Founder,
   Paginated,
 } from "@/lib/types";
+
+const DEFAULT_FOUNDER: Founder = {
+  name: "Nitheesh R.",
+  role: "Founder & Principal Engineer",
+  handle: "setupsworks",
+  status: "Available",
+  photo: "",
+  quote:
+    "I started Setups Works because I was tired of seeing great ideas ruined by mediocre execution. We treat every project like it's our own product.",
+};
 
 /** Deep-serialize a Mongoose lean doc to a plain JSON object. */
 function serialize<T>(doc: unknown): T {
@@ -133,6 +155,29 @@ export async function getPortfolioBySlug(slug: string): Promise<TPortfolio | nul
 export async function getPortfolioCategories(): Promise<string[]> {
   const items = await getPortfolio();
   return ["All", ...Array.from(new Set(items.map((p) => p.category)))];
+}
+
+/* ---------------------------- SETTINGS --------------------------- */
+export async function getSettings(): Promise<SiteSettings> {
+  const conn = await connectDB();
+  if (!conn) return {};
+  const doc = await Settings.findOne({ key: "site" }).lean();
+  return doc ? serialize<SiteSettings>(doc) : {};
+}
+
+export async function getFounder(): Promise<Founder> {
+  const settings = await getSettings();
+  return { ...DEFAULT_FOUNDER, ...(settings.founder ?? {}) };
+}
+
+/** Timeline milestones — DB-managed, falling back to the built-in journey. */
+export async function getTimeline(): Promise<TMilestone[]> {
+  const conn = await connectDB();
+  if (conn) {
+    const docs = await Milestone.find().sort({ order: 1, year: 1 }).lean();
+    if (docs.length) return serialize<TMilestone[]>(docs);
+  }
+  return defaultJourney.map((j, i) => ({ ...j, order: i }));
 }
 
 /* -------------------------- CLIENT LOGOS ------------------------- */

@@ -174,7 +174,9 @@
     background: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);
-    overflow-x: hidden;
+    /* `clip` avoids creating a scroll container, which would break
+       position: sticky used by the scroll-stack section. */
+    overflow-x: clip;
   }
   ::selection {
     background: color-mix(in oklab, var(--brand-500) 30%, transparent);
@@ -299,8 +301,82 @@
 .bento-brand .card {
   min-height: 220px !important;
 }
+/* Theme-aware bento cards (light + dark) */
+.bento-brand .bento-section {
+  --white: var(--foreground) !important;
+  --border-color: var(--border) !important;
+  --background-dark: var(--card) !important;
+}
+.bento-brand .card {
+  border-color: var(--border) !important;
+}
+.bento-brand .card__label {
+  color: var(--muted-foreground) !important;
+}
 
 /* ChromaGrid cards need an explicit height for their images to render */
 .why-chroma article {
   height: 360px !important;
 }
+
+/* ---- Border Glow card (animated rotating conic-gradient border) ---- */
+@property --glow-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes glow-rotate {
+  to { --glow-angle: 360deg; }
+}
+.glow-border {
+  position: relative;
+  isolation: isolate;
+}
+.glow-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--glow-angle),
+    transparent 15%,
+    #4d86f7 35%,
+    #8b5cf6 50%,
+    #4d86f7 65%,
+    transparent 85%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: glow-rotate 5s linear infinite;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+.glow-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--glow-angle),
+    transparent 15%,
+    #4d86f7 35%,
+    #8b5cf6 50%,
+    #4d86f7 65%,
+    transparent 85%
+  );
+  filter: blur(16px);
+  opacity: 0.25;
+  animation: glow-rotate 5s linear infinite;
+  transition: opacity 0.3s;
+}
+.glow-border:hover::before { opacity: 1; }
+.glow-border:hover::after { opacity: 0.5; }
+
+/* Hover-only variant of the border glow (used on bento cards) */
+.glow-border.glow-hover::before { opacity: 0; }
+.glow-border.glow-hover::after { opacity: 0; }
+.glow-border.glow-hover:hover::before { opacity: 1; }
+.glow-border.glow-hover:hover::after { opacity: 0.5; }

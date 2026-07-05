@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/copy-tinymce.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/copy-tinymce.mjs",
     "build": "next build",
     "start": "next start",
+    "postinstall": "node scripts/copy-tinymce.mjs",
     "seed": "tsx --env-file=.env.local scripts/seed.ts",
     "seed:wipe": "tsx --env-file=.env.local scripts/seed.ts --wipe",
     "typecheck": "tsc --noEmit"

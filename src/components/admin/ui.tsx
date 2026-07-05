@@ -327,3 +327,25 @@ export function Spinner() {
     </div>
   );
 }
+
+export function NotFoundState({
+  label,
+  backHref,
+  backLabel,
+}: {
+  label: string;
+  backHref: string;
+  backLabel: string;
+}) {
+  return (
+    <div className="flex flex-col items-center gap-4 rounded-2xl border border-dashed border-border/60 py-20 text-center">
+      <span className="grid size-12 place-items-center rounded-xl bg-destructive/10 text-destructive">
+        <FontAwesomeIcon icon={faTriangleExclamation} className="size-5" />
+      </span>
+      <p className="text-muted-foreground">{label}</p>
+      <Link href={backHref} className="inline-flex items-center gap-2 rounded-xl bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white">
+        {backLabel}
+      </Link>
+    </div>
+  );
+}

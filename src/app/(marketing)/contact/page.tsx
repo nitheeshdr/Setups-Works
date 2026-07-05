@@ -5,13 +5,9 @@ import {
   faPhone,
   faLocationDot,
   faClock,
+  faComments,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  faXTwitter,
-  faGithub,
-  faLinkedinIn,
-  faDribbble,
-} from "@fortawesome/free-brands-svg-icons";
+import { faXTwitter, faGithub, faLinkedinIn, faDribbble } from "@fortawesome/free-brands-svg-icons";
 import { PageHeader } from "@/components/page-header";
 import { Container, Section } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
@@ -26,18 +22,8 @@ export const metadata: Metadata = {
 };
 
 const details = [
-  {
-    icon: faEnvelope,
-    label: "Email",
-    value: siteConfig.email,
-    href: `mailto:${siteConfig.email}`,
-  },
-  {
-    icon: faPhone,
-    label: "Phone",
-    value: siteConfig.phone,
-    href: `tel:${siteConfig.phone.replace(/\s/g, "")}`,
-  },
+  { icon: faEnvelope, label: "Email us", value: siteConfig.email, href: `mailto:${siteConfig.email}` },
+  { icon: faPhone, label: "Call us", value: siteConfig.phone, href: `tel:${siteConfig.phone.replace(/\s/g, "")}` },
   { icon: faLocationDot, label: "Location", value: siteConfig.location },
   { icon: faClock, label: "Response time", value: "Within 1 business day" },
 ];
@@ -62,39 +48,53 @@ export default function ContactPage() {
       <Section className="pt-4">
         <Container>
           <div className="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
-            <Reveal>
-              <div className="space-y-6">
-                <div className="grid gap-4">
-                  {details.map((d) => (
-                    <div
-                      key={d.label}
-                      className="flex items-center gap-4 rounded-2xl border border-border/60 bg-card/50 p-5"
-                    >
-                      <span className="grid size-11 place-items-center rounded-xl bg-brand-500/10 text-brand-500">
-                        <FontAwesomeIcon icon={d.icon} className="size-5" />
+            {/* Left — info */}
+            <div className="space-y-6">
+              <Reveal>
+                <div className="glow-border rounded-3xl">
+                  <div className="rounded-3xl bg-card p-6">
+                    <span className="grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 text-white shadow-lg shadow-brand-500/25">
+                      <FontAwesomeIcon icon={faComments} className="size-5" />
+                    </span>
+                    <h2 className="mt-5 font-display text-xl font-bold tracking-tight">
+                      Let&apos;s build something remarkable
+                    </h2>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      Whether it&apos;s a fully-specced brief or just a spark of an
+                      idea, we&apos;d love to hear it.
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                {details.map((d, i) => (
+                  <Reveal key={d.label} delay={(i % 2) * 0.06}>
+                    <div className="flex h-full flex-col gap-3 rounded-2xl border border-border/60 bg-card/50 p-5 transition-colors hover:border-brand-500/40">
+                      <span className="grid size-10 place-items-center rounded-xl bg-brand-500/10 text-brand-500">
+                        <FontAwesomeIcon icon={d.icon} className="size-4" />
                       </span>
                       <div>
                         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                           {d.label}
                         </p>
                         {d.href ? (
-                          <a
-                            href={d.href}
-                            className="font-medium transition-colors hover:text-brand-500"
-                          >
+                          <a href={d.href} className="text-sm font-medium transition-colors hover:text-brand-500">
                             {d.value}
                           </a>
                         ) : (
-                          <p className="font-medium">{d.value}</p>
+                          <p className="text-sm font-medium">{d.value}</p>
                         )}
                       </div>
                     </div>
-                  ))}
-                </div>
+                  </Reveal>
+                ))}
+              </div>
 
-                <div className="rounded-2xl border border-border/60 bg-card/50 p-5">
+              <Reveal>
+                <div className="flex items-center justify-between rounded-2xl border border-border/60 bg-card/50 p-5">
                   <p className="text-sm font-semibold">Follow along</p>
-                  <div className="mt-3 flex gap-2">
+                  <div className="flex gap-2">
                     {socials.map((s, i) => (
                       <a
                         key={i}
@@ -108,11 +108,14 @@ export default function ContactPage() {
                     ))}
                   </div>
                 </div>
-              </div>
-            </Reveal>
+              </Reveal>
+            </div>
 
+            {/* Right — form in glass panel */}
             <Reveal delay={0.1}>
-              <ContactForm />
+              <div className="glow-border rounded-3xl">
+                <ContactForm />
+              </div>
             </Reveal>
           </div>
         </Container>

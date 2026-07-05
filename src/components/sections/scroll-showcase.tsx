@@ -4,77 +4,78 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Container, Section, SectionHeading } from "@/components/section";
 import { processSteps } from "@/data/site-content";
 
-const gradients = [
-  "from-brand-500/25 to-violet-500/10",
-  "from-violet-500/25 to-fuchsia-500/10",
-  "from-sky-500/25 to-brand-500/10",
-  "from-emerald-500/25 to-teal-500/10",
-  "from-amber-500/25 to-orange-500/10",
-  "from-rose-500/25 to-brand-500/10",
+// Dummy images — swap these URLs for your own later.
+const dummyImages = [
+  "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1522199755839-a2bacb67c546?auto=format&fit=crop&w=1200&q=80",
 ];
+
+function Card({
+  i,
+  n,
+  sticky,
+}: {
+  i: number;
+  n: number;
+  sticky?: boolean;
+}) {
+  const step = processSteps[i];
+  return (
+    <div
+      className="relative h-72 w-full overflow-hidden rounded-[2rem] border border-border/60 shadow-2xl shadow-black/20 sm:h-80"
+      style={sticky ? { transform: `scale(${1 - (n - 1 - i) * 0.025})` } : undefined}
+    >
+      <img
+        src={dummyImages[i]}
+        alt={step.title}
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/25" />
+      <div className="relative flex h-full flex-col justify-center p-8 text-white sm:p-12">
+        <div className="flex items-center gap-4">
+          <span className="grid size-13 place-items-center rounded-2xl bg-brand-500 text-white shadow-lg shadow-brand-500/40 sm:size-14">
+            <FontAwesomeIcon icon={step.icon} className="size-6" />
+          </span>
+          <span className="font-mono text-4xl font-bold text-white/25 sm:text-5xl">{step.step}</span>
+        </div>
+        <h3 className="mt-5 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+          {step.title}
+        </h3>
+        <p className="mt-3 max-w-lg text-sm text-white/80 sm:text-base">{step.description}</p>
+      </div>
+    </div>
+  );
+}
 
 export function ScrollShowcase() {
   const n = processSteps.length;
 
   return (
-    <Section className="relative overflow-hidden">
+    <Section className="relative">
       <Container>
         <SectionHeading
           eyebrow="How we work"
           title="A process built to ship"
           description="Six deliberate stages that turn ambitious ideas into products people love — with progress you can see every week."
         />
-      </Container>
 
-      {/* Sticky scroll-stack (desktop) */}
-      <Container className="mt-8 hidden lg:block">
-        <div className="relative">
-          {processSteps.map((step, i) => (
-            <div key={step.step} className="h-[62vh]">
-              <div
-                className="sticky mx-auto w-full max-w-4xl"
-                style={{ top: `${120 + i * 22}px` }}
-              >
-                <div
-                  className={`flex items-center gap-8 rounded-[2rem] border border-border/60 bg-gradient-to-br ${gradients[i]} p-10 shadow-2xl shadow-black/10 backdrop-blur-xl`}
-                  style={{ transform: `scale(${1 - (n - 1 - i) * 0.03})` }}
-                >
-                  <span className="hidden shrink-0 font-display text-8xl font-bold text-foreground/10 sm:block">
-                    {step.step}
-                  </span>
-                  <div className="flex-1">
-                    <span className="grid size-14 place-items-center rounded-2xl bg-brand-500 text-white shadow-lg shadow-brand-500/30">
-                      <FontAwesomeIcon icon={step.icon} className="size-6" />
-                    </span>
-                    <h3 className="mt-5 font-display text-2xl font-bold tracking-tight sm:text-3xl">
-                      {step.title}
-                    </h3>
-                    <p className="mt-3 max-w-lg text-muted-foreground">{step.description}</p>
-                  </div>
-                </div>
-              </div>
+        {/* Sticky deck (desktop) — cards stack as you scroll */}
+        <div className="relative mx-auto mt-14 hidden max-w-4xl flex-col gap-6 lg:flex">
+          {processSteps.map((_, i) => (
+            <div key={i} className="sticky" style={{ top: `${110 + i * 18}px` }}>
+              <Card i={i} n={n} sticky />
             </div>
           ))}
         </div>
-      </Container>
 
-      {/* Mobile fallback */}
-      <Container className="mt-12 lg:hidden">
-        <div className="space-y-4">
-          {processSteps.map((step, i) => (
-            <div
-              key={step.step}
-              className={`rounded-2xl border border-border/60 bg-gradient-to-br ${gradients[i]} p-6 backdrop-blur-sm`}
-            >
-              <div className="flex items-center gap-4">
-                <span className="grid size-11 place-items-center rounded-xl bg-brand-500 text-white">
-                  <FontAwesomeIcon icon={step.icon} className="size-5" />
-                </span>
-                <span className="font-mono text-3xl font-bold text-foreground/15">{step.step}</span>
-              </div>
-              <h3 className="mt-4 font-display text-xl font-bold tracking-tight">{step.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{step.description}</p>
-            </div>
+        {/* Mobile — simple stack */}
+        <div className="mt-12 flex flex-col gap-4 lg:hidden">
+          {processSteps.map((_, i) => (
+            <Card key={i} i={i} n={n} />
           ))}
         </div>
       </Container>

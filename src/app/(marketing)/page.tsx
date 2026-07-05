@@ -3,7 +3,7 @@ import { ClientsMarquee } from "@/components/sections/marquee";
 import { StatsSection } from "@/components/sections/stats";
 import { BentoServices } from "@/components/sections/bento-services";
 import { ScrollShowcase } from "@/components/sections/scroll-showcase";
-import { FeaturedProduct } from "@/components/sections/featured-product";
+import { ProductsHome } from "@/components/sections/products-home";
 import { PortfolioPreview } from "@/components/sections/portfolio-preview";
 import { TechStackSection } from "@/components/sections/tech-stack";
 import { WhyUsSection } from "@/components/sections/why-us";
@@ -30,7 +30,6 @@ export default async function HomePage() {
     getProducts(),
     getClientLogos(),
   ]);
-  const codeforge = products[0];
 
   return (
     <>
@@ -40,7 +39,7 @@ export default async function HomePage() {
       <StatsSection />
       <BentoServices />
       <ScrollShowcase />
-      {codeforge && <FeaturedProduct product={codeforge} />}
+      <ProductsHome products={products} />
       <PortfolioPreview projects={portfolio} />
       <TechStackSection />
       <WhyUsSection />

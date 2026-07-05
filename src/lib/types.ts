@@ -104,6 +104,38 @@ export interface ClientLogo {
   createdAt?: string;
 }
 
+export interface Milestone {
+  _id?: string;
+  year: string;
+  title: string;
+  description: string;
+  order: number;
+  createdAt?: string;
+}
+
+export interface Founder {
+  name: string;
+  role: string;
+  handle?: string;
+  status?: string;
+  photo?: string;
+  quote?: string;
+  bio?: string;
+  twitter?: string;
+  linkedin?: string;
+}
+
+export interface SiteSettings {
+  siteName?: string;
+  tagline?: string;
+  description?: string;
+  email?: string;
+  phone?: string;
+  location?: string;
+  social?: Record<string, string>;
+  founder?: Founder;
+}
+
 export interface Paginated<T> {
   items: T[];
   total: number;

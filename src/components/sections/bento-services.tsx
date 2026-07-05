@@ -5,37 +5,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Container, Section, SectionHeading } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
-import MagicBento, { type BentoCardProps } from "@/components/reactbits/MagicBento";
 import { services } from "@/data/services";
+import { cn } from "@/lib/utils";
 
-const featured = [
-  "nextjs",
-  "ai-development",
-  "mobile-app-development",
-  "ui-ux-design",
-  "mern-stack",
-  "seo",
+const layout = [
+  { slug: "nextjs", span: "lg:col-span-2 lg:row-span-2", big: true },
+  { slug: "ai-development", span: "" },
+  { slug: "ui-ux-design", span: "" },
+  { slug: "mobile-app-development", span: "lg:col-span-2" },
+  { slug: "mern-stack", span: "" },
+  { slug: "seo", span: "" },
 ];
 
 export function BentoServices() {
-  const cards: BentoCardProps[] = featured
-    .map((slug) => services.find((s) => s.slug === slug))
-    .filter(Boolean)
-    .map((s) => ({
-      color: "#0a0c13",
-      label: s!.category,
-      title: s!.title,
-      description: s!.short,
-      href: `/services/${s!.slug}`,
-      icon: (
-        <span className="grid size-9 place-items-center rounded-xl bg-brand-500/15 text-brand-500">
-          <FontAwesomeIcon icon={s!.icon} className="size-4" />
-        </span>
-      ),
-    }));
-
   return (
-    <Section id="services" className="relative overflow-hidden">
+    <Section id="services" className="relative">
       <Container>
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row md:items-end">
           <SectionHeading
@@ -60,22 +44,55 @@ export function BentoServices() {
           </Reveal>
         </div>
 
-        <Reveal className="mt-12">
-          <div className="bento-brand">
-            <MagicBento
-              cards={cards}
-              glowColor="77, 134, 247"
-              enableStars
-              enableSpotlight
-              enableBorderGlow
-              enableTilt
-              clickEffect
-              spotlightRadius={340}
-              particleCount={10}
-              textAutoHide={false}
-            />
-          </div>
-        </Reveal>
+        <div className="mt-12 grid auto-rows-[minmax(180px,1fr)] grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {layout.map((item, i) => {
+            const s = services.find((x) => x.slug === item.slug);
+            if (!s) return null;
+            return (
+              <Reveal key={s.slug} delay={(i % 4) * 0.06} className={cn("min-h-0", item.span)}>
+                <Link href={`/services/${s.slug}`} className="group block h-full">
+                  <div className="glow-border glow-hover h-full rounded-2xl">
+                    <div className="flex h-full flex-col rounded-2xl border border-border/60 bg-card p-6 transition-colors group-hover:border-transparent">
+                      <div className="flex items-center justify-between">
+                        <span
+                          className={cn(
+                            "grid place-items-center rounded-xl bg-brand-500/10 text-brand-500 transition-all group-hover:bg-brand-500 group-hover:text-white",
+                            item.big ? "size-14" : "size-11",
+                          )}
+                        >
+                          <FontAwesomeIcon icon={s.icon} className={item.big ? "size-6" : "size-5"} />
+                        </span>
+                        <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
+                          {s.category}
+                        </span>
+                      </div>
+
+                      <div className="mt-auto pt-6">
+                        <h3
+                          className={cn(
+                            "font-display font-semibold tracking-tight",
+                            item.big ? "text-2xl sm:text-3xl" : "text-lg",
+                          )}
+                        >
+                          {s.title}
+                        </h3>
+                        <p className={cn("mt-2 text-muted-foreground", item.big ? "text-base max-w-md" : "text-sm")}>
+                          {item.big ? s.description : s.short}
+                        </p>
+                        {item.big && (
+                          <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-500">
+                            Explore
+                            <FontAwesomeIcon icon={faArrowRight} className="size-3 transition-transform group-hover:translate-x-1" />
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </Reveal>
+            );
+          })}
+        </div>
       </Container>
     </Section>
   );

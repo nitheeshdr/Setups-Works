@@ -5,9 +5,19 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { AdminHeader, Field, TextInput, TextArea, Spinner } from "@/components/admin/ui";
+import { AdminHeader, Field, TextInput, TextArea, ImageUploader, Spinner } from "@/components/admin/ui";
 import { api } from "@/lib/admin/api";
 
+interface Founder {
+  name?: string;
+  role?: string;
+  handle?: string;
+  status?: string;
+  photo?: string;
+  quote?: string;
+  twitter?: string;
+  linkedin?: string;
+}
 interface Settings {
   siteName?: string;
   tagline?: string;
@@ -18,6 +28,7 @@ interface Settings {
   social?: Record<string, string>;
   seo?: { title?: string; description?: string; ogImage?: string };
   analytics?: { googleAnalyticsId?: string; searchConsoleId?: string };
+  founder?: Founder;
 }
 
 export default function AdminSettingsPage() {
@@ -44,7 +55,7 @@ export default function AdminSettingsPage() {
   if (isLoading) return <Spinner />;
 
   const set = (k: keyof Settings, v: unknown) => setForm((f) => ({ ...f, [k]: v }));
-  const setNested = (group: "social" | "seo" | "analytics", k: string, v: string) =>
+  const setNested = (group: "social" | "seo" | "analytics" | "founder", k: string, v: string) =>
     setForm((f) => ({ ...f, [group]: { ...(f[group] as object), [k]: v } }));
 
   const card = "space-y-4 rounded-2xl border border-border/60 bg-card/50 p-6";
@@ -72,6 +83,22 @@ export default function AdminSettingsPage() {
             <Field label="Phone"><TextInput value={form.phone ?? ""} onChange={(e) => set("phone", e.target.value)} /></Field>
             <Field label="Location"><TextInput value={form.location ?? ""} onChange={(e) => set("location", e.target.value)} /></Field>
           </div>
+        </div>
+
+        <div className={card}>
+          <p className="text-sm font-semibold">Founder (About page)</p>
+          <Field label="Photo">
+            <ImageUploader value={form.founder?.photo} onChange={(url) => setNested("founder", "photo", url)} label="Founder photo" />
+          </Field>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Name"><TextInput value={form.founder?.name ?? ""} onChange={(e) => setNested("founder", "name", e.target.value)} /></Field>
+            <Field label="Role"><TextInput value={form.founder?.role ?? ""} onChange={(e) => setNested("founder", "role", e.target.value)} /></Field>
+            <Field label="Handle" hint="without @"><TextInput value={form.founder?.handle ?? ""} onChange={(e) => setNested("founder", "handle", e.target.value)} /></Field>
+            <Field label="Status"><TextInput value={form.founder?.status ?? ""} onChange={(e) => setNested("founder", "status", e.target.value)} /></Field>
+            <Field label="Twitter URL"><TextInput value={form.founder?.twitter ?? ""} onChange={(e) => setNested("founder", "twitter", e.target.value)} /></Field>
+            <Field label="LinkedIn URL"><TextInput value={form.founder?.linkedin ?? ""} onChange={(e) => setNested("founder", "linkedin", e.target.value)} /></Field>
+          </div>
+          <Field label="Quote / note"><TextArea rows={3} value={form.founder?.quote ?? ""} onChange={(e) => setNested("founder", "quote", e.target.value)} /></Field>
         </div>
 
         <div className={card}>

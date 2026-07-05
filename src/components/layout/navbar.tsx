@@ -198,20 +198,16 @@ function MegaMenu() {
                 </p>
                 {services
                   .filter((s) => s.category === cat)
-                  .slice(0, 4)
                   .map((s) => (
                     <Link
                       key={s.slug}
                       href={`/services/${s.slug}`}
-                      className="group flex items-start gap-2.5 rounded-xl px-2 py-2 transition-colors hover:bg-surface-2"
+                      className="group flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-surface-2"
                     >
-                      <span className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-lg bg-brand-500/10 text-brand-500 transition-all group-hover:bg-brand-500 group-hover:text-white">
-                        <FontAwesomeIcon icon={s.icon} className="size-3.5" />
+                      <span className="grid size-7 shrink-0 place-items-center rounded-md bg-brand-500/10 text-brand-500 transition-all group-hover:bg-brand-500 group-hover:text-white">
+                        <FontAwesomeIcon icon={s.icon} className="size-3" />
                       </span>
-                      <span>
-                        <span className="block text-sm font-medium text-foreground">{s.title}</span>
-                        <span className="block text-xs text-muted-foreground line-clamp-1">{s.short}</span>
-                      </span>
+                      <span className="text-sm font-medium text-foreground">{s.title}</span>
                     </Link>
                   ))}
               </div>

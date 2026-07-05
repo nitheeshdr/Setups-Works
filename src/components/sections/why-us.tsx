@@ -1,55 +1,9 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Container, Section, SectionHeading } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
-import type { ChromaItem } from "@/components/reactbits/ChromaGrid";
-
-const ChromaGrid = dynamic(() => import("@/components/reactbits/ChromaGrid"), {
-  ssr: false,
-});
-
-const img = (id: string) =>
-  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=700&q=80`;
-
-const items: ChromaItem[] = [
-  {
-    image: img("1517180102446-f3ece451e9d8"),
-    title: "Premium craft",
-    subtitle: "Every pixel is intentional",
-    handle: "01",
-    borderColor: "#4D86F7",
-    gradient: "linear-gradient(145deg, #4D86F7, #05060a)",
-    url: "/about",
-  },
-  {
-    image: img("1451187580459-43490279c0fa"),
-    title: "Ship fast, ship right",
-    subtitle: "Weekly increments to market",
-    handle: "02",
-    borderColor: "#8B5CF6",
-    gradient: "linear-gradient(145deg, #8B5CF6, #05060a)",
-    url: "/about",
-  },
-  {
-    image: img("1558494949-ef010cbdcc31"),
-    title: "Built to scale",
-    subtitle: "Clean, typed architecture",
-    handle: "03",
-    borderColor: "#0EA5E9",
-    gradient: "linear-gradient(145deg, #0EA5E9, #05060a)",
-    url: "/about",
-  },
-  {
-    image: img("1600880292203-757bb62b4baf"),
-    title: "True partnership",
-    subtitle: "An extension of your team",
-    handle: "04",
-    borderColor: "#10B981",
-    gradient: "linear-gradient(145deg, #10B981, #05060a)",
-    url: "/about",
-  },
-];
+import { whyChooseUs } from "@/data/site-content";
 
 export function WhyUsSection() {
   return (
@@ -64,11 +18,24 @@ export function WhyUsSection() {
           title="The difference is in the craft"
           description="We're not a body shop churning out templates. We're a senior team that treats your product like our own."
         />
-        <Reveal className="mt-14">
-          <div className="why-chroma relative min-h-[420px]">
-            <ChromaGrid items={items} radius={320} damping={0.45} fadeOut={0.6} />
-          </div>
-        </Reveal>
+
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {whyChooseUs.map((item, i) => (
+            <Reveal key={item.title} delay={(i % 4) * 0.08}>
+              <div className="glow-border h-full rounded-3xl">
+                <div className="flex h-full flex-col rounded-3xl bg-card p-6">
+                  <span className="grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 text-white shadow-lg shadow-brand-500/25">
+                    <FontAwesomeIcon icon={item.icon} className="size-5" />
+                  </span>
+                  <h3 className="mt-5 font-display text-lg font-semibold tracking-tight">
+                    {item.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
       </Container>
     </Section>
   );
