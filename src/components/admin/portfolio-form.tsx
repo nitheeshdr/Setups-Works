@@ -15,6 +15,7 @@ import {
   MultiImageUploader,
 } from "@/components/admin/ui";
 import { useResourceMutations } from "@/lib/admin/hooks";
+import { AIGenerate } from "@/components/admin/ai-generate";
 import { slugify } from "@/lib/helpers";
 import type { Portfolio } from "@/lib/types";
 
@@ -31,6 +32,13 @@ export function PortfolioForm({ initial }: { initial?: Portfolio }) {
   const [slugTouched, setSlugTouched] = useState(isEdit);
   const { create, update } = useResourceMutations<Portfolio>("portfolio", "Project");
   const set = <K extends keyof Portfolio>(k: K, v: Portfolio[K]) => setForm((f) => ({ ...f, [k]: v }));
+  const onAI = (data: Record<string, unknown>) =>
+    setForm((f) => {
+      const next = { ...f, ...data } as Partial<Portfolio>;
+      if (!slugTouched && typeof data.title === "string")
+        next.slug = slugify(data.title);
+      return next;
+    });
 
   function save() {
     if (!form.title || !form.category) {
@@ -61,6 +69,11 @@ export function PortfolioForm({ initial }: { initial?: Portfolio }) {
 
       <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
         <div className="space-y-5">
+          <AIGenerate
+            type="portfolio"
+            placeholder="e.g. A fintech dashboard for a neobank startup"
+            onGenerated={onAI}
+          />
           <div className="grid gap-5 sm:grid-cols-2">
             <Field label="Title">
               <TextInput value={form.title} onChange={(e) => setForm((f) => ({ ...f, title: e.target.value, slug: slugTouched ? f.slug : slugify(e.target.value) }))} />

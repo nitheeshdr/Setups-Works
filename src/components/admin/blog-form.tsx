@@ -20,6 +20,7 @@ import {
   ImageUploader,
 } from "@/components/admin/ui";
 import { useResourceMutations } from "@/lib/admin/hooks";
+import { AIGenerate } from "@/components/admin/ai-generate";
 import { slugify } from "@/lib/helpers";
 import type { Blog } from "@/lib/types";
 
@@ -83,6 +84,14 @@ export function BlogForm({ initial }: { initial?: Blog }) {
     }));
   };
 
+  const onAI = (data: Record<string, unknown>) =>
+    setForm((f) => {
+      const next = { ...f, ...data } as Partial<Blog>;
+      if (!slugTouched && typeof data.title === "string")
+        next.slug = slugify(data.title);
+      return next;
+    });
+
   async function save() {
     if (!form.title || !form.excerpt || !form.content) {
       toast.error("Title, excerpt, and content are required.");
@@ -132,6 +141,11 @@ export function BlogForm({ initial }: { initial?: Blog }) {
       <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
         {/* Main */}
         <div className="space-y-5">
+          <AIGenerate
+            type="blog"
+            placeholder="e.g. Why server components change how we build React apps"
+            onGenerated={onAI}
+          />
           <Field label="Title">
             <TextInput
               value={form.title}

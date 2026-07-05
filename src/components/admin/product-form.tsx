@@ -17,6 +17,7 @@ import {
   MultiImageUploader,
 } from "@/components/admin/ui";
 import { useResourceMutations } from "@/lib/admin/hooks";
+import { AIGenerate } from "@/components/admin/ai-generate";
 import { slugify } from "@/lib/helpers";
 import type { Product } from "@/lib/types";
 
@@ -60,6 +61,13 @@ export function ProductForm({ initial }: { initial?: Product }) {
   const { create, update } = useResourceMutations<Product>("products", "Product");
 
   const set = <K extends keyof Product>(k: K, v: Product[K]) => setForm((f) => ({ ...f, [k]: v }));
+  const onAI = (data: Record<string, unknown>) =>
+    setForm((f) => {
+      const next = { ...f, ...data } as Partial<Product>;
+      if (!slugTouched && typeof data.name === "string")
+        next.slug = slugify(data.name);
+      return next;
+    });
   const features = form.features ?? [];
   const setFeature = (i: number, key: "title" | "description", val: string) => {
     const next = [...features];
@@ -99,6 +107,11 @@ export function ProductForm({ initial }: { initial?: Product }) {
 
       <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
         <div className="space-y-5">
+          <AIGenerate
+            type="product"
+            placeholder="e.g. An AI code review tool for teams"
+            onGenerated={onAI}
+          />
           <div className="grid gap-5 sm:grid-cols-2">
             <Field label="Name">
               <TextInput value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value, slug: slugTouched ? f.slug : slugify(e.target.value) }))} />
