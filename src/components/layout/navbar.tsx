@@ -135,7 +135,10 @@ export function Navbar() {
             onClick={() => setMobileOpen((o) => !o)}
             className="inline-grid size-9 place-items-center rounded-lg border border-border/60 bg-surface-2/60 text-foreground lg:hidden"
           >
-            <FontAwesomeIcon icon={mobileOpen ? faXmark : faBars} className="size-4" />
+            <FontAwesomeIcon
+              icon={mobileOpen ? faXmark : faBars}
+              className="size-4"
+            />
           </button>
         </div>
       </div>
@@ -165,7 +168,11 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <PremiumButton href="/contact" className="mt-3 w-full" icon={faArrowRight}>
+              <PremiumButton
+                href="/contact"
+                className="mt-3 w-full"
+                icon={faArrowRight}
+              >
                 Start a project
               </PremiumButton>
             </nav>
@@ -207,7 +214,9 @@ function MegaMenu() {
                       <span className="grid size-7 shrink-0 place-items-center rounded-md bg-brand-500/10 text-brand-500 transition-all group-hover:bg-brand-500 group-hover:text-white">
                         <FontAwesomeIcon icon={s.icon} className="size-3" />
                       </span>
-                      <span className="text-sm font-medium text-foreground">{s.title}</span>
+                      <span className="text-sm font-medium text-foreground">
+                        {s.title}
+                      </span>
                     </Link>
                   ))}
               </div>
@@ -224,10 +233,11 @@ function MegaMenu() {
                 CodeForge AI
               </h4>
               <p className="mt-1.5 text-sm text-muted-foreground">
-                Our AI-powered platform that helps developers ship software faster. Coming soon.
+                Our AI-powered platform that helps developers ship software
+                faster. Coming soon.
               </p>
               <Link
-                href="/products/codeforge-ai"
+                href="/products/codeforgeai-io"
                 className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-500 transition-all hover:gap-2.5"
               >
                 Join the waitlist
@@ -239,7 +249,10 @@ function MegaMenu() {
               className="flex items-center justify-between rounded-xl border border-border/60 bg-background/50 p-3 text-sm font-medium transition-colors hover:border-brand-500/40"
             >
               Book a free consult
-              <FontAwesomeIcon icon={faArrowRight} className="size-3 text-brand-500" />
+              <FontAwesomeIcon
+                icon={faArrowRight}
+                className="size-3 text-brand-500"
+              />
             </Link>
           </div>
         </div>

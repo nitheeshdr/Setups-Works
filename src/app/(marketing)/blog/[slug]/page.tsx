@@ -61,7 +61,7 @@ export default async function BlogDetailPage({
       />
 
       <article>
-        <section className="relative isolate overflow-hidden pb-10 pt-8">
+        <section className="relative isolate overflow-hidden pb-10 pt-28 sm:pt-32">
           <AuroraBackground opacity={0.35} />
           <GridGlow />
           <Container className="relative max-w-3xl">

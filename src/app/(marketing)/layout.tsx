@@ -10,9 +10,7 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
     <CommandPaletteProvider>
       <ScrollProgress />
       <Navbar />
-      <PageTransition>
-        <div className="pt-10 sm:pt-24">{children}</div>
-      </PageTransition>
+      <PageTransition>{children}</PageTransition>
       <Footer />
     </CommandPaletteProvider>
   );

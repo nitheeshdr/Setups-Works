@@ -3,7 +3,11 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faStar, faBolt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowRight,
+  faStar,
+  faBolt,
+} from "@fortawesome/free-solid-svg-icons";
 import { Container } from "@/components/section";
 import {
   ParticleBackground,
@@ -34,7 +38,7 @@ const rows = [
 
 export function Hero() {
   return (
-    <section className="relative isolate overflow-hidden pb-16 pt-2 sm:pb-20 sm:pt-4">
+    <section className="relative isolate overflow-hidden pb-16 pt-28 sm:pb-20 sm:pt-36">
       {/* Background */}
       <AuroraBackground opacity={0.28} />
       <ParticleBackground count={120} />
@@ -49,22 +53,37 @@ export function Hero() {
             transition={{ duration: 0.6, ease: easeOut }}
           >
             <Link
-              href="/products/codeforge-ai"
+              href="/products/codeforgeai-io"
               className="group mb-7 inline-flex items-center gap-2 rounded-full glass py-1.5 pl-1.5 pr-4 text-sm transition-colors hover:border-brand-500/40"
             >
               <span className="flex items-center gap-1 rounded-full bg-brand-500 px-2.5 py-0.5 text-xs font-semibold text-white">
                 <FontAwesomeIcon icon={faBolt} className="size-2.5" />
                 New
               </span>
-              <ShinyText text="Introducing CodeForge AI" speed={4} className="font-medium" />
-              <FontAwesomeIcon icon={faArrowRight} className="size-3 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+              <ShinyText
+                text="Introducing CodeForge AI"
+                speed={4}
+                className="font-medium"
+              />
+              <FontAwesomeIcon
+                icon={faArrowRight}
+                className="size-3 text-muted-foreground transition-transform group-hover:translate-x-0.5"
+              />
             </Link>
           </motion.div>
 
           <h1 className="font-display text-4xl font-bold leading-[1.03] tracking-tight text-balance sm:text-6xl md:text-7xl">
-            <BlurText text="We design & build" animateBy="words" delay={80} className="justify-center" />
+            <BlurText
+              text="We design & build"
+              animateBy="words"
+              delay={80}
+              className="justify-center"
+            />
             <span className="mt-1 flex flex-wrap items-center justify-center gap-x-3">
-              <GradientText colors={["#4D86F7", "#8B5CF6", "#4D86F7"]} className="!mx-0 inline-block">
+              <GradientText
+                colors={["#4D86F7", "#8B5CF6", "#4D86F7"]}
+                className="!mx-0 inline-block"
+              >
                 digital products
               </GradientText>
               <span className="text-muted-foreground">that</span>
@@ -123,7 +142,11 @@ export function Hero() {
           >
             <span className="flex">
               {Array.from({ length: 5 }).map((_, i) => (
-                <FontAwesomeIcon key={i} icon={faStar} className="size-3.5 text-amber-400" />
+                <FontAwesomeIcon
+                  key={i}
+                  icon={faStar}
+                  className="size-3.5 text-amber-400"
+                />
               ))}
             </span>
             <span className="font-medium text-foreground">4.9/5</span>
@@ -144,7 +167,9 @@ export function Hero() {
               <span className="size-3 rounded-full bg-red-400/80" />
               <span className="size-3 rounded-full bg-amber-400/80" />
               <span className="size-3 rounded-full bg-emerald-400/80" />
-              <span className="ml-2 font-mono text-xs text-muted-foreground">setupsworks.studio</span>
+              <span className="ml-2 font-mono text-xs text-muted-foreground">
+                setupsworks.studio
+              </span>
             </div>
 
             <div className="mt-5 grid gap-5 lg:grid-cols-[auto_1fr] lg:items-center">
@@ -161,12 +186,22 @@ export function Hero() {
                 </div>
                 <div className="mt-4 grid grid-cols-3 gap-3">
                   {miniStats.map((s) => (
-                    <div key={s.label} className="rounded-xl border border-border/50 bg-surface-2/40 p-3 text-center">
+                    <div
+                      key={s.label}
+                      className="rounded-xl border border-border/50 bg-surface-2/40 p-3 text-center"
+                    >
                       <div className="font-display text-2xl font-bold tracking-tight">
-                        <CountUp to={s.value} duration={2} className="inline" separator="," />
+                        <CountUp
+                          to={s.value}
+                          duration={2}
+                          className="inline"
+                          separator=","
+                        />
                         {s.suffix}
                       </div>
-                      <div className="text-[10px] uppercase tracking-wide text-muted-foreground">{s.label}</div>
+                      <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
+                        {s.label}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -185,7 +220,11 @@ export function Hero() {
                         initial={{ width: 0 }}
                         whileInView={{ width: `${row.pct}%` }}
                         viewport={{ once: true }}
-                        transition={{ duration: 1.2, delay: 0.4, ease: easeOut }}
+                        transition={{
+                          duration: 1.2,
+                          delay: 0.4,
+                          ease: easeOut,
+                        }}
                         className="h-full rounded-full bg-gradient-to-r from-brand-400 to-brand-600"
                       />
                     </div>

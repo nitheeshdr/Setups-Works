@@ -26,7 +26,7 @@ export function PageHeader({
   children?: ReactNode;
 }) {
   return (
-    <section className="relative isolate overflow-hidden pb-12 pt-8 sm:pb-16 sm:pt-12">
+    <section className="relative isolate overflow-hidden pb-12 pt-28 sm:pb-16 sm:pt-32">
       <AuroraBackground opacity={0.4} />
       <GridGlow />
       <Container className="relative">
