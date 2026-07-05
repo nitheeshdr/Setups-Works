@@ -17,16 +17,18 @@ import {
   getPortfolio,
   getTestimonials,
   getProducts,
+  getClientLogos,
 } from "@/lib/content";
 
 export const revalidate = 300;
 
 export default async function HomePage() {
-  const [blogs, portfolio, testimonials, products] = await Promise.all([
+  const [blogs, portfolio, testimonials, products, logos] = await Promise.all([
     getFeaturedBlogs(3),
     getPortfolio(),
     getTestimonials(true),
     getProducts(),
+    getClientLogos(),
   ]);
   const codeforge = products[0];
 
@@ -34,7 +36,7 @@ export default async function HomePage() {
     <>
       <JsonLd data={[organizationSchema(), websiteSchema()]} />
       <Hero />
-      <ClientsMarquee />
+      <ClientsMarquee logos={logos} />
       <StatsSection />
       <ServicesPreview />
       <ProcessSection />

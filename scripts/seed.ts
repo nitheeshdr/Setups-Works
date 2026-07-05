@@ -1,6 +1,10 @@
 /**
- * Seed script — populates MongoDB with demo content + an admin user.
- * Run with:  pnpm seed
+ * Init script — ensures the admin user and settings exist.
+ * Does NOT insert demo content (publish your own via the admin CMS).
+ *
+ *   pnpm seed          → ensure admin user + settings
+ *   pnpm seed --wipe   → also delete ALL content (blogs, products, portfolio,
+ *                        testimonials, messages, subscribers). Admin is kept.
  */
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
@@ -10,26 +14,23 @@ import {
   Product,
   Portfolio,
   Testimonial,
+  Contact,
+  Subscriber,
   Settings,
 } from "../src/models/index";
-import {
-  seedBlogs,
-  seedProducts,
-  seedPortfolio,
-  seedTestimonials,
-} from "../src/data/seed-content";
 
 const MONGODB_URI =
   process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/setupsworks";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@setupsworks.com";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "Admin@12345";
+const WIPE = process.argv.includes("--wipe");
 
 async function main() {
-  console.log("→ Connecting to MongoDB:", MONGODB_URI);
-  await mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 5000 });
+  console.log("→ Connecting to MongoDB…");
+  await mongoose.connect(MONGODB_URI, { serverSelectionTimeoutMS: 8000 });
   console.log("✓ Connected");
 
-  // Admin user (upsert)
+  // Admin user (upsert — never wiped)
   const hash = await bcrypt.hash(ADMIN_PASSWORD, 10);
   await User.findOneAndUpdate(
     { email: ADMIN_EMAIL.toLowerCase() },
@@ -39,56 +40,38 @@ async function main() {
       password: hash,
       role: "admin",
     },
-    { upsert: true, new: true },
+    { upsert: true, returnDocument: "after" },
   );
-  console.log(`✓ Admin user ready → ${ADMIN_EMAIL} / ${ADMIN_PASSWORD}`);
+  console.log(`✓ Admin user ready → ${ADMIN_EMAIL}`);
 
-  // Content — wipe and reinsert
-  await Blog.deleteMany({});
-  await Blog.insertMany(seedBlogs);
-  console.log(`✓ ${seedBlogs.length} blog posts`);
-
-  await Product.deleteMany({});
-  await Product.insertMany(seedProducts);
-  console.log(`✓ ${seedProducts.length} product(s)`);
-
-  await Portfolio.deleteMany({});
-  await Portfolio.insertMany(seedPortfolio);
-  console.log(`✓ ${seedPortfolio.length} portfolio projects`);
-
-  await Testimonial.deleteMany({});
-  await Testimonial.insertMany(seedTestimonials);
-  console.log(`✓ ${seedTestimonials.length} testimonials`);
-
+  // Settings singleton
   await Settings.findOneAndUpdate(
     { key: "site" },
-    {
-      key: "site",
-      siteName: "Setups Works",
-      tagline: "The Digital Agency.",
-      description:
-        "Setups Works is a premium digital agency crafting high-performance websites, apps, AI products, and brands.",
-      email: "hello@setupsworks.com",
-      phone: "+1 (415) 555-0142",
-      location: "Remote · Worldwide",
-      social: {
-        twitter: "https://twitter.com/setupsworks",
-        github: "https://github.com/setupsworks",
-        linkedin: "https://linkedin.com/company/setupsworks",
-        dribbble: "https://dribbble.com/setupsworks",
-        instagram: "https://instagram.com/setupsworks",
-      },
-    },
-    { upsert: true, new: true },
+    { key: "site", siteName: "Setups Works", tagline: "The Digital Agency." },
+    { upsert: true, returnDocument: "after", setDefaultsOnInsert: true },
   );
-  console.log("✓ Settings initialized");
+  console.log("✓ Settings ready");
+
+  if (WIPE) {
+    const [b, p, pf, t, c, s] = await Promise.all([
+      Blog.deleteMany({}),
+      Product.deleteMany({}),
+      Portfolio.deleteMany({}),
+      Testimonial.deleteMany({}),
+      Contact.deleteMany({}),
+      Subscriber.deleteMany({}),
+    ]);
+    console.log(
+      `🧹 Wiped content — blogs:${b.deletedCount} products:${p.deletedCount} portfolio:${pf.deletedCount} testimonials:${t.deletedCount} messages:${c.deletedCount} subscribers:${s.deletedCount}`,
+    );
+  }
 
   await mongoose.disconnect();
-  console.log("✅ Seed complete");
+  console.log("✅ Done");
   process.exit(0);
 }
 
 main().catch((err) => {
-  console.error("✗ Seed failed:", err);
+  console.error("✗ Failed:", err);
   process.exit(1);
 });

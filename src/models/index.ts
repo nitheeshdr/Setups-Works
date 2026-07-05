@@ -176,7 +176,21 @@ const SettingsSchema = new Schema(
   { timestamps: true },
 );
 
+/* ------------------------------------------------------------------ *
+ *  Client logo (homepage marquee)
+ * ------------------------------------------------------------------ */
+const ClientLogoSchema = new Schema(
+  {
+    name: { type: String, required: true },
+    logo: { type: String, default: "" },
+    url: String,
+    order: { type: Number, default: 0 },
+  },
+  { timestamps: true },
+);
+
 export const User = models.User || model("User", UserSchema);
+export const ClientLogo = models.ClientLogo || model("ClientLogo", ClientLogoSchema);
 export const Blog = models.Blog || model("Blog", BlogSchema);
 export const Product = models.Product || model("Product", ProductSchema);
 export const Portfolio = models.Portfolio || model("Portfolio", PortfolioSchema);

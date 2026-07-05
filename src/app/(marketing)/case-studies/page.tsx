@@ -31,6 +31,16 @@ export default async function CaseStudiesPage() {
 
       <Section>
         <Container>
+          {projects.length === 0 && (
+            <div className="rounded-3xl border border-dashed border-border/60 bg-card/30 py-20 text-center">
+              <p className="font-display text-xl font-semibold text-muted-foreground">
+                Case studies coming soon
+              </p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                We&apos;re preparing detailed write-ups of our best work. Check back shortly.
+              </p>
+            </div>
+          )}
           <div className="space-y-6">
             {projects.map((p, i) => (
               <Reveal key={p.slug} delay={0.05}>

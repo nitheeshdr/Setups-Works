@@ -1,4 +1,4 @@
-import { Blog, Product, Portfolio, Testimonial } from "@/models";
+import { Blog, Product, Portfolio, Testimonial, ClientLogo } from "@/models";
 import {
   createResource,
   blogCreateSchema,
@@ -9,6 +9,8 @@ import {
   portfolioUpdateSchema,
   testimonialCreateSchema,
   testimonialUpdateSchema,
+  clientLogoCreateSchema,
+  clientLogoUpdateSchema,
 } from "@/lib/crud";
 import { readingTime } from "@/lib/helpers";
 
@@ -49,4 +51,12 @@ export const testimonialHandlers = createResource({
   createSchema: testimonialCreateSchema,
   updateSchema: testimonialUpdateSchema,
   searchFields: ["name", "company", "review"],
+});
+
+export const clientLogoHandlers = createResource({
+  model: ClientLogo,
+  createSchema: clientLogoCreateSchema,
+  updateSchema: clientLogoUpdateSchema,
+  searchFields: ["name"],
+  defaultSort: "order",
 });

@@ -95,6 +95,15 @@ export interface Subscriber {
   createdAt?: string;
 }
 
+export interface ClientLogo {
+  _id?: string;
+  name: string;
+  logo: string;
+  url?: string;
+  order: number;
+  createdAt?: string;
+}
+
 export interface Paginated<T> {
   items: T[];
   total: number;

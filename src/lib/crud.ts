@@ -21,12 +21,14 @@ interface ResourceOptions<T> {
   slugFrom?: string;
   /** Transform doc before save (e.g. compute readingTime, publishedAt). */
   transform?: (data: Record<string, unknown>) => Record<string, unknown>;
+  /** Sort applied when the request doesn't specify one (default "-createdAt"). */
+  defaultSort?: string;
 }
 
 const serialize = (doc: unknown) => JSON.parse(JSON.stringify(doc));
 
 export function createResource<T>(opts: ResourceOptions<T>) {
-  const { model, createSchema, updateSchema, searchFields = [], slugFrom, transform } = opts;
+  const { model, createSchema, updateSchema, searchFields = [], slugFrom, transform, defaultSort } = opts;
 
   async function ensureSlug(data: Record<string, unknown>, currentId?: string) {
     if (!slugFrom) return data;
@@ -51,6 +53,8 @@ export function createResource<T>(opts: ResourceOptions<T>) {
     const { error } = await requireAuth();
     if (error) return error;
     const { page, limit, search, category, status, sort } = parseListParams(req);
+    const hasSortParam = new URL(req.url).searchParams.has("sort");
+    const effectiveSort = hasSortParam ? sort : (defaultSort ?? sort);
 
     try {
       await requireDB();
@@ -64,7 +68,7 @@ export function createResource<T>(opts: ResourceOptions<T>) {
       const total = await model.countDocuments(filter);
       const items = await model
         .find(filter)
-        .sort(sort)
+        .sort(effectiveSort)
         .skip((page - 1) * limit)
         .limit(limit)
         .lean();
@@ -214,6 +218,14 @@ export const portfolioCreateSchema = z.object({
   featured: z.boolean().default(false),
 });
 export const portfolioUpdateSchema = portfolioCreateSchema.partial();
+
+export const clientLogoCreateSchema = z.object({
+  name: z.string().min(1),
+  logo: z.string().default(""),
+  url: z.string().optional(),
+  order: z.number().default(0),
+});
+export const clientLogoUpdateSchema = clientLogoCreateSchema.partial();
 
 export const testimonialCreateSchema = z.object({
   name: z.string().min(2),
