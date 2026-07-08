@@ -174,9 +174,9 @@ const SettingsSchema = new Schema(
       searchConsoleId: String,
     },
     founder: {
-      name: { type: String, default: "Nitheesh R." },
-      role: { type: String, default: "Founder & Principal Engineer" },
-      handle: { type: String, default: "setupsworks" },
+      name: { type: String, default: "Nitheesh Rajendran" },
+      role: { type: String, default: "Founder" },
+      handle: { type: String, default: "nitheesh.rajendran" },
       status: { type: String, default: "Available" },
       photo: { type: String, default: "" },
       quote: {
