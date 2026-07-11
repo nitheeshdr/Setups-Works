@@ -43,6 +43,7 @@ export const siteConfig = {
       "https://github.com/nitheeshdr",
       "https://www.imdb.com/name/nm16304237/",
       "https://www.youtube.com/@nitheeshrajendran",
+      "https://www.wikidata.org/wiki/Q140500455",
     ],
   },
   ogImage: "/opengraph-image",
