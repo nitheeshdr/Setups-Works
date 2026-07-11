@@ -28,6 +28,7 @@ const orgSameAs: string[] = [
   siteConfig.links.linkedin, // linkedin.com/company/setups-works
   siteConfig.links.instagram, // instagram.com/setups.works
   siteConfig.googleBusiness,
+  siteConfig.wikidata, // wikidata.org/wiki/Q140500419 — entity anchor
 ].filter(Boolean);
 const ORG_ID = `${siteConfig.url}/#organization`;
 const WEBSITE_ID = `${siteConfig.url}/#website`;

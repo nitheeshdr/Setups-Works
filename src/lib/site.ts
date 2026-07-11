@@ -18,6 +18,7 @@ export const siteConfig = {
   },
   geo: { lat: 13.0826802, lng: 80.2707184 },
   googleBusiness: "https://share.google/ZwR52us1CGd82FHW6",
+  wikidata: "https://www.wikidata.org/wiki/Q140500419",
   areaServed: ["Chennai", "Tamil Nadu", "India", "Worldwide"],
   founderProfile: {
     name: "Nitheesh Rajendran",
