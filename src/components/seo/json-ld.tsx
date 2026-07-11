@@ -41,11 +41,17 @@ const orgReference = {
   url: siteConfig.url,
 };
 
-/* ----------------------------- Organization ---------------------------- */
+/* --------------------------- Organization ------------------------------ */
+/**
+ * Single business entity typed as BOTH Organization and ProfessionalService.
+ * One @id, one node — so Google shows one "Setups Works" instead of two,
+ * while still carrying the local-business signals (geo, hours, price range)
+ * that power Maps / the local pack alongside the brand/Knowledge-Panel data.
+ */
 export function organizationSchema() {
   return {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": ["Organization", "ProfessionalService"],
     "@id": ORG_ID,
     name: siteConfig.name,
     alternateName: "SETUPS WORKS",
@@ -62,42 +68,7 @@ export function organizationSchema() {
     telephone: siteConfig.phone,
     foundingDate: siteConfig.foundingDate,
     slogan: siteConfig.tagline,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: siteConfig.address.locality,
-      addressRegion: siteConfig.address.region,
-      postalCode: siteConfig.address.postalCode,
-      addressCountry: siteConfig.address.country,
-    },
-    contactPoint: [
-      {
-        "@type": "ContactPoint",
-        telephone: siteConfig.phone,
-        email: siteConfig.email,
-        contactType: "customer service",
-        areaServed: siteConfig.areaServed,
-        availableLanguage: ["English"],
-      },
-    ],
-    founder: { "@id": `${siteConfig.url}/#founder` },
-    sameAs: orgSameAs,
-  };
-}
-
-/* ----------------------------- LocalBusiness --------------------------- */
-export function localBusinessSchema() {
-  return {
-    "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "@id": `${siteConfig.url}/#localbusiness`,
-    name: siteConfig.name,
-    image: `${siteConfig.url}/icon-512.png`,
-    logo: `${siteConfig.url}/icon-512.png`,
-    url: siteConfig.url,
-    telephone: siteConfig.phone,
-    email: siteConfig.email,
     priceRange: siteConfig.priceRange,
-    description: siteConfig.description,
     address: {
       "@type": "PostalAddress",
       addressLocality: siteConfig.address.locality,
@@ -120,6 +91,17 @@ export function localBusinessSchema() {
         closes: "18:00",
       },
     ],
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        telephone: siteConfig.phone,
+        email: siteConfig.email,
+        contactType: "customer service",
+        areaServed: siteConfig.areaServed,
+        availableLanguage: ["English"],
+      },
+    ],
+    founder: { "@id": `${siteConfig.url}/#founder` },
     sameAs: orgSameAs,
   };
 }

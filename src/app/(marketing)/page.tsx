@@ -15,7 +15,6 @@ import {
   JsonLd,
   organizationSchema,
   websiteSchema,
-  localBusinessSchema,
   siteNavigationSchema,
 } from "@/components/seo/json-ld";
 import { mainNav } from "@/data/nav";
@@ -43,7 +42,6 @@ export default async function HomePage() {
       <JsonLd
         data={[
           organizationSchema(),
-          localBusinessSchema(),
           websiteSchema(),
           siteNavigationSchema(
             mainNav.map((l) => ({ name: l.label, url: l.href })),
