@@ -140,6 +140,26 @@ export function personSchema(founder?: Founder) {
   };
 }
 
+/* ------------------------------ ProfilePage ---------------------------- */
+/**
+ * Marks /about as a profile page whose subject is the founder, so Google reads
+ * it as "Profile page for Nitheesh Rajendran" rather than an Organization page.
+ * mainEntity points at the Person node (#founder) rendered alongside it.
+ */
+export function profilePageSchema(founder?: Founder) {
+  const p = siteConfig.founderProfile;
+  return {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "@id": `${siteConfig.url}/about/#profilepage`,
+    url: `${siteConfig.url}/about`,
+    name: `${founder?.name || p.name} — ${founder?.role || p.jobTitle}`,
+    dateCreated: `${siteConfig.foundingDate}-01-01`,
+    dateModified: `${siteConfig.foundingDate}-01-01`,
+    mainEntity: { "@id": `${siteConfig.url}/#founder` },
+  };
+}
+
 /* -------------------------------- WebSite ------------------------------ */
 export function websiteSchema() {
   return {

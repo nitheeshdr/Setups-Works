@@ -11,6 +11,7 @@ import { FounderCard } from "@/components/founder-card";
 import {
   JsonLd,
   personSchema,
+  profilePageSchema,
   organizationSchema,
   breadcrumbSchema,
 } from "@/components/seo/json-ld";
@@ -33,8 +34,9 @@ export default async function AboutPage() {
     <>
       <JsonLd
         data={[
-          organizationSchema(),
+          profilePageSchema(founder),
           personSchema(founder),
+          organizationSchema(),
           breadcrumbSchema([{ name: "About", url: "/about" }]),
         ]}
       />
