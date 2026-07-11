@@ -23,7 +23,7 @@ export function JsonLd({ data }: { data: object | object[] }) {
  * itself. The founder's personal profiles (his GitHub, LinkedIn, IMDb, YouTube)
  * must NOT appear here, or search engines conflate the org with the person.
  */
-const orgSameAs = [
+const orgSameAs: string[] = [
   siteConfig.links.twitter, // x.com/setupsworks
   siteConfig.links.linkedin, // linkedin.com/company/setups-works
   siteConfig.links.instagram, // instagram.com/setups.works
@@ -31,6 +31,14 @@ const orgSameAs = [
 ].filter(Boolean);
 const ORG_ID = `${siteConfig.url}/#organization`;
 const WEBSITE_ID = `${siteConfig.url}/#website`;
+
+/** Self-contained Organization reference used by the founder Person node. */
+const orgReference = {
+  "@id": ORG_ID,
+  "@type": "Organization",
+  name: siteConfig.name,
+  url: siteConfig.url,
+};
 
 /* ----------------------------- Organization ---------------------------- */
 export function organizationSchema() {
@@ -127,16 +135,23 @@ export function personSchema(founder?: Founder) {
     description: founder?.bio || p.description,
     url: `${siteConfig.url}/about`,
     ...(founder?.photo ? { image: founder.photo } : {}),
-    worksFor: { "@id": ORG_ID },
-    founderOf: { "@id": ORG_ID },
+    // Explicit (not just @id) so Google reads "founder of Setups Works"
+    // unambiguously — this is what surfaces the company in his Knowledge Panel.
+    worksFor: orgReference,
+    founderOf: orgReference,
     knowsAbout: p.knowsAbout,
+    // Personal profiles only. Filter out the company's brand accounts so the
+    // org's X/LinkedIn/etc. can never leak into the founder's identity, which
+    // would confuse Knowledge Panel entity reconciliation.
     sameAs: Array.from(
       new Set(
         [
           ...p.sameAs,
           founder?.linkedin,
           founder?.twitter,
-        ].filter(Boolean) as string[],
+        ].filter(
+          (url): url is string => !!url && !orgSameAs.includes(url),
+        ),
       ),
     ),
   };
