@@ -8,7 +8,6 @@ import { siteConfig } from "@/lib/site";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faXTwitter,
-  faGithub,
   faLinkedinIn,
   faDribbble,
   faInstagram,
@@ -17,7 +16,6 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 const socials = [
   { icon: faXTwitter, href: siteConfig.links.twitter, label: "X / Twitter" },
-  { icon: faGithub, href: siteConfig.links.github, label: "GitHub" },
   { icon: faLinkedinIn, href: siteConfig.links.linkedin, label: "LinkedIn" },
   { icon: faDribbble, href: siteConfig.links.dribbble, label: "Dribbble" },
   { icon: faInstagram, href: siteConfig.links.instagram, label: "Instagram" },
