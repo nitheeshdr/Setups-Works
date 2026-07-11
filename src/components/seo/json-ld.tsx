@@ -154,8 +154,10 @@ export function profilePageSchema(founder?: Founder) {
     "@id": `${siteConfig.url}/about/#profilepage`,
     url: `${siteConfig.url}/about`,
     name: `${founder?.name || p.name} — ${founder?.role || p.jobTitle}`,
-    dateCreated: `${siteConfig.foundingDate}-01-01`,
-    dateModified: `${siteConfig.foundingDate}-01-01`,
+    // Google's ProfilePage requires full ISO 8601 datetime (with time + offset),
+    // not a bare date. +05:30 = IST (Chennai).
+    dateCreated: `${siteConfig.foundingDate}-01-01T00:00:00+05:30`,
+    dateModified: `${siteConfig.foundingDate}-01-01T00:00:00+05:30`,
     mainEntity: { "@id": `${siteConfig.url}/#founder` },
   };
 }
