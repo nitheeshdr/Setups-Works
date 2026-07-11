@@ -18,7 +18,17 @@ export function JsonLd({ data }: { data: object | object[] }) {
   );
 }
 
-const socialLinks = Object.values(siteConfig.links).filter(Boolean);
+/**
+ * Brand/company social profiles ONLY — the accounts that belong to Setups Works
+ * itself. The founder's personal profiles (his GitHub, LinkedIn, IMDb, YouTube)
+ * must NOT appear here, or search engines conflate the org with the person.
+ */
+const orgSameAs = [
+  siteConfig.links.twitter, // x.com/setupsworks
+  siteConfig.links.linkedin, // linkedin.com/company/setups-works
+  siteConfig.links.instagram, // instagram.com/setups.works
+  siteConfig.googleBusiness,
+].filter(Boolean);
 const ORG_ID = `${siteConfig.url}/#organization`;
 const WEBSITE_ID = `${siteConfig.url}/#website`;
 
@@ -61,7 +71,7 @@ export function organizationSchema() {
       },
     ],
     founder: { "@id": `${siteConfig.url}/#founder` },
-    sameAs: [...socialLinks, siteConfig.googleBusiness],
+    sameAs: orgSameAs,
   };
 }
 
@@ -101,7 +111,7 @@ export function localBusinessSchema() {
         closes: "18:00",
       },
     ],
-    sameAs: [...socialLinks, siteConfig.googleBusiness],
+    sameAs: orgSameAs,
   };
 }
 
