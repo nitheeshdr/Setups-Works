@@ -63,19 +63,13 @@ export function ScrollShowcase() {
           description="Six deliberate stages that turn ambitious ideas into products people love — with progress you can see every week."
         />
 
-        {/* Sticky deck (desktop) — cards stack as you scroll */}
-        <div className="relative mx-auto mt-14 hidden max-w-4xl flex-col gap-6 lg:flex">
+        {/* Sticky deck — cards stack as you scroll, on all breakpoints.
+            top clears the fixed header (~72px) plus a per-card offset. */}
+        <div className="relative mx-auto mt-12 flex max-w-4xl flex-col gap-6 sm:mt-14">
           {processSteps.map((_, i) => (
-            <div key={i} className="sticky" style={{ top: `${110 + i * 18}px` }}>
+            <div key={i} className="sticky" style={{ top: `${88 + i * 16}px` }}>
               <Card i={i} n={n} sticky />
             </div>
-          ))}
-        </div>
-
-        {/* Mobile — simple stack */}
-        <div className="mt-12 flex flex-col gap-4 lg:hidden">
-          {processSteps.map((_, i) => (
-            <Card key={i} i={i} n={n} />
           ))}
         </div>
       </Container>
