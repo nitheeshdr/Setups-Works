@@ -125,7 +125,12 @@ export function Navbar() {
           </button>
           <ThemeToggle />
           <div className="hidden lg:block">
-            <PremiumButton href="/contact" size="md" icon={faArrowRight}>
+            <PremiumButton
+              href="/contact"
+              size="md"
+              icon={faArrowRight}
+              className="whitespace-nowrap"
+            >
               Start a project
             </PremiumButton>
           </div>
