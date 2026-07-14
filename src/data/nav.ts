@@ -11,6 +11,22 @@ export const mainNav: NavLink[] = [
   { label: "Portfolio", href: "/portfolio" },
 ];
 
+/**
+ * Curated set of key destinations exposed as SiteNavigationElement structured
+ * data on the homepage. These are the pages we want Google to consider for
+ * search sitelinks (the indented sub-links under the main result).
+ */
+export const sitelinkNav: NavLink[] = [
+  { label: "About", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Products", href: "/products" },
+  { label: "Portfolio", href: "/portfolio" },
+  { label: "Case Studies", href: "/case-studies" },
+  { label: "Blog", href: "/blog" },
+  { label: "Careers", href: "/careers" },
+  { label: "Contact", href: "/contact" },
+];
+
 export const footerNav: { title: string; links: NavLink[] }[] = [
   {
     title: "Company",

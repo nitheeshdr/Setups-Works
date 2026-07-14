@@ -17,7 +17,7 @@ import {
   websiteSchema,
   siteNavigationSchema,
 } from "@/components/seo/json-ld";
-import { mainNav } from "@/data/nav";
+import { sitelinkNav } from "@/data/nav";
 import {
   getFeaturedBlogs,
   getPortfolio,
@@ -44,7 +44,7 @@ export default async function HomePage() {
           organizationSchema(),
           websiteSchema(),
           siteNavigationSchema(
-            mainNav.map((l) => ({ name: l.label, url: l.href })),
+            sitelinkNav.map((l) => ({ name: l.label, url: l.href })),
           ),
         ]}
       />
