@@ -16,8 +16,8 @@ export const siteConfig = {
     postalCode: "600001",
     country: "IN",
   },
-  geo: { lat: 13.0826802, lng: 80.2707184 },
-  googleBusiness: "https://share.google/ZwR52us1CGd82FHW6",
+  geo: { lat: 13.459948725379245, lng: 80.11290785179675 },
+  googleBusiness: "https://share.google/OUbn6kWF7QHMrVCmo",
   wikidata: "https://www.wikidata.org/wiki/Q140500419",
   areaServed: ["Chennai", "Tamil Nadu", "India", "Worldwide"],
   founderProfile: {
