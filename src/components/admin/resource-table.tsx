@@ -93,7 +93,7 @@ export function ResourceTable<T extends { _id?: string }>({
       ) : (
         <div className="overflow-hidden rounded-2xl border border-border/60">
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full min-w-[640px] text-sm">
               <thead>
                 <tr className="border-b border-border/60 bg-surface-2/40 text-left text-xs uppercase tracking-wider text-muted-foreground">
                   {columns.map((c) => (
