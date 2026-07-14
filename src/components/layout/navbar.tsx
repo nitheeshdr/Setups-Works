@@ -143,7 +143,8 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — shares the header's container so its edges line up
+          with the logo and menu button above it. */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -151,9 +152,9 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.25 }}
-            className="mx-3 mt-1 rounded-2xl border border-border/60 bg-background/95 p-4 backdrop-blur-xl lg:hidden"
+            className="mx-auto max-w-7xl px-5 sm:px-8 lg:hidden"
           >
-            <nav className="flex flex-col">
+            <nav className="mt-2 flex flex-col rounded-2xl border border-border/60 bg-background/95 p-3 backdrop-blur-xl">
               {mainNav.map((link) => (
                 <Link
                   key={link.href}
