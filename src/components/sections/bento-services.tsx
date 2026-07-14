@@ -51,8 +51,8 @@ export function BentoServices() {
             return (
               <Reveal key={s.slug} delay={(i % 4) * 0.06} className={cn("min-h-0", item.span)}>
                 <Link href={`/services/${s.slug}`} className="group block h-full">
-                  <div className="glow-border glow-hover h-full rounded-2xl">
-                    <div className="flex h-full flex-col rounded-2xl border border-border/60 bg-card p-6 transition-colors group-hover:border-transparent">
+                  <div className="h-full rounded-2xl">
+                    <div className="flex h-full flex-col rounded-2xl border border-border/60 bg-card p-6 transition-colors group-hover:border-brand-500/40">
                       <div className="flex items-center justify-between">
                         <span
                           className={cn(

@@ -26,7 +26,7 @@ function Card({
   const step = processSteps[i];
   return (
     <div
-      className="relative h-72 w-full overflow-hidden rounded-[2rem] border border-border/60 shadow-2xl shadow-black/20 sm:h-80"
+      className="relative h-72 w-full origin-top overflow-hidden rounded-[2rem] border border-border/60 shadow-lg shadow-black/10 sm:h-80"
       style={sticky ? { transform: `scale(${1 - (n - 1 - i) * 0.025})` } : undefined}
     >
       <img
@@ -42,10 +42,12 @@ function Card({
           </span>
           <span className="font-mono text-4xl font-bold text-white/25 sm:text-5xl">{step.step}</span>
         </div>
-        <h3 className="mt-5 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+        <h3 className="mt-5 line-clamp-2 font-display text-2xl font-bold tracking-tight sm:text-3xl">
           {step.title}
         </h3>
-        <p className="mt-3 max-w-lg text-sm text-white/80 sm:text-base">{step.description}</p>
+        <p className="mt-3 line-clamp-3 max-w-lg text-sm text-white/80 sm:text-base">
+          {step.description}
+        </p>
       </div>
     </div>
   );

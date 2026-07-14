@@ -44,7 +44,7 @@ export function ServiceCard({ service }: { service: Service }) {
 /* ------------------------------ Blog ------------------------------ */
 export function BlogCard({ blog, priority }: { blog: Blog; priority?: boolean }) {
   return (
-    <Link href={`/blog/${blog.slug}`} className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border/60 bg-card/60 backdrop-blur-sm transition-all hover:border-brand-500/40 hover:shadow-xl hover:shadow-brand-500/5">
+    <Link href={`/blog/${blog.slug}`} className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border/60 bg-card/60 backdrop-blur-sm transition-colors hover:border-brand-500/40">
       <div className="relative aspect-[16/9] overflow-hidden">
         <Image
           src={blog.featuredImage}

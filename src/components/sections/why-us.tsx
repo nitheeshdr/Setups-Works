@@ -22,8 +22,8 @@ export function WhyUsSection() {
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {whyChooseUs.map((item, i) => (
             <Reveal key={item.title} delay={(i % 4) * 0.08}>
-              <div className="glow-border h-full rounded-3xl">
-                <div className="flex h-full flex-col rounded-3xl bg-card p-6">
+              <div className="h-full rounded-3xl">
+                <div className="flex h-full flex-col rounded-3xl border border-border/60 bg-card p-6">
                   <span className="grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 text-white shadow-lg shadow-brand-500/25">
                     <FontAwesomeIcon icon={item.icon} className="size-5" />
                   </span>

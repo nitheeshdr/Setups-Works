@@ -19,8 +19,8 @@ export function StatsSection() {
         <div className="mt-14 grid grid-cols-2 gap-4 lg:grid-cols-4">
           {stats.map((s, i) => (
             <Reveal key={s.label} delay={i * 0.08}>
-              <div className="glow-border h-full rounded-2xl">
-                <div className="flex h-full flex-col gap-3 rounded-2xl bg-card p-6">
+              <div className="h-full rounded-2xl">
+                <div className="flex h-full flex-col gap-3 rounded-2xl border border-border/60 bg-card p-6">
                   <span className="grid size-11 place-items-center rounded-xl bg-brand-500/10 text-brand-500">
                     <FontAwesomeIcon icon={s.icon} className="size-5" />
                   </span>

@@ -381,6 +381,16 @@
 .glow-border.glow-hover:hover::before { opacity: 1; }
 .glow-border.glow-hover:hover::after { opacity: 0.5; }
 
+/* Outer glow removed site-wide — cards use a plain static border instead. */
+.glow-border::before,
+.glow-border::after,
+.glow-border:hover::before,
+.glow-border:hover::after,
+.glow-border.glow-hover:hover::before,
+.glow-border.glow-hover:hover::after {
+  display: none !important;
+}
+
 /* Constrain ReactBits ProfileCard so it fits nicely (esp. mobile) */
 .founder-card > div > section {
   height: auto !important;
