@@ -8,51 +8,24 @@ export const revalidate = 3600;
 const base = siteConfig.url;
 
 /**
- * Split the sitemap into one file per content type. Next generates a sitemap
- * INDEX at /sitemap.xml that points to each section at /sitemap/<id>.xml
- * (e.g. /sitemap/blog.xml). This keeps each file small, lets crawlers fetch
- * only what changed, and scales past Google's 50,000-URL-per-file limit.
+ * Single sitemap served at /sitemap.xml, covering every static page and every
+ * dynamic item (services, blog posts, portfolio, case studies, products).
+ *
+ * Note: we intentionally do NOT use `generateSitemaps` here. In Next 16 that
+ * emits per-section files at /sitemap/<id>.xml but never serves the root
+ * /sitemap.xml index (it 404s), which breaks robots.txt and Search Console.
+ * A single file is well within Google's 50,000-URL limit for this site.
  */
-export async function generateSitemaps() {
-  return [
-    { id: "pages" },
-    { id: "services" },
-    { id: "blog" },
-    { id: "portfolio" },
-    { id: "case-studies" },
-    { id: "products" },
-  ];
-}
-
-export default async function sitemap({
-  id,
-}: {
-  id: Promise<string>;
-}): Promise<MetadataRoute.Sitemap> {
-  const section = await id;
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
-  switch (section) {
-    case "pages":
-      return pageRoutes(now);
-    case "services":
-      return serviceRoutes(now);
-    case "blog":
-      return blogRoutes(now);
-    case "portfolio":
-      return portfolioRoutes(now);
-    case "case-studies":
-      return caseStudyRoutes(now);
-    case "products":
-      return productRoutes(now);
-    default:
-      return [];
-  }
-}
+  const [{ items: blogs }, portfolio, products] = await Promise.all([
+    getBlogs({ limit: 1000 }),
+    getPortfolio(),
+    getProducts(),
+  ]);
 
-/* ------------------------------ Static pages --------------------------- */
-function pageRoutes(now: Date): MetadataRoute.Sitemap {
-  return [
+  const pages: MetadataRoute.Sitemap = [
     { path: "", priority: 1, freq: "daily" as const },
     { path: "/about", priority: 0.9, freq: "monthly" as const },
     { path: "/services", priority: 0.9, freq: "monthly" as const },
@@ -70,44 +43,29 @@ function pageRoutes(now: Date): MetadataRoute.Sitemap {
     changeFrequency: freq,
     priority,
   }));
-}
 
-/* -------------------------------- Services ----------------------------- */
-function serviceRoutes(now: Date): MetadataRoute.Sitemap {
-  return services.map((s) => ({
+  const serviceRoutes: MetadataRoute.Sitemap = services.map((s) => ({
     url: `${base}/services/${s.slug}`,
     lastModified: now,
     changeFrequency: "monthly",
     priority: 0.7,
   }));
-}
 
-/* ---------------------------------- Blog ------------------------------- */
-async function blogRoutes(now: Date): Promise<MetadataRoute.Sitemap> {
-  const { items: blogs } = await getBlogs({ limit: 1000 });
-  return blogs.map((b) => ({
+  const blogRoutes: MetadataRoute.Sitemap = blogs.map((b) => ({
     url: `${base}/blog/${b.slug}`,
     lastModified: new Date(b.updatedAt || b.publishedAt || now),
     changeFrequency: "weekly",
     priority: 0.7,
   }));
-}
 
-/* ------------------------------- Portfolio ----------------------------- */
-async function portfolioRoutes(now: Date): Promise<MetadataRoute.Sitemap> {
-  const portfolio = await getPortfolio();
-  return portfolio.map((p) => ({
+  const portfolioRoutes: MetadataRoute.Sitemap = portfolio.map((p) => ({
     url: `${base}/portfolio/${p.slug}`,
     lastModified: new Date(p.createdAt || now),
     changeFrequency: "monthly",
     priority: 0.7,
   }));
-}
 
-/* ------------------------------ Case studies --------------------------- */
-async function caseStudyRoutes(now: Date): Promise<MetadataRoute.Sitemap> {
-  const portfolio = await getPortfolio();
-  return portfolio
+  const caseStudyRoutes: MetadataRoute.Sitemap = portfolio
     .filter((p) => p.caseStudy)
     .map((p) => ({
       url: `${base}/case-studies/${p.slug}`,
@@ -115,15 +73,20 @@ async function caseStudyRoutes(now: Date): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.7,
     }));
-}
 
-/* -------------------------------- Products ----------------------------- */
-async function productRoutes(now: Date): Promise<MetadataRoute.Sitemap> {
-  const products = await getProducts();
-  return products.map((p) => ({
+  const productRoutes: MetadataRoute.Sitemap = products.map((p) => ({
     url: `${base}/products/${p.slug}`,
     lastModified: new Date(p.updatedAt || p.createdAt || now),
     changeFrequency: "weekly",
     priority: 0.7,
   }));
+
+  return [
+    ...pages,
+    ...serviceRoutes,
+    ...blogRoutes,
+    ...portfolioRoutes,
+    ...caseStudyRoutes,
+    ...productRoutes,
+  ];
 }
