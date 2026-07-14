@@ -46,7 +46,7 @@ export function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50">
       <div
         className={cn(
-          "mx-auto grid max-w-7xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-5 transition-all duration-300 sm:px-8",
+          "mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 transition-all duration-300 sm:px-8 lg:grid lg:grid-cols-[1fr_auto_1fr]",
           scrolled
             ? "my-2 rounded-2xl border border-border/60 bg-background/70 py-2.5 backdrop-blur-xl sm:my-3"
             : "border border-transparent py-4",
