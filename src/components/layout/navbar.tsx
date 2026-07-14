@@ -46,7 +46,7 @@ export function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50">
       <div
         className={cn(
-          "mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 transition-all duration-300 sm:px-8 lg:grid lg:grid-cols-[1fr_auto_1fr]",
+          "mx-3 flex max-w-7xl items-center justify-between gap-4 px-5 transition-all duration-300 sm:mx-4 sm:px-8 lg:mx-auto lg:grid lg:grid-cols-[1fr_auto_1fr]",
           scrolled
             ? "my-2 rounded-2xl border border-border/60 bg-background/70 py-2.5 backdrop-blur-xl sm:my-3"
             : "border border-transparent py-4",
@@ -152,7 +152,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.25 }}
-            className="mx-auto max-w-7xl px-5 sm:px-8 lg:hidden"
+            className="mx-3 max-w-7xl px-5 sm:mx-4 sm:px-8 lg:hidden"
           >
             <nav className="mt-2 flex flex-col rounded-2xl border border-border/60 bg-background/95 p-3 backdrop-blur-xl">
               {mainNav.map((link) => (
