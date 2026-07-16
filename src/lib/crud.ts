@@ -12,6 +12,7 @@ import {
   parseListParams,
 } from "@/lib/api-utils";
 import { slugify } from "@/lib/helpers";
+import { submitToIndexNow } from "@/lib/indexnow";
 
 interface ResourceOptions<T> {
   model: Model<T>;
@@ -24,12 +25,28 @@ interface ResourceOptions<T> {
   transform?: (data: Record<string, unknown>) => Record<string, unknown>;
   /** Sort applied when the request doesn't specify one (default "-createdAt"). */
   defaultSort?: string;
+  /**
+   * Public URLs affected by a saved doc, pinged to IndexNow after write.
+   * Return [] when the doc isn't publicly visible (e.g. a draft).
+   */
+  urlPaths?: (doc: Record<string, unknown>) => string[];
 }
 
 const serialize = (doc: unknown) => JSON.parse(JSON.stringify(doc));
 
 export function createResource<T>(opts: ResourceOptions<T>) {
-  const { model, createSchema, updateSchema, searchFields = [], slugFrom, transform, defaultSort } = opts;
+  const { model, createSchema, updateSchema, searchFields = [], slugFrom, transform, defaultSort, urlPaths } = opts;
+
+  /** Ping IndexNow for a saved doc. Never awaited — must not slow or break a save. */
+  function pingIndexNow(doc: unknown) {
+    if (!urlPaths) return;
+    try {
+      const paths = urlPaths(serialize(doc) as Record<string, unknown>);
+      if (paths.length) void submitToIndexNow(paths);
+    } catch (err) {
+      console.warn("[crud] indexnow ping skipped", err);
+    }
+  }
 
   async function ensureSlug(data: Record<string, unknown>, currentId?: string) {
     if (!slugFrom) return data;
@@ -99,6 +116,7 @@ export function createResource<T>(opts: ResourceOptions<T>) {
       payload = await ensureSlug(payload);
       const doc = await model.create(payload as never);
       revalidatePath("/", "layout");
+      pingIndexNow(doc);
       return created(serialize(doc));
     } catch (err) {
       console.error("[crud.create]", err);
@@ -139,6 +157,7 @@ export function createResource<T>(opts: ResourceOptions<T>) {
       }).lean();
       if (!doc) return notFoundResponse();
       revalidatePath("/", "layout");
+      pingIndexNow(doc);
       return ok(serialize(doc));
     } catch (err) {
       console.error("[crud.update]", err);

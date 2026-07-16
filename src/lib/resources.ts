@@ -22,6 +22,11 @@ export const blogHandlers = createResource({
   updateSchema: blogUpdateSchema,
   searchFields: ["title", "excerpt", "category"],
   slugFrom: "title",
+  // Drafts stay unlisted; only published posts get announced.
+  urlPaths: (d) =>
+    d.status === "published" && d.slug
+      ? [`/blog/${d.slug}`, "/blog", "/"]
+      : [],
   transform: (data) => {
     const out = { ...data };
     if (typeof out.content === "string") out.readingTime = readingTime(out.content);
@@ -38,6 +43,7 @@ export const productHandlers = createResource({
   updateSchema: productUpdateSchema,
   searchFields: ["name", "tagline", "category"],
   slugFrom: "name",
+  urlPaths: (d) => (d.slug ? [`/products/${d.slug}`, "/products", "/"] : []),
 });
 
 export const portfolioHandlers = createResource({
@@ -46,6 +52,15 @@ export const portfolioHandlers = createResource({
   updateSchema: portfolioUpdateSchema,
   searchFields: ["title", "summary", "client", "category"],
   slugFrom: "title",
+  urlPaths: (d) =>
+    d.slug
+      ? [
+          `/portfolio/${d.slug}`,
+          "/portfolio",
+          "/",
+          ...(d.caseStudy ? [`/case-studies/${d.slug}`, "/case-studies"] : []),
+        ]
+      : [],
 });
 
 export const testimonialHandlers = createResource({
