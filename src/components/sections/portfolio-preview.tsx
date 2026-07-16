@@ -67,9 +67,9 @@ function PortfolioStackCard({
   const media = p.coverImage || p.images?.[0] || "";
 
   return (
-    <article className="group relative grid overflow-hidden rounded-[2rem] border border-border/60 bg-card shadow-lg shadow-black/10 lg:h-96 lg:grid-cols-2">
+    <article className="group relative grid h-[26rem] w-full grid-cols-1 overflow-hidden rounded-[2rem] border border-border/60 bg-card shadow-lg shadow-black/10 lg:h-96 lg:grid-cols-2">
       {/* Media */}
-      <div className="relative order-first h-44 overflow-hidden sm:h-52 lg:h-full">
+      <div className="relative order-first h-40 overflow-hidden sm:h-52 lg:h-full">
         {media ? (
           <Image
             src={media}
@@ -91,7 +91,7 @@ function PortfolioStackCard({
       </div>
 
       {/* Content */}
-      <div className="flex flex-col justify-center gap-4 p-7 sm:gap-5 sm:p-10 lg:p-12">
+      <div className="flex flex-col justify-center gap-3 p-6 sm:gap-5 sm:p-10 lg:p-12">
         <div className="min-w-0">
           <p className="text-xs font-semibold uppercase tracking-wider text-brand-500">
             {p.category}

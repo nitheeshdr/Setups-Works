@@ -126,7 +126,7 @@ function ProductStackCard({
       </div>
 
       {/* Content */}
-      <div className="flex flex-col justify-center gap-4 p-7 sm:gap-5 sm:p-10 lg:p-12">
+      <div className="flex flex-col justify-center gap-3 p-6 sm:gap-5 sm:p-10 lg:p-12">
         <div className="flex items-center gap-3">
           <span className="grid size-11 shrink-0 place-items-center overflow-hidden rounded-xl border border-border/60 bg-surface-2 sm:size-12">
             <Image
