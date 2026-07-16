@@ -36,10 +36,15 @@ export function ProductsHome({ products }: { products: Product[] }) {
     // NOTE: no `overflow-hidden` here — it would clip the sticky ancestor and
     // break the scroll-stack. The blur blob is contained by `body { overflow-x: clip }`.
     <Section className="relative">
+      {/* The blob is clipped by its own absolute wrapper. Putting
+          overflow-hidden on the Section would break the sticky scroll-stack;
+          leaving it unclipped overflows the viewport horizontally on mobile. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/4 -z-10 size-[500px] -translate-x-1/2 rounded-full bg-brand-500/10 blur-[140px]"
-      />
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+      >
+        <div className="absolute left-1/2 top-1/4 size-[500px] -translate-x-1/2 rounded-full bg-brand-500/10 blur-[140px]" />
+      </div>
       <Container>
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row md:items-end">
           <SectionHeading

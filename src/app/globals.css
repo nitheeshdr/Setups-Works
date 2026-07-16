@@ -169,6 +169,9 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    /* Guard against any stray horizontal overflow leaving blank space beside
+       the fixed navbar. `clip` (not `hidden`) keeps position: sticky working. */
+    overflow-x: clip;
   }
   body {
     background: var(--background);
