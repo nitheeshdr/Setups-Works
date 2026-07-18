@@ -129,8 +129,8 @@ export default async function AboutPage() {
                     }`}
                   >
                     <span
-                      className={`absolute left-2.5 top-1.5 size-3 rounded-full bg-brand-500 ring-4 ring-brand-500/20 sm:left-auto ${
-                        i % 2 === 0 ? "sm:-right-1.5" : "sm:-left-1.5"
+                      className={`absolute left-2.5 top-1.5 size-3 rounded-full bg-brand-500 ring-4 ring-brand-500/20 ${
+                        i % 2 === 0 ? "sm:left-auto sm:-right-1.5" : "sm:-left-1.5"
                       }`}
                     />
                     <span className="font-mono text-sm font-bold text-brand-500">{item.year}</span>
