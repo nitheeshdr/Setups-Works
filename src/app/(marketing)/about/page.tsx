@@ -124,8 +124,8 @@ export default async function AboutPage() {
               {timeline.map((item, i) => (
                 <Reveal key={item._id ?? item.year} delay={0.05}>
                   <div
-                    className={`relative flex flex-col gap-2 pl-12 sm:w-1/2 sm:pl-0 ${
-                      i % 2 === 0 ? "sm:pr-12 sm:text-right" : "sm:ml-auto sm:pl-12"
+                    className={`relative flex flex-col gap-2 pl-12 sm:w-1/2 ${
+                      i % 2 === 0 ? "sm:pl-0 sm:pr-12 sm:text-right" : "sm:ml-auto sm:pl-12"
                     }`}
                   >
                     <span
