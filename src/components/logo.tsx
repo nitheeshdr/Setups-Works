@@ -55,16 +55,14 @@ export function Logo({
   );
 }
 
-/** Compact square monogram (favicon mark) for tight spaces. */
 export function LogoMark({ className }: { className?: string }) {
   return (
-    <span
-      className={cn(
-        "inline-grid place-items-center rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 font-display font-bold text-white shadow-lg shadow-brand-500/30",
-        className,
-      )}
-    >
-      SW
-    </span>
+    <Image
+      src="/icon-512.png"
+      alt="Setups Works Logo"
+      width={36}
+      height={36}
+      className={cn("object-contain", className)}
+    />
   );
 }
