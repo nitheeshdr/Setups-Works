@@ -21,7 +21,13 @@ const socials = [
   { icon: faInstagram, href: siteConfig.links.instagram, label: "Instagram" },
 ];
 
-export function Footer() {
+export function Footer({
+  logoLight,
+  logoDark,
+}: {
+  logoLight?: string | null;
+  logoDark?: string | null;
+}) {
   return (
     <footer className="relative mt-20 overflow-hidden border-t border-border/60 bg-surface-2/40">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-500/50 to-transparent" />
@@ -54,7 +60,7 @@ export function Footer() {
 
         <div className="grid gap-10 lg:grid-cols-[1.4fr_2fr]">
           <div className="space-y-5">
-            <Logo />
+            <Logo logoLight={logoLight} logoDark={logoDark} />
             <p className="max-w-xs text-sm text-muted-foreground">
               {siteConfig.description}
             </p>

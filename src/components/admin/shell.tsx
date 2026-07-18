@@ -21,7 +21,7 @@ import {
   faXmark,
   faArrowUpRightFromSquare,
 } from "@fortawesome/free-solid-svg-icons";
-import { Logo, LogoMark } from "@/components/logo";
+import { Logo } from "@/components/logo";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { api } from "@/lib/admin/api";
 import { cn } from "@/lib/utils";
@@ -44,9 +44,13 @@ const nav = [
 
 export function AdminShell({
   user,
+  logoLight,
+  logoDark,
   children,
 }: {
   user: SessionUser;
+  logoLight?: string | null;
+  logoDark?: string | null;
   children: ReactNode;
 }) {
   const pathname = usePathname();
@@ -64,11 +68,8 @@ export function AdminShell({
 
   const SidebarContent = (
     <div className="flex h-full flex-col">
-      <div className="flex h-16 items-center gap-2 px-5">
-        <LogoMark className="size-9 text-sm" />
-        <span className="font-display text-sm font-bold tracking-tight">
-          Setups Works
-        </span>
+      <div className="flex h-16 items-center px-5">
+        <Logo href="/admin" logoLight={logoLight} logoDark={logoDark} />
       </div>
       <nav className="flex-1 space-y-1 overflow-y-auto px-3 py-4">
         {nav.map((item) => (

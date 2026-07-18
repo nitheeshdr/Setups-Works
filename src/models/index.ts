@@ -153,6 +153,8 @@ const SettingsSchema = new Schema(
     siteName: { type: String, default: "Setups Works" },
     tagline: { type: String, default: "The Digital Agency." },
     description: String,
+    logoLight: String,
+    logoDark: String,
     email: String,
     phone: String,
     location: String,

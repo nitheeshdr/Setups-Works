@@ -20,7 +20,13 @@ import { mainNav } from "@/data/nav";
 import { services, serviceCategories } from "@/data/services";
 import { cn } from "@/lib/utils";
 
-export function Navbar() {
+export function Navbar({
+  logoLight,
+  logoDark,
+}: {
+  logoLight?: string | null;
+  logoDark?: string | null;
+}) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -52,7 +58,7 @@ export function Navbar() {
             : "border border-transparent py-4",
         )}
       >
-        <Logo priority className="justify-self-start" />
+        <Logo priority className="justify-self-start" logoLight={logoLight} logoDark={logoDark} />
 
         {/* Desktop nav (centered) */}
         <nav className="hidden items-center gap-1 justify-self-center lg:flex">

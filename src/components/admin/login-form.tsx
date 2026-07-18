@@ -23,7 +23,13 @@ const schema = z.object({
 });
 type Values = z.infer<typeof schema>;
 
-export function LoginForm() {
+export function LoginForm({
+  logoLight,
+  logoDark,
+}: {
+  logoLight?: string | null;
+  logoDark?: string | null;
+}) {
   const router = useRouter();
   const params = useSearchParams();
   const from = params.get("from") || "/admin";
@@ -64,7 +70,7 @@ export function LoginForm() {
 
       <div className="w-full max-w-md">
         <div className="mb-8 flex flex-col items-center gap-4 text-center">
-          <Logo href="/" />
+          <Logo href="/" logoLight={logoLight} logoDark={logoDark} />
           <div>
             <h1 className="font-display text-2xl font-bold tracking-tight">
               Admin Dashboard

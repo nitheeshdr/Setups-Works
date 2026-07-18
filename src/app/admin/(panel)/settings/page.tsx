@@ -22,6 +22,8 @@ interface Settings {
   siteName?: string;
   tagline?: string;
   description?: string;
+  logoLight?: string;
+  logoDark?: string;
   email?: string;
   phone?: string;
   location?: string;
@@ -82,6 +84,17 @@ export default function AdminSettingsPage() {
             <Field label="Email"><TextInput value={form.email ?? ""} onChange={(e) => set("email", e.target.value)} /></Field>
             <Field label="Phone"><TextInput value={form.phone ?? ""} onChange={(e) => set("phone", e.target.value)} /></Field>
             <Field label="Location"><TextInput value={form.location ?? ""} onChange={(e) => set("location", e.target.value)} /></Field>
+          </div>
+        </div>
+        <div className={card}>
+          <p className="text-sm font-semibold">Website Logos</p>
+          <div className="grid gap-6 sm:grid-cols-2">
+            <Field label="Light Mode Logo" hint="For light backgrounds (dark text/symbol)">
+              <ImageUploader value={form.logoLight} onChange={(url) => set("logoLight", url)} label="Upload light mode logo" />
+            </Field>
+            <Field label="Dark Mode Logo" hint="For dark backgrounds (light text/symbol)">
+              <ImageUploader value={form.logoDark} onChange={(url) => set("logoDark", url)} label="Upload dark mode logo" />
+            </Field>
           </div>
         </div>
 

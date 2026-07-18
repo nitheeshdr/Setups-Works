@@ -7,10 +7,14 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function AdminLoginPage() {
+import { getSettings } from "@/lib/content";
+
+export default async function AdminLoginPage() {
+  const settings = await getSettings();
+
   return (
     <Suspense fallback={null}>
-      <LoginForm />
+      <LoginForm logoLight={settings.logoLight} logoDark={settings.logoDark} />
     </Suspense>
   );
 }

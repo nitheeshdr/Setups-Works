@@ -2,8 +2,11 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faHouse, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Logo } from "@/components/logo";
+import { getSettings } from "@/lib/content";
 
-export default function NotFound() {
+export default async function NotFound() {
+  const settings = await getSettings();
+
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 text-center">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 grid-bg mask-fade-b" />
@@ -13,7 +16,7 @@ export default function NotFound() {
       />
 
       <Link href="/" className="mb-10">
-        <Logo />
+        <Logo logoLight={settings.logoLight} logoDark={settings.logoDark} />
       </Link>
 
       <p className="font-display text-[7rem] font-bold leading-none tracking-tighter text-gradient sm:text-[10rem]">

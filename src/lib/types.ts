@@ -130,6 +130,8 @@ export interface SiteSettings {
   siteName?: string;
   tagline?: string;
   description?: string;
+  logoLight?: string;
+  logoDark?: string;
   email?: string;
   phone?: string;
   location?: string;

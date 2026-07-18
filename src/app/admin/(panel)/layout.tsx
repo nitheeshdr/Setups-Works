@@ -9,6 +9,8 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+import { getSettings } from "@/lib/content";
+
 export default async function AdminPanelLayout({
   children,
 }: {
@@ -17,5 +19,11 @@ export default async function AdminPanelLayout({
   const user = await getSession();
   if (!user) redirect("/admin/login");
 
-  return <AdminShell user={user}>{children}</AdminShell>;
+  const settings = await getSettings();
+
+  return (
+    <AdminShell user={user} logoLight={settings.logoLight} logoDark={settings.logoDark}>
+      {children}
+    </AdminShell>
+  );
 }
