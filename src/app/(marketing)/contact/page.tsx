@@ -13,6 +13,12 @@ import { Container, Section } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
 import { ContactForm } from "@/components/contact-form";
 import { FAQSection } from "@/components/sections/faq";
+import {
+  JsonLd,
+  contactPageSchema,
+  organizationSchema,
+  breadcrumbSchema,
+} from "@/components/seo/json-ld";
 import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -39,6 +45,13 @@ const socials = [
 export default function ContactPage() {
   return (
     <>
+      <JsonLd
+        data={[
+          contactPageSchema(),
+          organizationSchema(),
+          breadcrumbSchema([{ name: "Contact", url: "/contact" }]),
+        ]}
+      />
       <PageHeader
         eyebrow="Get in touch"
         title="Let's talk about your project"
@@ -119,6 +132,40 @@ export default function ContactPage() {
               </div>
             </Reveal>
           </div>
+
+          {/* Map — find us on Google Maps */}
+          <Reveal>
+            <div className="mt-8 overflow-hidden rounded-3xl border border-border/60 bg-card/50">
+              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 px-5 py-4 sm:px-6">
+                <div className="flex items-center gap-3">
+                  <span className="grid size-10 place-items-center rounded-xl bg-brand-500/10 text-brand-500">
+                    <FontAwesomeIcon icon={faLocationDot} className="size-4" />
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold">Find us on Google Maps</p>
+                    <p className="text-xs text-muted-foreground">{siteConfig.location}</p>
+                  </div>
+                </div>
+                <a
+                  href={siteConfig.googleMaps}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-lg border border-border/60 bg-surface-2/60 px-4 py-2 text-xs font-semibold text-muted-foreground transition-colors hover:border-brand-500/40 hover:text-brand-500"
+                >
+                  Open in Maps
+                </a>
+              </div>
+              <iframe
+                src={siteConfig.mapEmbed}
+                title="Setups Works on Google Maps"
+                className="h-[320px] w-full sm:h-[400px]"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            </div>
+          </Reveal>
         </Container>
       </Section>
 

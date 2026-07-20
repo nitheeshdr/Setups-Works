@@ -27,7 +27,8 @@ const orgSameAs: string[] = [
   siteConfig.links.twitter, // x.com/setupsworks
   siteConfig.links.linkedin, // linkedin.com/company/setups-works
   siteConfig.links.instagram, // instagram.com/setups.works
-  siteConfig.googleBusiness,
+  siteConfig.googleBusiness, // GBP share link
+  siteConfig.googleMaps, // canonical Maps listing (CID) — local entity anchor
   siteConfig.wikidata, // wikidata.org/wiki/Q140500419 — entity anchor
 ].filter(Boolean);
 const ORG_ID = `${siteConfig.url}/#organization`;
@@ -81,7 +82,7 @@ export function organizationSchema() {
       latitude: siteConfig.geo.lat,
       longitude: siteConfig.geo.lng,
     },
-    hasMap: siteConfig.googleBusiness,
+    hasMap: siteConfig.googleMaps,
     areaServed: siteConfig.areaServed.map((name) => ({ "@type": "Place", name })),
     openingHoursSpecification: [
       {
@@ -159,6 +160,23 @@ export function profilePageSchema(founder?: Founder) {
     dateCreated: `${siteConfig.foundingDate}-01-01T00:00:00+05:30`,
     dateModified: `${siteConfig.foundingDate}-01-01T00:00:00+05:30`,
     mainEntity: { "@id": `${siteConfig.url}/#founder` },
+  };
+}
+
+/* ------------------------------ ContactPage ---------------------------- */
+/**
+ * Marks /contact as the business's contact page and binds it to the same
+ * Organization entity, reinforcing NAP + map signals for local SEO.
+ */
+export function contactPageSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "@id": `${siteConfig.url}/contact/#contactpage`,
+    url: `${siteConfig.url}/contact`,
+    name: `Contact ${siteConfig.name}`,
+    about: { "@id": ORG_ID },
+    mainEntity: { "@id": ORG_ID },
   };
 }
 
