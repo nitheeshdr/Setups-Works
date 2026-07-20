@@ -503,27 +503,29 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
             {/* Glare layer */}
             <div style={glareStyle} />
 
-            {/* Avatar content */}
+            {/* Avatar content — no blend mode / filters, photo shown as-is,
+                above the shine/glare layers so nothing tints it. */}
             <div
-              className="overflow-visible"
+              className="overflow-hidden"
               style={{
-                mixBlendMode: 'luminosity',
                 transform: 'translateZ(2px)',
                 gridArea: '1 / -1',
                 borderRadius: cardRadius,
                 pointerEvents: 'none',
-                backfaceVisibility: 'hidden'
+                backfaceVisibility: 'hidden',
+                zIndex: 5
               }}
             >
               <img
-                className="w-full absolute left-1/2 bottom-[-1px] will-change-transform transition-transform duration-[120ms] ease-out"
+                className="absolute inset-0 h-full w-full object-cover will-change-transform transition-transform duration-[120ms] ease-out"
                 src={avatarUrl}
                 alt={`${name || 'User'} avatar`}
                 loading="lazy"
                 style={{
+                  objectPosition: 'center top',
                   transformOrigin: '50% 100%',
                   transform:
-                    'translateX(calc(-50% + (var(--pointer-from-left) - 0.5) * 6px)) translateZ(0) scaleY(calc(1 + (var(--pointer-from-top) - 0.5) * 0.02)) scaleX(calc(1 + (var(--pointer-from-left) - 0.5) * 0.01))',
+                    'translateX(calc((var(--pointer-from-left) - 0.5) * 6px)) translateZ(0) scale(1.03)',
                   borderRadius: cardRadius,
                   backfaceVisibility: 'hidden'
                 }}
@@ -586,14 +588,14 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
 
             {/* Details content */}
             <div
-              className="max-h-full overflow-hidden text-center relative z-[5]"
+              className="max-h-full overflow-hidden text-center relative z-[6]"
               style={{
                 transform:
                   'translate3d(calc(var(--pointer-from-left) * -6px + 3px), calc(var(--pointer-from-top) * -6px + 3px), 0.1px)',
-                mixBlendMode: 'luminosity',
                 gridArea: '1 / -1',
                 borderRadius: cardRadius,
-                pointerEvents: 'none'
+                pointerEvents: 'none',
+                filter: 'drop-shadow(0 1px 10px rgba(0,0,0,0.5))'
               }}
             >
               <div className="w-full absolute flex flex-col" style={{ top: '3em', display: 'flex', gridArea: 'auto' }}>
