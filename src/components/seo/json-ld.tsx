@@ -67,9 +67,26 @@ export function organizationSchema() {
     description: siteConfig.description,
     email: siteConfig.email,
     telephone: siteConfig.phone,
+    legalName: siteConfig.name,
     foundingDate: siteConfig.foundingDate,
+    foundingLocation: {
+      "@type": "Place",
+      name: `${siteConfig.address.locality}, ${siteConfig.address.region}, India`,
+    },
     slogan: siteConfig.tagline,
     priceRange: siteConfig.priceRange,
+    knowsAbout: [
+      "Web Development",
+      "Mobile App Development",
+      "AI Development",
+      "Automation",
+      "CRM Development",
+      "UI/UX Design",
+      "SEO",
+      "Digital Marketing",
+      "SaaS Products",
+    ],
+    keywords: siteConfig.keywords.join(", "),
     address: {
       "@type": "PostalAddress",
       addressLocality: siteConfig.address.locality,
@@ -123,6 +140,17 @@ export function personSchema(founder?: Founder) {
     // unambiguously — this is what surfaces the company in his Knowledge Panel.
     worksFor: orgReference,
     founderOf: orgReference,
+    alumniOf: {
+      "@type": "CollegeOrUniversity",
+      name: p.alumniOf,
+    },
+    nationality: { "@type": "Country", name: "IN" },
+    hasOccupation: {
+      "@type": "Occupation",
+      name: "Chief Executive Officer",
+      occupationLocation: { "@type": "City", name: "Chennai" },
+      skills: p.knowsAbout.join(", "),
+    },
     knowsAbout: p.knowsAbout,
     // Personal profiles only. Filter out the company's brand accounts so the
     // org's X/LinkedIn/etc. can never leak into the founder's identity, which
@@ -177,6 +205,20 @@ export function contactPageSchema() {
     name: `Contact ${siteConfig.name}`,
     about: { "@id": ORG_ID },
     mainEntity: { "@id": ORG_ID },
+  };
+}
+
+/* -------------------------------- FAQPage ------------------------------ */
+/** FAQ rich results for pages that render the FAQ section. */
+export function faqSchema(faqs: { question: string; answer: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
   };
 }
 

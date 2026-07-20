@@ -18,7 +18,9 @@ import {
   contactPageSchema,
   organizationSchema,
   breadcrumbSchema,
+  faqSchema,
 } from "@/components/seo/json-ld";
+import { faqs } from "@/data/site-content";
 import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -49,6 +51,7 @@ export default function ContactPage() {
         data={[
           contactPageSchema(),
           organizationSchema(),
+          faqSchema(faqs),
           breadcrumbSchema([{ name: "Contact", url: "/contact" }]),
         ]}
       />

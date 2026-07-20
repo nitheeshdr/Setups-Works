@@ -27,9 +27,10 @@ export const siteConfig = {
   areaServed: ["Chennai", "Tamil Nadu", "India", "Worldwide"],
   founderProfile: {
     name: "Nitheesh Rajendran",
-    jobTitle: "Founder",
+    jobTitle: "Founder & CEO",
     description:
-      "Founder of Setups Works. Passionate about Artificial Intelligence, software engineering, and building developer tools that help programmers prepare for coding interviews.",
+      "Founder & CEO of Setups Works. Passionate about Artificial Intelligence, software engineering, and building developer tools that help programmers prepare for coding interviews.",
+    alumniOf: "Vels University",
     knowsAbout: [
       "Artificial Intelligence",
       "Software Engineering",
