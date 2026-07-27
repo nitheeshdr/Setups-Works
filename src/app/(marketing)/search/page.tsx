@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/page-header";
 import { Container, Section } from "@/components/section";
 import { SiteSearch } from "@/components/site-search";
-import { services } from "@/data/services";
-import { getBlogs, getPortfolio, getProducts } from "@/lib/content";
+import { getBlogs, getPortfolio, getProducts, getServices } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Search",
@@ -18,10 +17,11 @@ export default async function SearchPage({
   searchParams: Promise<{ q?: string }>;
 }) {
   const { q } = await searchParams;
-  const [{ items: blogs }, portfolio, products] = await Promise.all([
+  const [{ items: blogs }, portfolio, products, services] = await Promise.all([
     getBlogs({ limit: 100 }),
     getPortfolio(),
     getProducts(),
+    getServices(),
   ]);
 
   return (

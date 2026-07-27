@@ -9,6 +9,7 @@ import {
   faNewspaper,
   faCube,
   faBriefcase,
+  faScrewdriverWrench,
   faComments,
   faEnvelope,
   faUsers,
@@ -31,6 +32,7 @@ import { initials } from "@/lib/helpers";
 const nav = [
   { label: "Dashboard", href: "/admin", icon: faGaugeHigh },
   { label: "Blogs", href: "/admin/blogs", icon: faNewspaper },
+  { label: "Services", href: "/admin/services", icon: faScrewdriverWrench },
   { label: "Products", href: "/admin/products", icon: faCube },
   { label: "Portfolio", href: "/admin/portfolio", icon: faBriefcase },
   { label: "Testimonials", href: "/admin/testimonials", icon: faComments },

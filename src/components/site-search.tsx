@@ -5,7 +5,7 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import type { Blog, Portfolio, Product } from "@/lib/types";
-import type { Service } from "@/data/services";
+import type { Service } from "@/lib/types";
 
 interface Result {
   type: string;

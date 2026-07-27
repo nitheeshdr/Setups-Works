@@ -28,7 +28,8 @@ import {
   faBlog,
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faLinkedin } from "@fortawesome/free-brands-svg-icons";
-import { services } from "@/data/services";
+import { resolveServiceIcon } from "@/lib/service-icons";
+import type { Service } from "@/lib/types";
 
 const CommandCtx = createContext<{ open: () => void }>({ open: () => {} });
 export const useCommandPalette = () => useContext(CommandCtx);
@@ -44,7 +45,15 @@ const pages = [
   { label: "Contact", href: "/contact", icon: faEnvelope },
 ];
 
-export function CommandPaletteProvider({ children }: { children: ReactNode }) {
+export function CommandPaletteProvider({
+  children,
+  services = [],
+}: {
+  children: ReactNode;
+  /** Passed down from the layout — services are DB-backed, so a client
+      component can no longer import them synchronously. */
+  services?: Service[];
+}) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
@@ -106,7 +115,7 @@ export function CommandPaletteProvider({ children }: { children: ReactNode }) {
                 value={`service ${s.title}`}
               >
                 <FontAwesomeIcon
-                  icon={s.icon}
+                  icon={resolveServiceIcon(s.icon)}
                   className="size-3.5 text-brand-500"
                 />
                 {s.title}

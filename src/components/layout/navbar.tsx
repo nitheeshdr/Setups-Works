@@ -17,15 +17,20 @@ import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { useCommandPalette } from "@/components/layout/command-palette";
 import { PremiumButton } from "@/components/premium-button";
 import { mainNav } from "@/data/nav";
-import { services, serviceCategories } from "@/data/services";
+import { resolveServiceIcon } from "@/lib/service-icons";
+import type { Service } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 export function Navbar({
   logoLight,
   logoDark,
+  services = [],
 }: {
   logoLight?: string | null;
   logoDark?: string | null;
+  /** Services are DB-backed now, so this client component receives them from
+      the marketing layout instead of importing the static array. */
+  services?: Service[];
 }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -89,7 +94,7 @@ export function Navbar({
                   />
                 </Link>
                 <AnimatePresence>
-                  {servicesOpen && <MegaMenu />}
+                  {servicesOpen && <MegaMenu services={services} />}
                 </AnimatePresence>
               </div>
             ) : (
@@ -195,7 +200,20 @@ export function Navbar({
   );
 }
 
-function MegaMenu() {
+const CATEGORY_ORDER = [
+  "Development",
+  "Design",
+  "Growth",
+  "Platforms",
+  "Intelligence",
+] as const;
+
+function MegaMenu({ services }: { services: Service[] }) {
+  // Derived from what was actually passed in, so a category with no published
+  // services never renders an empty column heading.
+  const categories = CATEGORY_ORDER.filter((c) =>
+    services.some((s) => s.category === c),
+  );
   return (
     <motion.div
       initial={{ opacity: 0, y: 12 }}
@@ -215,7 +233,7 @@ function MegaMenu() {
         <div className="grid lg:grid-cols-[1fr_300px]">
           {/* Services grid */}
           <div className="grid grid-cols-2 gap-x-2 gap-y-1 p-5 md:grid-cols-3">
-            {serviceCategories.map((cat) => (
+            {categories.map((cat) => (
               <div key={cat} className="p-1.5">
                 <p className="mb-1.5 px-2 text-[11px] font-semibold uppercase tracking-wider text-brand-500">
                   {cat}
@@ -229,7 +247,7 @@ function MegaMenu() {
                       className="group flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-surface-2"
                     >
                       <span className="grid size-7 shrink-0 place-items-center rounded-md bg-brand-500/10 text-brand-500 transition-all group-hover:bg-brand-500 group-hover:text-white">
-                        <FontAwesomeIcon icon={s.icon} className="size-3" />
+                        <FontAwesomeIcon icon={resolveServiceIcon(s.icon)} className="size-3" />
                       </span>
                       <span className="text-sm font-medium text-foreground">
                         {s.title}

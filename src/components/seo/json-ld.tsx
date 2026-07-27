@@ -1,5 +1,5 @@
 import { siteConfig } from "@/lib/site";
-import type { Blog, Product, Portfolio, Founder } from "@/lib/types";
+import type { Blog, Product, Portfolio, Founder, Service } from "@/lib/types";
 import { stripHtml, truncate } from "@/lib/helpers";
 
 /** Renders one or more JSON-LD schema objects as script tags. */
@@ -383,21 +383,30 @@ export function productSchema(product: Product) {
 }
 
 /* --------------------------------- Service ----------------------------- */
-export function serviceSchema(service: {
-  title: string;
-  description: string;
-  slug: string;
-  category: string;
-}) {
+export function serviceSchema(service: Service) {
+  const offers = service.features?.length
+    ? {
+        "@type": "OfferCatalog",
+        name: `${service.title} — what's included`,
+        itemListElement: service.features.map((f) => ({
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name: f },
+        })),
+      }
+    : undefined;
+
   return {
     "@context": "https://schema.org",
     "@type": "Service",
+    "@id": `${siteConfig.url}/services/${service.slug}#service`,
     name: service.title,
-    description: service.description,
+    description: service.seoDescription || service.description,
     serviceType: service.category,
     url: `${siteConfig.url}/services/${service.slug}`,
     provider: { "@id": ORG_ID },
     areaServed: siteConfig.areaServed.map((name) => ({ "@type": "Place", name })),
+    ...(service.heroImage ? { image: service.heroImage } : {}),
+    ...(offers ? { hasOfferCatalog: offers } : {}),
   };
 }
 

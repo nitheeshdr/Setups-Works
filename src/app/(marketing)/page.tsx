@@ -29,6 +29,7 @@ import {
   getTestimonials,
   getProducts,
   getClientLogos,
+  getServices,
 } from "@/lib/content";
 
 /**
@@ -55,13 +56,15 @@ export const metadata: Metadata = {
 export const revalidate = 300;
 
 export default async function HomePage() {
-  const [blogs, portfolio, testimonials, products, logos] = await Promise.all([
-    getFeaturedBlogs(3),
-    getPortfolio(),
-    getTestimonials(true),
-    getProducts(),
-    getClientLogos(),
-  ]);
+  const [blogs, portfolio, testimonials, products, logos, services] =
+    await Promise.all([
+      getFeaturedBlogs(3),
+      getPortfolio(),
+      getTestimonials(true),
+      getProducts(),
+      getClientLogos(),
+      getServices(),
+    ]);
 
   return (
     <>
@@ -88,7 +91,7 @@ export default async function HomePage() {
       <Hero />
       <ClientsMarquee logos={logos} />
       <StatsSection />
-      <BentoServices />
+      <BentoServices services={services} />
       <ScrollShowcase />
       <ProductsHome products={products} />
       <PortfolioPreview projects={portfolio} />

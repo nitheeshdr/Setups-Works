@@ -8,7 +8,8 @@ import SpotlightCard from "@/components/reactbits/SpotlightCard";
 import { cn } from "@/lib/utils";
 import { formatDate } from "@/lib/helpers";
 import type { Blog, Portfolio, Testimonial, Product } from "@/lib/types";
-import type { Service } from "@/data/services";
+import { resolveServiceIcon } from "@/lib/service-icons";
+import type { Service } from "@/lib/types";
 
 /* ----------------------------- Service ---------------------------- */
 export function ServiceCard({ service }: { service: Service }) {
@@ -20,7 +21,7 @@ export function ServiceCard({ service }: { service: Service }) {
       >
         <div className="flex h-full flex-col gap-4">
           <span className="grid size-12 place-items-center rounded-xl bg-brand-500/10 text-brand-500 transition-all group-hover:bg-brand-500 group-hover:text-white">
-            <FontAwesomeIcon icon={service.icon} className="size-5" />
+            <FontAwesomeIcon icon={resolveServiceIcon(service.icon)} className="size-5" />
           </span>
           <div>
             <h3 className="font-display text-lg font-semibold tracking-tight">

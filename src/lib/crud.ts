@@ -225,6 +225,41 @@ export const productCreateSchema = z.object({
 });
 export const productUpdateSchema = productCreateSchema.partial();
 
+export const serviceCreateSchema = z.object({
+  title: z.string().min(2),
+  slug: z.string().optional(),
+  short: z.string().default(""),
+  description: z.string().min(1),
+  icon: z.string().default("code"),
+  category: z
+    .enum(["Development", "Design", "Growth", "Platforms", "Intelligence"])
+    .default("Development"),
+  features: z.array(z.string()).default([]),
+  deliverables: z.array(z.string()).default([]),
+  content: z.string().default(""),
+  overview: z.string().default(""),
+  process: z
+    .array(z.object({ title: z.string(), description: z.string() }))
+    .default([]),
+  faqs: z
+    .array(z.object({ question: z.string(), answer: z.string() }))
+    .default([]),
+  outcomes: z
+    .array(z.object({ value: z.string(), label: z.string() }))
+    .default([]),
+  techStack: z.array(z.string()).default([]),
+  idealFor: z.array(z.string()).default([]),
+  startingPrice: z.string().default(""),
+  timeline: z.string().default(""),
+  heroImage: z.string().default(""),
+  seoTitle: z.string().optional(),
+  seoDescription: z.string().optional(),
+  order: z.number().default(0),
+  featured: z.boolean().default(false),
+  status: z.enum(["draft", "published"]).default("published"),
+});
+export const serviceUpdateSchema = serviceCreateSchema.partial();
+
 export const portfolioCreateSchema = z.object({
   title: z.string().min(2),
   slug: z.string().optional(),

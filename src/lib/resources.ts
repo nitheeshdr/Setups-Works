@@ -1,4 +1,4 @@
-import { Blog, Product, Portfolio, Testimonial, ClientLogo, Milestone } from "@/models";
+import { Blog, Product, Portfolio, Service, Testimonial, ClientLogo, Milestone } from "@/models";
 import {
   createResource,
   blogCreateSchema,
@@ -7,6 +7,8 @@ import {
   productUpdateSchema,
   portfolioCreateSchema,
   portfolioUpdateSchema,
+  serviceCreateSchema,
+  serviceUpdateSchema,
   testimonialCreateSchema,
   testimonialUpdateSchema,
   clientLogoCreateSchema,
@@ -60,6 +62,21 @@ export const portfolioHandlers = createResource({
           "/",
           ...(d.caseStudy ? [`/case-studies/${d.slug}`, "/case-studies"] : []),
         ]
+      : [],
+});
+
+export const serviceHandlers = createResource({
+  model: Service,
+  createSchema: serviceCreateSchema,
+  updateSchema: serviceUpdateSchema,
+  searchFields: ["title", "short", "description", "category"],
+  slugFrom: "title",
+  // Services drive the mega menu and the /services index, so a published change
+  // affects those alongside its own page.
+  defaultSort: "order",
+  urlPaths: (d) =>
+    d.status === "published" && d.slug
+      ? [`/services/${d.slug}`, "/services", "/"]
       : [],
 });
 

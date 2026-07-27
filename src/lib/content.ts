@@ -3,12 +3,14 @@ import {
   Blog,
   Product,
   Portfolio,
+  Service,
   Testimonial,
   ClientLogo,
   Settings,
   Milestone,
 } from "@/models";
 import { journey as defaultJourney } from "@/data/site-content";
+import { services as defaultServices } from "@/data/services";
 import type {
   Blog as TBlog,
   Product as TProduct,
@@ -16,6 +18,7 @@ import type {
   Testimonial as TTestimonial,
   ClientLogo as TClientLogo,
   Milestone as TMilestone,
+  Service as TService,
   SiteSettings,
   Founder,
   Paginated,
@@ -133,6 +136,53 @@ export async function getProductBySlug(slug: string): Promise<TProduct | null> {
   const doc = await Product.findOne({ slug }).lean();
   return doc ? serialize<TProduct>(doc) : null;
 }
+
+/* ---------------------------- SERVICES --------------------------- */
+/**
+ * Services are admin-managed, but the site must never render an empty
+ * /services page or an empty mega menu. So when the collection is empty (fresh
+ * install, un-seeded environment) or the DB is unreachable, fall back to the
+ * built-in catalogue — same contract as `getTimeline`.
+ */
+export async function getServices(): Promise<TService[]> {
+  const conn = await connectDB();
+  if (conn) {
+    const docs = await Service.find({ status: { $ne: "draft" } })
+      .sort({ order: 1, createdAt: 1 })
+      .lean();
+    if (docs.length) return serialize<TService[]>(docs);
+  }
+  return defaultServices;
+}
+
+export async function getServiceBySlug(slug: string): Promise<TService | null> {
+  const conn = await connectDB();
+  if (conn) {
+    const doc = await Service.findOne({ slug, status: { $ne: "draft" } }).lean();
+    if (doc) return serialize<TService>(doc);
+    // A DB that holds services but not this slug is a genuine 404. Only fall
+    // through to the built-ins when the collection is empty, otherwise a
+    // service deleted in the admin would resurrect from the seed data.
+    const populated = await Service.countDocuments({ status: { $ne: "draft" } });
+    if (populated > 0) return null;
+  }
+  return defaultServices.find((s) => s.slug === slug) ?? null;
+}
+
+/** Categories that actually have at least one service, in canonical order. */
+export async function getServiceCategories(): Promise<string[]> {
+  const items = await getServices();
+  const present = new Set(items.map((s) => s.category));
+  return serviceCategoryOrder.filter((c) => present.has(c));
+}
+
+const serviceCategoryOrder: TService["category"][] = [
+  "Development",
+  "Design",
+  "Growth",
+  "Platforms",
+  "Intelligence",
+];
 
 /* --------------------------- PORTFOLIO --------------------------- */
 export async function getPortfolio(category?: string): Promise<TPortfolio[]> {

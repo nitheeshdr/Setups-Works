@@ -1,7 +1,11 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site";
-import { services } from "@/data/services";
-import { getBlogs, getPortfolio, getProducts } from "@/lib/content";
+import {
+  getBlogs,
+  getPortfolio,
+  getProducts,
+  getServices,
+} from "@/lib/content";
 
 export const revalidate = 3600;
 
@@ -19,10 +23,11 @@ const base = siteConfig.url;
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
-  const [{ items: blogs }, portfolio, products] = await Promise.all([
+  const [{ items: blogs }, portfolio, products, services] = await Promise.all([
     getBlogs({ limit: 1000 }),
     getPortfolio(),
     getProducts(),
+    getServices(),
   ]);
 
   const pages: MetadataRoute.Sitemap = [

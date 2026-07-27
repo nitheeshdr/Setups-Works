@@ -80,6 +80,60 @@ const ProductSchema = new Schema(
 );
 
 /* ------------------------------------------------------------------ *
+ *  Service
+ * ------------------------------------------------------------------ */
+const ServiceSchema = new Schema(
+  {
+    title: { type: String, required: true },
+    slug: { type: String, required: true, unique: true, index: true },
+    short: { type: String, default: "" },
+    description: { type: String, required: true },
+    // Icon *name* (see lib/service-icons.ts), not a FontAwesome object.
+    icon: { type: String, default: "code" },
+    category: {
+      type: String,
+      enum: ["Development", "Design", "Growth", "Platforms", "Intelligence"],
+      default: "Development",
+      index: true,
+    },
+    features: { type: [String], default: [] },
+    deliverables: { type: [String], default: [] },
+
+    // Rich detail-page content
+    content: { type: String, default: "" },
+    overview: { type: String, default: "" },
+    process: {
+      type: [{ title: String, description: String }],
+      default: [],
+    },
+    faqs: {
+      type: [{ question: String, answer: String }],
+      default: [],
+    },
+    outcomes: {
+      type: [{ value: String, label: String }],
+      default: [],
+    },
+    techStack: { type: [String], default: [] },
+    idealFor: { type: [String], default: [] },
+    startingPrice: { type: String, default: "" },
+    timeline: { type: String, default: "" },
+    heroImage: { type: String, default: "" },
+    seoTitle: String,
+    seoDescription: String,
+    order: { type: Number, default: 0 },
+    featured: { type: Boolean, default: false },
+    status: {
+      type: String,
+      enum: ["draft", "published"],
+      default: "published",
+      index: true,
+    },
+  },
+  { timestamps: true },
+);
+
+/* ------------------------------------------------------------------ *
  *  Portfolio
  * ------------------------------------------------------------------ */
 const PortfolioSchema = new Schema(
@@ -225,6 +279,7 @@ export const ClientLogo = models.ClientLogo || model("ClientLogo", ClientLogoSch
 export const Milestone = models.Milestone || model("Milestone", MilestoneSchema);
 export const Blog = models.Blog || model("Blog", BlogSchema);
 export const Product = models.Product || model("Product", ProductSchema);
+export const Service = models.Service || model("Service", ServiceSchema);
 export const Portfolio = models.Portfolio || model("Portfolio", PortfolioSchema);
 export const Testimonial = models.Testimonial || model("Testimonial", TestimonialSchema);
 export const Contact = models.Contact || model("Contact", ContactSchema);

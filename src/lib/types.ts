@@ -1,5 +1,70 @@
 export type BlogStatus = "draft" | "published" | "scheduled";
 export type ProductStatus = "coming-soon" | "beta" | "live" | "archived";
+export type ServiceCategory =
+  | "Development"
+  | "Design"
+  | "Growth"
+  | "Platforms"
+  | "Intelligence";
+
+/** One numbered step in a service's delivery process. */
+export interface ServiceProcessStep {
+  title: string;
+  description: string;
+}
+
+/** A question/answer pair rendered on the service page and as FAQ schema. */
+export interface ServiceFaq {
+  question: string;
+  answer: string;
+}
+
+/** A headline metric ("40%", "faster load times"). */
+export interface ServiceOutcome {
+  value: string;
+  label: string;
+}
+
+export interface Service {
+  _id?: string;
+  slug: string;
+  title: string;
+  /** One-liner used on cards and in the mega menu. */
+  short: string;
+  /** Plain-text summary used for meta descriptions and card bodies. */
+  description: string;
+  /**
+   * Icon *name*, resolved through `resolveServiceIcon`. Stored as a string
+   * because a FontAwesome IconDefinition can't round-trip through Mongo.
+   */
+  icon: string;
+  category: ServiceCategory;
+  features: string[];
+  deliverables: string[];
+
+  /* --- Rich detail-page fields (all optional; the page degrades cleanly) --- */
+  /** Rich-text HTML body rendered as the main article on the detail page. */
+  content?: string;
+  /** Longer plain-text intro shown above the fold. */
+  overview?: string;
+  process?: ServiceProcessStep[];
+  faqs?: ServiceFaq[];
+  outcomes?: ServiceOutcome[];
+  techStack?: string[];
+  /** Who this is for — bullet list. */
+  idealFor?: string[];
+  startingPrice?: string;
+  timeline?: string;
+  heroImage?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  /** Controls ordering within a category; lower sorts first. */
+  order?: number;
+  featured?: boolean;
+  status?: "draft" | "published";
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 export interface Blog {
   _id?: string;

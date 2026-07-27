@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Container, Section, SectionHeading } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
-import { services } from "@/data/services";
+import { resolveServiceIcon } from "@/lib/service-icons";
+import type { Service } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const layout = [
@@ -17,7 +18,7 @@ const layout = [
   { slug: "seo", span: "" },
 ];
 
-export function BentoServices() {
+export function BentoServices({ services }: { services: Service[] }) {
   return (
     <Section id="services" className="relative">
       <Container>
@@ -60,7 +61,7 @@ export function BentoServices() {
                             item.big ? "size-14" : "size-11",
                           )}
                         >
-                          <FontAwesomeIcon icon={s.icon} className={item.big ? "size-6" : "size-5"} />
+                          <FontAwesomeIcon icon={resolveServiceIcon(s.icon)} className={item.big ? "size-6" : "size-5"} />
                         </span>
                         <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
                           {s.category}

@@ -6,12 +6,11 @@ import { ServiceCard } from "@/components/cards";
 import { ProcessSection } from "@/components/sections/process";
 import { CTASection } from "@/components/sections/cta";
 import { FAQSection } from "@/components/sections/faq";
-import { services, serviceCategories } from "@/data/services";
+import { getServices } from "@/lib/content";
 import { JsonLd, pageSchemas } from "@/components/seo/json-ld";
 
-// Interpolated rather than hardcoded — this count drifted out of sync with the
-// data the last time services were added.
-const description = `From software and mobile development to Spring Boot, DevOps, AI, design, and growth — explore the ${services.length} services Setups Works offers to build and scale your product.`;
+const description =
+  "From software and mobile development to Spring Boot, DevOps, AI, design, and growth — explore the services Setups Works offers to build and scale your product.";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/services" },
@@ -19,7 +18,23 @@ export const metadata: Metadata = {
   description,
 };
 
-export default function ServicesPage() {
+export const revalidate = 300;
+
+const CATEGORY_ORDER = [
+  "Development",
+  "Design",
+  "Growth",
+  "Platforms",
+  "Intelligence",
+] as const;
+
+export default async function ServicesPage() {
+  const services = await getServices();
+  // Only render category sections that actually contain something.
+  const serviceCategories = CATEGORY_ORDER.filter((c) =>
+    services.some((s) => s.category === c),
+  );
+
   return (
     <>
       <JsonLd
