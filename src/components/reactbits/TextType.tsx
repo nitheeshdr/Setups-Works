@@ -177,12 +177,30 @@ const TextType = ({
       className: `inline-block whitespace-pre-wrap tracking-tight ${className}`,
       ...props
     },
-    <span className="inline" style={{ color: getCurrentTextColor() || 'inherit' }}>
+    // `displayedText` starts empty and fills in from a client effect, so the
+    // server rendered this element with no text at all — the copy was absent
+    // from the initial HTML entirely. This sr-only span carries the same
+    // sentences the animation types out, which puts them in the server markup
+    // and, just as importantly, makes them readable: a screen reader cannot
+    // follow text that arrives one character at a time. The animated copy below
+    // is aria-hidden so assistive tech hears the sentences once, not per-keystroke.
+    // Not hidden text in the deceptive sense — identical content, no extra terms.
+    <span key="a11y" className="sr-only">
+      {textArray.join(' ')}
+    </span>,
+    <span
+      key="typed"
+      aria-hidden="true"
+      className="inline"
+      style={{ color: getCurrentTextColor() || 'inherit' }}
+    >
       {displayedText}
     </span>,
     showCursor && (
       <span
+        key="cursor"
         ref={cursorRef}
+        aria-hidden="true"
         className={`ml-1 inline-block opacity-100 ${shouldHideCursor ? 'hidden' : ''} ${cursorClassName}`}
       >
         {cursorCharacter}

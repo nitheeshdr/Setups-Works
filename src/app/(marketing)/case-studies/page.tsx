@@ -8,12 +8,15 @@ import { Container, Section } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
 import { CTASection } from "@/components/sections/cta";
 import { getPortfolio } from "@/lib/content";
+import { JsonLd, pageSchemas } from "@/components/seo/json-ld";
+
+const description =
+  "In-depth case studies on how Setups Works solved real problems for clients — the challenge, the approach, and the measurable results.";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/case-studies" },
   title: "Case Studies",
-  description:
-    "In-depth case studies on how Setups Works solved real problems for clients — the challenge, the approach, and the measurable results.",
+  description,
 };
 
 export const revalidate = 300;
@@ -23,6 +26,13 @@ export default async function CaseStudiesPage() {
 
   return (
     <>
+      <JsonLd
+        data={pageSchemas({
+          path: "/case-studies",
+          label: "Case Studies",
+          description,
+        })}
+      />
       <PageHeader
         eyebrow="Case studies"
         title="Deep dives into our best work"

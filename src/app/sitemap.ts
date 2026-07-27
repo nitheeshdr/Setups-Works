@@ -38,6 +38,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/privacy", priority: 0.3, freq: "yearly" as const },
     { path: "/terms", priority: 0.3, freq: "yearly" as const },
   ].map(({ path, priority, freq }) => ({
+    // Bare `${base}` for the homepage is deliberate: Next normalizes the
+    // `canonical: "/"` alternate to a trailing-slash-free URL, so this is what
+    // matches the tag the page actually emits. Don't "fix" this to `${base}/`.
     url: `${base}${path}`,
     lastModified: now,
     changeFrequency: freq,

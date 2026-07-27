@@ -9,12 +9,15 @@ import {
   getPortfolioCategories,
   getTestimonials,
 } from "@/lib/content";
+import { JsonLd, pageSchemas } from "@/components/seo/json-ld";
+
+const description =
+  "Selected work from Setups Works — web apps, AI products, e-commerce, mobile apps, and marketing sites built for clients worldwide.";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/portfolio" },
   title: "Portfolio",
-  description:
-    "Selected work from Setups Works — web apps, AI products, e-commerce, mobile apps, and marketing sites built for clients worldwide.",
+  description,
 };
 
 export const revalidate = 300;
@@ -28,6 +31,9 @@ export default async function PortfolioPage() {
 
   return (
     <>
+      <JsonLd
+        data={pageSchemas({ path: "/portfolio", label: "Portfolio", description })}
+      />
       <PageHeader
         eyebrow="Selected work"
         title="Products & platforms we've shipped"

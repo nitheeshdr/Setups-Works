@@ -55,7 +55,16 @@ export function organizationSchema() {
     "@type": ["Organization", "ProfessionalService"],
     "@id": ORG_ID,
     name: siteConfig.name,
-    alternateName: "SETUPS WORKS",
+    // "Setups Works" is two ordinary English words, so brand queries compete
+    // with generic results. Listing the spellings people actually type helps
+    // Google bind the query to this entity rather than to the dictionary sense.
+    alternateName: [
+      "SetupsWorks",
+      "Setups.Works",
+      "setups.works",
+      "SETUPS WORKS",
+      "Setups Works Digital Agency",
+    ],
     url: siteConfig.url,
     logo: {
       "@type": "ImageObject",
@@ -188,6 +197,8 @@ export function profilePageSchema(founder?: Founder) {
     dateCreated: `${siteConfig.foundingDate}-01-01T00:00:00+05:30`,
     dateModified: `${siteConfig.foundingDate}-01-01T00:00:00+05:30`,
     mainEntity: { "@id": `${siteConfig.url}/#founder` },
+    isPartOf: { "@id": WEBSITE_ID },
+    breadcrumb: { "@id": `${siteConfig.url}/about#breadcrumb` },
   };
 }
 
@@ -205,6 +216,8 @@ export function contactPageSchema() {
     name: `Contact ${siteConfig.name}`,
     about: { "@id": ORG_ID },
     mainEntity: { "@id": ORG_ID },
+    isPartOf: { "@id": WEBSITE_ID },
+    breadcrumb: { "@id": `${siteConfig.url}/contact#breadcrumb` },
   };
 }
 
@@ -246,19 +259,72 @@ export function websiteSchema() {
 }
 
 /* --------------------- SiteNavigation (helps sitelinks) ---------------- */
+/**
+ * Declares the site's primary destinations as an ordered ItemList of
+ * SiteNavigationElements — the machine-readable half of the sitelinks signal.
+ *
+ * Sitelinks are ultimately algorithmic: Google picks them from site structure,
+ * internal anchor text, and breadcrumbs, and this markup only describes what it
+ * already crawls. It is `itemListOrder`-ed so our preferred ranking is explicit
+ * rather than inferred, and each entry carries its own description so the
+ * candidates read as distinct pages.
+ */
 export function siteNavigationSchema(
-  items: { name: string; url: string }[],
+  items: { name: string; url: string; description?: string }[],
 ) {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Primary navigation",
+    "@id": `${siteConfig.url}/#sitenav`,
+    name: `${siteConfig.name} primary navigation`,
+    itemListOrder: "https://schema.org/ItemListOrderAscending",
+    numberOfItems: items.length,
     itemListElement: items.map((item, i) => ({
       "@type": "SiteNavigationElement",
       position: i + 1,
       name: item.name,
       url: `${siteConfig.url}${item.url}`,
+      ...(item.description ? { description: item.description } : {}),
+      isPartOf: { "@id": WEBSITE_ID },
     })),
+  };
+}
+
+/* -------------------------------- WebPage ------------------------------ */
+/**
+ * Binds a page to the site and the Organization that publishes it. Giving every
+ * top-level destination a stable @id and an explicit `isPartOf` edge is what
+ * lets crawlers see the site as one entity with a hierarchy — a precondition
+ * for sitelinks — instead of a bag of unrelated URLs.
+ */
+export function webPageSchema({
+  path,
+  name,
+  description,
+  isHomePage = false,
+}: {
+  path: string;
+  name: string;
+  description: string;
+  isHomePage?: boolean;
+}) {
+  // `path === "/"` collapses to the bare origin so the node's url/@id line up
+  // with the trailing-slash-free canonical Next emits for the homepage.
+  const url = path === "/" ? siteConfig.url : `${siteConfig.url}${path}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": isHomePage ? ["WebPage", "CollectionPage"] : "WebPage",
+    "@id": `${url}#webpage`,
+    url,
+    name,
+    description,
+    isPartOf: { "@id": WEBSITE_ID },
+    about: { "@id": ORG_ID },
+    publisher: { "@id": ORG_ID },
+    inLanguage: "en",
+    ...(isHomePage
+      ? { primaryImageOfPage: { "@type": "ImageObject", url: `${siteConfig.url}/opengraph-image` } }
+      : { breadcrumb: { "@id": `${url}#breadcrumb` } }),
   };
 }
 
@@ -351,11 +417,43 @@ export function portfolioSchema(project: Portfolio) {
   };
 }
 
+/**
+ * The standard schema pair for a top-level destination: a WebPage node bound to
+ * the site graph, plus the BreadcrumbList it references. Every page in
+ * `sitelinkNav` emits this so the whole sitelink candidate set is described
+ * consistently — a page Google can't place in the hierarchy rarely gets picked.
+ */
+export function pageSchemas({
+  path,
+  label,
+  description,
+}: {
+  path: string;
+  label: string;
+  description: string;
+}) {
+  return [
+    // The Organization and WebSite nodes ship on every page rather than only on
+    // the homepage: WebPage.isPartOf/about/publisher reference them by @id, and
+    // a reference whose target isn't defined in the same document is a dangling
+    // edge. Crawlers do consolidate nodes across a site, but making each page's
+    // graph resolve on its own removes the dependency on that happening.
+    organizationSchema(),
+    websiteSchema(),
+    webPageSchema({ path, name: `${label} · ${siteConfig.name}`, description }),
+    breadcrumbSchema([{ name: label, url: path }]),
+  ];
+}
+
 /* ------------------------------- Breadcrumb ---------------------------- */
 export function breadcrumbSchema(items: { name: string; url: string }[]) {
+  // The trail always ends on the current page, so its URL is the stable anchor
+  // that webPageSchema()'s `breadcrumb` reference points back at.
+  const pageUrl = `${siteConfig.url}${items[items.length - 1]?.url ?? "/"}`;
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": `${pageUrl}#breadcrumb`,
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
       ...items.map((item, i) => ({

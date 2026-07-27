@@ -17,6 +17,7 @@ import {
   JsonLd,
   contactPageSchema,
   organizationSchema,
+  websiteSchema,
   breadcrumbSchema,
   faqSchema,
 } from "@/components/seo/json-ld";
@@ -51,6 +52,9 @@ export default function ContactPage() {
         data={[
           contactPageSchema(),
           organizationSchema(),
+          // contactPageSchema() declares isPartOf #website, so the WebSite node
+          // has to be present here for that reference to resolve.
+          websiteSchema(),
           faqSchema(faqs),
           breadcrumbSchema([{ name: "Contact", url: "/contact" }]),
         ]}

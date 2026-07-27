@@ -12,17 +12,23 @@ import { Container, Section, SectionHeading } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
 import { CTASection } from "@/components/sections/cta";
 import { jobOpenings, benefits } from "@/data/site-content";
+import { JsonLd, pageSchemas } from "@/components/seo/json-ld";
+
+const description =
+  "Join Setups Works — a remote-first team of designers, engineers, and strategists building premium digital products. See our open roles.";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/careers" },
   title: "Careers",
-  description:
-    "Join Setups Works — a remote-first team of designers, engineers, and strategists building premium digital products. See our open roles.",
+  description,
 };
 
 export default function CareersPage() {
   return (
     <>
+      <JsonLd
+        data={pageSchemas({ path: "/careers", label: "Careers", description })}
+      />
       <PageHeader
         eyebrow="Careers"
         title="Build the future with us"

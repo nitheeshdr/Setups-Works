@@ -3,12 +3,15 @@ import { PageHeader } from "@/components/page-header";
 import { Container, Section } from "@/components/section";
 import { BlogExplorer } from "@/components/blog-explorer";
 import { getBlogs, getBlogCategories } from "@/lib/content";
+import { JsonLd, pageSchemas } from "@/components/seo/json-ld";
+
+const description =
+  "Deep dives on engineering, design, AI, and building great digital products from the team at Setups Works.";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/blog" },
   title: "Blog",
-  description:
-    "Deep dives on engineering, design, AI, and building great digital products from the team at Setups Works.",
+  description,
 };
 
 export const revalidate = 300;
@@ -21,6 +24,9 @@ export default async function BlogPage() {
 
   return (
     <>
+      <JsonLd
+        data={pageSchemas({ path: "/blog", label: "Blog", description })}
+      />
       <PageHeader
         eyebrow="The blog"
         title="Ideas, engineering & design"

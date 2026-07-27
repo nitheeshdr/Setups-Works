@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Hero } from "@/components/sections/hero";
 import { ClientsMarquee } from "@/components/sections/marquee";
 import { StatsSection } from "@/components/sections/stats";
@@ -17,7 +18,9 @@ import {
   websiteSchema,
   siteNavigationSchema,
   faqSchema,
+  webPageSchema,
 } from "@/components/seo/json-ld";
+import { siteConfig } from "@/lib/site";
 import { sitelinkNav } from "@/data/nav";
 import { faqs } from "@/data/site-content";
 import {
@@ -27,6 +30,27 @@ import {
   getProducts,
   getClientLogos,
 } from "@/lib/content";
+
+/**
+ * The homepage was the only route on the site without a canonical, so Google had
+ * to guess which of `/`, `https://www.…`, and the sitemap's untrailed
+ * `https://setups.works` was the real brand entry point. Pinning it here
+ * consolidates every brand-query signal onto one URL.
+ */
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  // Brand name first and unqualified — for the query "setups works" the exact
+  // string needs to lead the title, not sit behind a tagline.
+  title: {
+    absolute: `${siteConfig.name} — Digital Agency for Web, App & AI Development`,
+  },
+  description: siteConfig.description,
+  openGraph: {
+    url: siteConfig.url,
+    title: `${siteConfig.name} — ${siteConfig.tagline}`,
+    description: siteConfig.description,
+  },
+};
 
 export const revalidate = 300;
 
@@ -45,9 +69,19 @@ export default async function HomePage() {
         data={[
           organizationSchema(),
           websiteSchema(),
+          webPageSchema({
+            path: "/",
+            name: `${siteConfig.name} — ${siteConfig.tagline}`,
+            description: siteConfig.description,
+            isHomePage: true,
+          }),
           faqSchema(faqs),
           siteNavigationSchema(
-            sitelinkNav.map((l) => ({ name: l.label, url: l.href })),
+            sitelinkNav.map((l) => ({
+              name: l.label,
+              url: l.href,
+              description: l.description,
+            })),
           ),
         ]}
       />

@@ -13,6 +13,7 @@ import {
   personSchema,
   profilePageSchema,
   organizationSchema,
+  websiteSchema,
   breadcrumbSchema,
 } from "@/components/seo/json-ld";
 import { companyValues } from "@/data/site-content";
@@ -37,6 +38,9 @@ export default async function AboutPage() {
           profilePageSchema(founder),
           personSchema(founder),
           organizationSchema(),
+          // profilePageSchema() declares isPartOf #website, so the WebSite node
+          // has to be present here for that reference to resolve.
+          websiteSchema(),
           breadcrumbSchema([{ name: "About", url: "/about" }]),
         ]}
       />

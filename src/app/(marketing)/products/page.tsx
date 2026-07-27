@@ -5,12 +5,15 @@ import { Reveal } from "@/components/motion-primitives";
 import { ProductCard } from "@/components/cards";
 import { CTASection } from "@/components/sections/cta";
 import { getProducts } from "@/lib/content";
+import { JsonLd, pageSchemas } from "@/components/seo/json-ld";
+
+const description =
+  "Beyond client work, Setups Works builds its own products — starting with CodeForge AI, an AI-powered development platform.";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/products" },
   title: "Products",
-  description:
-    "Beyond client work, Setups Works builds its own products — starting with CodeForge AI, an AI-powered development platform.",
+  description,
 };
 
 export const revalidate = 300;
@@ -20,6 +23,9 @@ export default async function ProductsPage() {
 
   return (
     <>
+      <JsonLd
+        data={pageSchemas({ path: "/products", label: "Products", description })}
+      />
       <PageHeader
         eyebrow="Our products"
         title="Software we build for ourselves"

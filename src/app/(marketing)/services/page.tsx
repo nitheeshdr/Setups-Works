@@ -7,17 +7,23 @@ import { ProcessSection } from "@/components/sections/process";
 import { CTASection } from "@/components/sections/cta";
 import { FAQSection } from "@/components/sections/faq";
 import { services, serviceCategories } from "@/data/services";
+import { JsonLd, pageSchemas } from "@/components/seo/json-ld";
+
+const description =
+  "From web and mobile development to AI, design, and growth — explore the 19 services Setups Works offers to build and scale your product.";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/services" },
   title: "Services",
-  description:
-    "From web and mobile development to AI, design, and growth — explore the 19 services Setups Works offers to build and scale your product.",
+  description,
 };
 
 export default function ServicesPage() {
   return (
     <>
+      <JsonLd
+        data={pageSchemas({ path: "/services", label: "Services", description })}
+      />
       <PageHeader
         eyebrow="Our services"
         title="Everything you need to build, launch & grow"
