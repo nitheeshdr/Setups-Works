@@ -16,6 +16,9 @@ import {
   faGlobe,
   faRocket,
   faCubes,
+  faLaptopCode,
+  faLeaf,
+  faInfinity,
 } from "@fortawesome/free-solid-svg-icons";
 
 export interface Service {
@@ -30,6 +33,17 @@ export interface Service {
 }
 
 export const services: Service[] = [
+  {
+    slug: "software-development",
+    title: "Software Development",
+    short: "Custom software, built to fit.",
+    description:
+      "Bespoke software for the problems off-the-shelf tools can't solve — internal platforms, SaaS products, and line-of-business systems built to your workflow.",
+    icon: faLaptopCode,
+    category: "Development",
+    features: ["Custom architecture", "Legacy modernization", "Third-party integrations", "Automated testing"],
+    deliverables: ["Technical discovery", "Production build", "Test suite", "Handover & docs"],
+  },
   {
     slug: "website-development",
     title: "Website Development",
@@ -73,6 +87,17 @@ export const services: Service[] = [
     category: "Development",
     features: ["REST & GraphQL", "WebSockets", "Queues & jobs", "Observability"],
     deliverables: ["API design", "Data modeling", "Auth & security", "Load testing"],
+  },
+  {
+    slug: "spring-boot-development",
+    title: "Spring Boot Development",
+    short: "Enterprise-grade Java backends.",
+    description:
+      "Production Spring Boot services — microservices, REST APIs, and batch systems with the reliability and security enterprise workloads demand.",
+    icon: faLeaf,
+    category: "Development",
+    features: ["Spring Boot & JPA", "Microservices", "Spring Security", "JUnit & integration tests"],
+    deliverables: ["Service architecture", "API implementation", "Database layer", "Deployment config"],
   },
   {
     slug: "mern-stack",
@@ -216,6 +241,17 @@ export const services: Service[] = [
     category: "Design",
     features: ["Logo & marks", "Brand voice", "Guidelines", "Asset library"],
     deliverables: ["Brand book", "Logo suite", "Templates", "Assets"],
+  },
+  {
+    slug: "devops",
+    title: "DevOps",
+    short: "Ship faster, break less.",
+    description:
+      "CI/CD pipelines, containerized infrastructure, and observability that turn deploys into a non-event — from first commit to production rollback.",
+    icon: faInfinity,
+    category: "Platforms",
+    features: ["CI/CD pipelines", "Docker & Kubernetes", "Infrastructure as code", "Monitoring & alerting"],
+    deliverables: ["Pipeline setup", "Infra provisioning", "Observability stack", "Runbooks"],
   },
   {
     slug: "hosting",

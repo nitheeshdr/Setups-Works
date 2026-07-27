@@ -28,7 +28,7 @@ export function ServicesPreview() {
               href="/services"
               className="group inline-flex shrink-0 items-center gap-2 rounded-xl border border-border/60 px-5 py-3 text-sm font-semibold transition-colors hover:border-brand-500/40"
             >
-              All 19 services
+              All {services.length} services
               <FontAwesomeIcon
                 icon={faArrowRight}
                 className="size-3 transition-transform group-hover:translate-x-1"

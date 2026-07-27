@@ -9,8 +9,9 @@ import { FAQSection } from "@/components/sections/faq";
 import { services, serviceCategories } from "@/data/services";
 import { JsonLd, pageSchemas } from "@/components/seo/json-ld";
 
-const description =
-  "From web and mobile development to AI, design, and growth — explore the 19 services Setups Works offers to build and scale your product.";
+// Interpolated rather than hardcoded — this count drifted out of sync with the
+// data the last time services were added.
+const description = `From software and mobile development to Spring Boot, DevOps, AI, design, and growth — explore the ${services.length} services Setups Works offers to build and scale your product.`;
 
 export const metadata: Metadata = {
   alternates: { canonical: "/services" },
