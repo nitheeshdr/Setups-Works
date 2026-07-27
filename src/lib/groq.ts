@@ -4,7 +4,7 @@
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODEL = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
 
-export type GenerateType = "blog" | "product" | "portfolio";
+export type GenerateType = "blog" | "product" | "portfolio" | "service";
 
 export const groqConfigured = () => Boolean(process.env.GROQ_API_KEY);
 
@@ -35,6 +35,30 @@ Generate a software product listing and return ONLY a valid JSON object with the
   "status": one of ["coming-soon","beta","live"]
 }
 Return only JSON.`,
+
+  // The icon must come back as one of our registry keys (lib/service-icons.ts),
+  // never a FontAwesome class name — the form writes it straight into the DB.
+  // Pricing, timelines, and outcome metrics are deliberately NOT requested: an
+  // LLM would invent plausible numbers, and those are real business claims.
+  service: `You are a services marketer for "Setups Works", a premium digital agency (web, mobile, AI, design & growth).
+Generate a service listing and return ONLY a valid JSON object with these exact keys:
+{
+  "title": string (the service name, e.g. "Rust Development"),
+  "short": string (one line, max ~50 chars, shown on cards and in the nav),
+  "description": string (2-3 sentence plain-text summary used for cards and meta),
+  "overview": string (2-3 sentences, the opening paragraph on the detail page — make a specific, non-generic point about why this work is hard or valuable),
+  "category": one of ["Development","Design","Growth","Platforms","Intelligence"],
+  "icon": one of ["code","layers","mobile","cart","pen","robot","diagram","plug","search","megaphone","palette","server","wrench","globe","rocket","cubes","laptop","leaf","infinity","shield","chart","database","cloud","gears","lightbulb","boxes"],
+  "features": string[] (4-6 short capability names, not sentences),
+  "deliverables": string[] (4-5 concrete things the client receives),
+  "idealFor": string[] (3 short descriptions of who should buy this),
+  "techStack": string[] (3-6 tool or technology names),
+  "process": Array<{ "title": string, "description": string }> (4-5 delivery steps),
+  "faqs": Array<{ "question": string, "answer": string }> (3-4 genuinely useful questions),
+  "seoTitle": string (max 45 chars — the site appends " · Setups Works", so do NOT include the brand),
+  "seoDescription": string (120-155 chars)
+}
+Write concretely and avoid marketing filler. Never invent prices, delivery timelines, client names, or statistics. Return only JSON.`,
 
   portfolio: `You are a case-study writer for "Setups Works", a premium digital agency.
 Generate a portfolio project and return ONLY a valid JSON object with these exact keys:

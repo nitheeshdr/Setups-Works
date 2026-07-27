@@ -11,7 +11,7 @@ export function AIGenerate({
   placeholder,
   onGenerated,
 }: {
-  type: "blog" | "product" | "portfolio";
+  type: "blog" | "product" | "portfolio" | "service";
   placeholder: string;
   onGenerated: (data: Record<string, unknown>) => void;
 }) {

@@ -231,29 +231,40 @@ function MegaMenu({ services }: { services: Service[] }) {
           to scroll. */}
       <div className="max-h-[calc(100dvh-6rem)] overflow-y-auto overflow-x-hidden rounded-3xl border border-border/60 bg-background/90 shadow-2xl shadow-black/30 backdrop-blur-2xl">
         <div className="grid lg:grid-cols-[1fr_300px]">
-          {/* Services grid */}
-          <div className="grid grid-cols-2 gap-x-2 gap-y-1 p-5 md:grid-cols-3">
+          {/* Services list.
+              Multi-column, not grid: as a grid every category cell inherited
+              the row height of the tallest one, so a 9-item Development column
+              left a block of dead space under 2-item Design and 3-item Growth
+              and pushed Platforms onto a distant second row. Columns let the
+              category blocks pack against each other, with break-inside-avoid
+              keeping each block whole. */}
+          <div className="columns-2 gap-x-4 p-5 md:columns-3">
             {categories.map((cat) => (
-              <div key={cat} className="p-1.5">
-                <p className="mb-1.5 px-2 text-[11px] font-semibold uppercase tracking-wider text-brand-500">
+              <div key={cat} className="mb-5 break-inside-avoid last:mb-0">
+                <p className="mb-2 px-2 text-[11px] font-semibold uppercase tracking-wider text-brand-500">
                   {cat}
                 </p>
-                {services
-                  .filter((s) => s.category === cat)
-                  .map((s) => (
-                    <Link
-                      key={s.slug}
-                      href={`/services/${s.slug}`}
-                      className="group flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-surface-2"
-                    >
-                      <span className="grid size-7 shrink-0 place-items-center rounded-md bg-brand-500/10 text-brand-500 transition-all group-hover:bg-brand-500 group-hover:text-white">
-                        <FontAwesomeIcon icon={resolveServiceIcon(s.icon)} className="size-3" />
-                      </span>
-                      <span className="text-sm font-medium text-foreground">
-                        {s.title}
-                      </span>
-                    </Link>
-                  ))}
+                <div className="space-y-0.5">
+                  {services
+                    .filter((s) => s.category === cat)
+                    .map((s) => (
+                      <Link
+                        key={s.slug}
+                        href={`/services/${s.slug}`}
+                        className="group flex items-center gap-2.5 rounded-lg px-2 py-1.5 transition-colors hover:bg-surface-2"
+                      >
+                        <span className="grid size-7 shrink-0 place-items-center rounded-md bg-brand-500/10 text-brand-500 transition-all group-hover:bg-brand-500 group-hover:text-white">
+                          <FontAwesomeIcon icon={resolveServiceIcon(s.icon)} className="size-3" />
+                        </span>
+                        {/* leading-snug keeps the two-line titles (Spring Boot
+                            Development, Mobile App Development) from opening up
+                            a taller row than their single-line neighbours. */}
+                        <span className="text-sm font-medium leading-snug text-foreground">
+                          {s.title}
+                        </span>
+                      </Link>
+                    ))}
+                </div>
               </div>
             ))}
           </div>

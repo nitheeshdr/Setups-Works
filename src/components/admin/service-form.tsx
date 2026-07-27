@@ -22,6 +22,7 @@ import {
   ImageUploader,
 } from "@/components/admin/ui";
 import { useResourceMutations } from "@/lib/admin/hooks";
+import { AIGenerate } from "@/components/admin/ai-generate";
 import { slugify } from "@/lib/helpers";
 import { serviceIcons, serviceIconNames } from "@/lib/service-icons";
 import { cn } from "@/lib/utils";
@@ -177,6 +178,40 @@ export function ServiceForm({ initial }: { initial?: Service }) {
   const set = <K extends keyof Service>(k: K, v: Service[K]) =>
     setForm((f) => ({ ...f, [k]: v }));
 
+  /**
+   * Merge an AI draft into the form. The model is prompted to return our icon
+   * keys and category enum, but it is still a model — so anything that would
+   * become an invalid database row is dropped rather than trusted, and the
+   * slug is derived locally instead of from the response.
+   */
+  function onAI(data: Record<string, unknown>) {
+    setForm((f) => {
+      const next = { ...f, ...data } as Partial<Service>;
+
+      if (typeof data.icon === "string" && !(data.icon in serviceIcons)) {
+        delete next.icon;
+      }
+      const categories = [
+        "Development",
+        "Design",
+        "Growth",
+        "Platforms",
+        "Intelligence",
+      ];
+      if (typeof data.category === "string" && !categories.includes(data.category)) {
+        delete next.category;
+      }
+      // Never let a generated value decide the public URL.
+      delete (next as Record<string, unknown>).slug;
+      if (!slugTouched && typeof data.title === "string") {
+        next.slug = slugify(data.title);
+      } else {
+        next.slug = f.slug;
+      }
+      return next;
+    });
+  }
+
   function save() {
     if (!form.title || !form.description) {
       toast.error("Title and description are required.");
@@ -221,6 +256,11 @@ export function ServiceForm({ initial }: { initial?: Service }) {
 
       <div className="grid gap-6 lg:grid-cols-[2fr_1fr]">
         <div className="space-y-5">
+          <AIGenerate
+            type="service"
+            placeholder="e.g. Rust backend development for high-throughput APIs"
+            onGenerated={onAI}
+          />
           <div className="grid gap-5 sm:grid-cols-2">
             <Field label="Title">
               <TextInput

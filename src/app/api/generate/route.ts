@@ -6,7 +6,7 @@ export const runtime = "nodejs";
 export const maxDuration = 60;
 
 const schema = z.object({
-  type: z.enum(["blog", "product", "portfolio"]),
+  type: z.enum(["blog", "product", "portfolio", "service"]),
   prompt: z.string().min(3, "Enter a longer prompt"),
 });
 

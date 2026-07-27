@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/page-header";
-import { Container, Section } from "@/components/section";
-import { Reveal } from "@/components/motion-primitives";
-import { ServiceCard } from "@/components/cards";
+import { ServicesStack } from "@/components/sections/services-stack";
 import { ProcessSection } from "@/components/sections/process";
 import { CTASection } from "@/components/sections/cta";
 import { FAQSection } from "@/components/sections/faq";
@@ -20,20 +18,9 @@ export const metadata: Metadata = {
 
 export const revalidate = 300;
 
-const CATEGORY_ORDER = [
-  "Development",
-  "Design",
-  "Growth",
-  "Platforms",
-  "Intelligence",
-] as const;
-
 export default async function ServicesPage() {
+  // ServicesStack groups by category itself and drops empty ones.
   const services = await getServices();
-  // Only render category sections that actually contain something.
-  const serviceCategories = CATEGORY_ORDER.filter((c) =>
-    services.some((s) => s.category === c),
-  );
 
   return (
     <>
@@ -47,33 +34,7 @@ export default async function ServicesPage() {
         crumbs={[{ label: "Services" }]}
       />
 
-      {serviceCategories.map((cat) => {
-        const items = services.filter((s) => s.category === cat);
-        return (
-          <Section key={cat} className="py-12">
-            <Container>
-              <Reveal>
-                <div className="mb-8 flex items-center gap-4">
-                  <h2 className="font-display text-2xl font-bold tracking-tight">
-                    {cat}
-                  </h2>
-                  <span className="h-px flex-1 bg-border" />
-                  <span className="text-sm text-muted-foreground">
-                    {items.length} services
-                  </span>
-                </div>
-              </Reveal>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {items.map((s, i) => (
-                  <Reveal key={s.slug} delay={(i % 4) * 0.05}>
-                    <ServiceCard service={s} />
-                  </Reveal>
-                ))}
-              </div>
-            </Container>
-          </Section>
-        );
-      })}
+      <ServicesStack services={services} />
 
       <ProcessSection />
       <FAQSection />
