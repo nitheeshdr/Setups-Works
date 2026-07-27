@@ -155,6 +155,31 @@ export interface ContactMessage {
   createdAt?: string;
 }
 
+export interface Lead {
+  _id?: string;
+  name: string;
+  email: string;
+  phonenumber: string;
+  company?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  /** Perfex numeric country id. */
+  country?: string;
+  countryName?: string;
+  zip?: string;
+  type: "quotation" | "enquiry";
+  service?: string;
+  budget?: string;
+  message?: string;
+  source?: string;
+  crmStatus: "pending" | "synced" | "failed";
+  crmError?: string;
+  emailStatus: "pending" | "sent" | "failed";
+  handled?: boolean;
+  createdAt?: string;
+}
+
 export interface Subscriber {
   _id?: string;
   email: string;

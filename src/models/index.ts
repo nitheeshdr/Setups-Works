@@ -189,6 +189,58 @@ const ContactSchema = new Schema(
 );
 
 /* ------------------------------------------------------------------ *
+ *  Lead (web-to-lead form → Perfex CRM + admin)
+ * ------------------------------------------------------------------ */
+const LeadSchema = new Schema(
+  {
+    // Fields Perfex accepts, named to match its web-to-lead payload.
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    phonenumber: { type: String, required: true },
+    company: { type: String, default: "" },
+    address: { type: String, default: "" },
+    city: { type: String, default: "" },
+    state: { type: String, default: "" },
+    /** Perfex country id (India = 102), stored as sent. */
+    country: { type: String, default: "" },
+    countryName: { type: String, default: "" },
+    zip: { type: String, default: "" },
+
+    // Website-only fields. Perfex's form has nowhere to put these, so they live
+    // here and go out in the notification email.
+    type: {
+      type: String,
+      enum: ["quotation", "enquiry"],
+      default: "enquiry",
+      index: true,
+    },
+    service: { type: String, default: "" },
+    budget: { type: String, default: "" },
+    message: { type: String, default: "" },
+    /** Which page the form was submitted from. */
+    source: { type: String, default: "" },
+
+    // Outcome of the two best-effort side effects. The lead is saved either
+    // way; these record what actually happened so a failed CRM push is visible
+    // in the admin instead of silently lost.
+    crmStatus: {
+      type: String,
+      enum: ["pending", "synced", "failed"],
+      default: "pending",
+      index: true,
+    },
+    crmError: { type: String, default: "" },
+    emailStatus: {
+      type: String,
+      enum: ["pending", "sent", "failed"],
+      default: "pending",
+    },
+    handled: { type: Boolean, default: false },
+  },
+  { timestamps: true },
+);
+
+/* ------------------------------------------------------------------ *
  *  Newsletter subscriber
  * ------------------------------------------------------------------ */
 const SubscriberSchema = new Schema(
@@ -283,6 +335,7 @@ export const Service = models.Service || model("Service", ServiceSchema);
 export const Portfolio = models.Portfolio || model("Portfolio", PortfolioSchema);
 export const Testimonial = models.Testimonial || model("Testimonial", TestimonialSchema);
 export const Contact = models.Contact || model("Contact", ContactSchema);
+export const Lead = models.Lead || model("Lead", LeadSchema);
 export const Subscriber = models.Subscriber || model("Subscriber", SubscriberSchema);
 export const Settings = models.Settings || model("Settings", SettingsSchema);
 

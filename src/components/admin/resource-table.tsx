@@ -30,7 +30,8 @@ export function ResourceTable<T extends { _id?: string }>({
   resource: string;
   label: string;
   columns: Column<T>[];
-  editHref: (id: string) => string;
+  /** Omit for read-only resources (e.g. leads) — the edit action is hidden. */
+  editHref?: (id: string) => string;
   statusOptions?: { value: string; label: string }[];
 }) {
   const [search, setSearch] = useState("");
@@ -114,12 +115,14 @@ export function ResourceTable<T extends { _id?: string }>({
                     ))}
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1">
-                        <Link
-                          href={editHref(row._id!)}
-                          className="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-brand-500/10 hover:text-brand-500"
-                        >
-                          <FontAwesomeIcon icon={faPenToSquare} className="size-3.5" />
-                        </Link>
+                        {editHref && (
+                          <Link
+                            href={editHref(row._id!)}
+                            className="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-brand-500/10 hover:text-brand-500"
+                          >
+                            <FontAwesomeIcon icon={faPenToSquare} className="size-3.5" />
+                          </Link>
+                        )}
                         <button
                           type="button"
                           onClick={() => setToDelete(row._id!)}

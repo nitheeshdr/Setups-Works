@@ -13,6 +13,7 @@ import { PageHeader } from "@/components/page-header";
 import { Container, Section } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
 import { ServiceCard } from "@/components/cards";
+import { LeadFormModal } from "@/components/lead-form-modal";
 import { CTASection } from "@/components/sections/cta";
 import {
   JsonLd,
@@ -101,16 +102,14 @@ export default async function ServiceDetailPage({
         ]}
       >
         <div className="mt-8 flex flex-wrap items-center gap-3">
-          <Link
-            href="/contact"
-            className="group inline-flex items-center gap-2 rounded-xl bg-brand-500 px-6 py-3.5 font-semibold text-white transition-all hover:bg-brand-600"
-          >
-            Get a quote
-            <FontAwesomeIcon
-              icon={faArrowRight}
-              className="size-3.5 transition-transform group-hover:translate-x-1"
-            />
-          </Link>
+          {/* Opens the lead form in a modal so the visitor keeps their place on
+              the page they were reading. */}
+          <LeadFormModal
+            triggerLabel="Get a quote"
+            defaultService={service.title}
+            services={allServices.map((s) => s.title)}
+            source={`/services/${service.slug}`}
+          />
           {hasMeta && (
             <div className="flex flex-wrap items-center gap-2">
               {service.startingPrice && (
