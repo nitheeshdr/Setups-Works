@@ -206,7 +206,12 @@ function MegaMenu() {
     >
       {/* invisible hover bridge to the navbar so the menu stays open */}
       <div aria-hidden className="absolute inset-x-0 -top-8 h-8" />
-      <div className="overflow-hidden rounded-3xl border border-border/60 bg-background/90 shadow-2xl shadow-black/30 backdrop-blur-2xl">
+      {/* Height is capped to the space below the navbar and allowed to scroll:
+          the menu renders every service, so each one added grows it. Past ~20
+          it overflowed a 720px-tall laptop viewport and the last entries in
+          Platforms became unreachable — clipped by overflow-hidden with nothing
+          to scroll. */}
+      <div className="max-h-[calc(100dvh-6rem)] overflow-y-auto overflow-x-hidden rounded-3xl border border-border/60 bg-background/90 shadow-2xl shadow-black/30 backdrop-blur-2xl">
         <div className="grid lg:grid-cols-[1fr_300px]">
           {/* Services grid */}
           <div className="grid grid-cols-2 gap-x-2 gap-y-1 p-5 md:grid-cols-3">
