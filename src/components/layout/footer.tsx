@@ -47,7 +47,7 @@ export function Footer({
             </p>
           </div>
           <Link
-            href="/contact"
+            href="/get-started"
             className="group inline-flex items-center gap-2 rounded-xl bg-brand-500 px-6 py-3.5 font-semibold text-white transition-all hover:bg-brand-600"
           >
             Start a project

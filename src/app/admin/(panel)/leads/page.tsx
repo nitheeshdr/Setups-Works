@@ -78,6 +78,7 @@ export default function AdminLeadsPage() {
         resource="leads"
         label="Leads"
         columns={columns}
+        editHref={(id) => `/admin/leads/${id}`}
         statusOptions={[
           { value: "quotation", label: "Quotation" },
           { value: "enquiry", label: "Enquiry" },

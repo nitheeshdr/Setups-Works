@@ -137,7 +137,7 @@ export function Navbar({
           <ThemeToggle />
           <div className="hidden lg:block">
             <PremiumButton
-              href="/contact"
+              href="/get-started"
               size="md"
               icon={faArrowRight}
               className="whitespace-nowrap"
@@ -186,7 +186,7 @@ export function Navbar({
                 </Link>
               ))}
               <PremiumButton
-                href="/contact"
+                href="/get-started"
                 className="mt-3 w-full"
                 icon={faArrowRight}
               >

@@ -113,7 +113,7 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.42, ease: easeOut }}
             className="mt-9 flex flex-col gap-3 sm:flex-row"
           >
-            <PremiumButton href="/contact" size="lg" icon={faArrowRight}>
+            <PremiumButton href="/get-started" size="lg" icon={faArrowRight}>
               Start a project
             </PremiumButton>
             <PremiumButton href="/portfolio" variant="glass" size="lg">

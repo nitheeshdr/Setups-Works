@@ -58,6 +58,69 @@ export async function sendMail(opts: {
   }
 }
 
+/**
+ * Send a new mail or a reply, and return the raw MIME so the caller can append
+ * it to the Sent folder — SMTP delivery alone never puts a copy there, which is
+ * why replies sent from an app usually go missing from webmail.
+ *
+ * `inReplyTo`/`references` are what make a mail client thread the reply under
+ * the original instead of starting a new conversation.
+ */
+export async function sendReply(opts: {
+  to: string;
+  subject: string;
+  html: string;
+  text?: string;
+  cc?: string;
+  bcc?: string;
+  inReplyTo?: string;
+  references?: string[];
+}): Promise<MailResult & { raw?: Buffer }> {
+  if (!mailConfigured()) return { ok: false, error: "SMTP is not configured." };
+
+  try {
+    const info = await transporter().sendMail({
+      from: process.env.SMTP_FROM || `"${siteConfig.name}" <${process.env.SMTP_USER}>`,
+      to: opts.to,
+      cc: opts.cc || undefined,
+      bcc: opts.bcc || undefined,
+      subject: opts.subject,
+      html: opts.html,
+      text: opts.text,
+      inReplyTo: opts.inReplyTo || undefined,
+      references: opts.references?.length ? opts.references.join(" ") : undefined,
+    });
+    return { ok: true, raw: (info as { message?: Buffer }).message };
+  } catch (err) {
+    return { ok: false, error: (err as Error).message };
+  }
+}
+
+/** Wrap a reply body in the site's branding, with the quoted original below. */
+export function replyTemplate(body: string, quoted?: { from: string; date: string; html: string }) {
+  const quotedBlock = quoted
+    ? `
+      <div style="margin-top:28px;padding-top:16px;border-top:1px solid #e5e7eb;color:#6b7280;font-size:13px">
+        <p style="margin:0 0 10px">On ${esc(quoted.date)}, ${esc(quoted.from)} wrote:</p>
+        <blockquote style="margin:0;padding-left:14px;border-left:3px solid #e5e7eb">${quoted.html}</blockquote>
+      </div>`
+    : "";
+
+  return `
+  <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:14px;line-height:1.6;color:#0a0b0f">
+    <div style="white-space:pre-wrap">${esc(body)}</div>
+    <div style="margin-top:24px;padding-top:16px;border-top:1px solid #e5e7eb;font-size:13px;color:#6b7280">
+      <p style="margin:0;font-weight:600;color:#0a0b0f">${esc(siteConfig.name)}</p>
+      <p style="margin:2px 0 0">${esc(siteConfig.tagline)}</p>
+      <p style="margin:6px 0 0">
+        <a href="${siteConfig.url}" style="color:#4D86F7;text-decoration:none">${esc(siteConfig.url.replace(/^https?:\/\//, ""))}</a>
+        &nbsp;·&nbsp; ${esc(siteConfig.email)}
+      </p>
+    </div>
+    ${quotedBlock}
+  </div>`;
+}
+
 const esc = (s: string) =>
   String(s ?? "")
     .replace(/&/g, "&amp;")

@@ -32,7 +32,7 @@ export function CTASection() {
             we&apos;d love to hear it. Book a free, no-pressure consultation.
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <PremiumButton href="/contact" size="lg" icon={faArrowRight}>
+            <PremiumButton href="/get-started" size="lg" icon={faArrowRight}>
               Start a project
             </PremiumButton>
             <PremiumButton href="/portfolio" variant="glass" size="lg">
