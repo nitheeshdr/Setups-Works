@@ -33,10 +33,6 @@ export function Footer({
   return (
     <footer className="relative mt-20 overflow-hidden border-t border-border/60 bg-surface-2/40">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-500/50 to-transparent" />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-24 left-1/2 size-[520px] -translate-x-1/2 rounded-full bg-brand-500/10 blur-[120px]"
-      />
       <Container className="relative py-16">
         {/* CTA row */}
         <div className="mb-14 flex flex-col items-start justify-between gap-6 rounded-3xl border border-border/60 bg-brand-500/10 p-8 sm:p-10 md:flex-row md:items-center">

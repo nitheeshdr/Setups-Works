@@ -5,7 +5,6 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faCalendar, faArrowLeft, faTag } from "@fortawesome/free-solid-svg-icons";
 import { Container, Section } from "@/components/section";
-import { AuroraBackground, GridGlow } from "@/components/backgrounds";
 import { Reveal } from "@/components/motion-primitives";
 import { BlogCard } from "@/components/cards";
 import { JsonLd, articleSchema, breadcrumbSchema } from "@/components/seo/json-ld";
@@ -71,8 +70,6 @@ export default async function BlogDetailPage({
 
       <article>
         <section className="relative isolate overflow-hidden pb-10 pt-28 sm:pt-32">
-          <AuroraBackground opacity={0.35} />
-          <GridGlow />
           <Container className="relative max-w-3xl">
             <Reveal>
               <Link

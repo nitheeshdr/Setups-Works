@@ -10,10 +10,6 @@ export default async function NotFound() {
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 text-center">
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 grid-bg mask-fade-b" />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/3 -z-10 size-[500px] -translate-x-1/2 rounded-full bg-brand-500/15 blur-[130px]"
-      />
 
       <Link href="/" className="mb-10">
         <Logo logoLight={settings.logoLight} logoDark={settings.logoDark} />

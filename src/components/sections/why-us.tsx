@@ -8,10 +8,6 @@ import { whyChooseUs } from "@/data/site-content";
 export function WhyUsSection() {
   return (
     <Section className="relative overflow-hidden">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute right-0 top-1/4 -z-10 size-[420px] rounded-full bg-brand-500/10 blur-[130px]"
-      />
       <Container>
         <SectionHeading
           eyebrow="Why Setups Works"

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { Container, Section } from "@/components/section";
-import { AuroraBackground } from "@/components/backgrounds";
 import { PremiumButton } from "@/components/premium-button";
 import SplitText from "@/components/reactbits/SplitText";
 
@@ -13,7 +12,6 @@ export function CTASection() {
     <Section>
       <Container>
         <div className="relative isolate overflow-hidden rounded-[2rem] border border-border/60 bg-card/40 px-6 py-16 text-center sm:px-12 sm:py-24">
-          <AuroraBackground opacity={0.6} className="mask-fade-b" />
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0 -z-10 grid-bg opacity-40"

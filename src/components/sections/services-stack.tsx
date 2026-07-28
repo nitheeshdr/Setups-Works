@@ -31,10 +31,8 @@ const CATEGORY_BLURB: Record<(typeof CATEGORY_ORDER)[number], string> = {
  * peek of each.
  *
  * IMPORTANT: no ancestor of these cards may set `overflow: hidden` — it clips
- * the sticky containing block and the pinning silently stops working. The
- * horizontal blur blob below is therefore clipped by its own wrapper rather
- * than by the Section, and `body { overflow-x: clip }` in globals.css handles
- * the page-level case.
+ * the sticky containing block and the pinning silently stops working.
+ * `body { overflow-x: clip }` in globals.css handles the page-level case.
  */
 export function ServicesStack({ services }: { services: Service[] }) {
   const groups = CATEGORY_ORDER.map((category) => ({
@@ -46,12 +44,6 @@ export function ServicesStack({ services }: { services: Service[] }) {
 
   return (
     <Section className="relative">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
-      >
-        <div className="absolute left-1/2 top-1/4 size-[500px] -translate-x-1/2 rounded-full bg-brand-500/10 blur-[140px]" />
-      </div>
       <Container>
         <div className="relative mx-auto flex max-w-5xl flex-col gap-6 sm:gap-8">
           {groups.map((group, i) => (

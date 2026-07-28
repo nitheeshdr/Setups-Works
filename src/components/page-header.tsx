@@ -2,7 +2,6 @@ import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { Container } from "@/components/section";
-import { AuroraBackground, GridGlow } from "@/components/backgrounds";
 import { Reveal } from "@/components/motion-primitives";
 import { Eyebrow } from "@/components/section";
 import type { ReactNode } from "react";
@@ -27,8 +26,6 @@ export function PageHeader({
 }) {
   return (
     <section className="relative isolate overflow-hidden pb-12 pt-28 sm:pb-16 sm:pt-32">
-      <AuroraBackground opacity={0.4} />
-      <GridGlow />
       <Container className="relative">
         {crumbs && (
           <Reveal>

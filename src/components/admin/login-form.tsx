@@ -63,10 +63,6 @@ export function LoginForm({
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 grid-bg mask-fade-b"
       />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/3 -z-10 size-[500px] -translate-x-1/2 rounded-full bg-brand-500/15 blur-[130px]"
-      />
 
       <div className="w-full max-w-md">
         <div className="mb-8 flex flex-col items-center gap-4 text-center">

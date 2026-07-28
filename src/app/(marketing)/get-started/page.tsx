@@ -13,7 +13,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Container, Section } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
-import { AuroraBackground, GridGlow } from "@/components/backgrounds";
 import { LeadForm } from "@/components/lead-form";
 import { JsonLd, pageSchemas } from "@/components/seo/json-ld";
 import { getServices, getTestimonials, getClientLogos } from "@/lib/content";
@@ -96,8 +95,6 @@ export default async function GetStartedPage() {
       {/* Hero + form share one section so the form sits in the hero rather than
           below it — the whole point of this page is the form. */}
       <section className="relative isolate overflow-hidden pb-16 pt-28 sm:pb-20 sm:pt-36">
-        <AuroraBackground opacity={0.3} />
-        <GridGlow />
 
         <Container className="relative">
           {/* Pitch on the left, form on the right. The form column is the wider

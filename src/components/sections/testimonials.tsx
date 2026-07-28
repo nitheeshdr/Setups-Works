@@ -13,10 +13,6 @@ export function TestimonialsSection({
   if (!testimonials.length) return null;
   return (
     <Section className="relative overflow-hidden">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-0 -z-10 size-[500px] -translate-x-1/2 rounded-full bg-violet-500/10 blur-[140px]"
-      />
       <Container>
         <SectionHeading
           eyebrow="Loved by clients"

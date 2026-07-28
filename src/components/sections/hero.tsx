@@ -9,11 +9,6 @@ import {
   faBolt,
 } from "@fortawesome/free-solid-svg-icons";
 import { Container } from "@/components/section";
-import {
-  ParticleBackground,
-  AuroraBackground,
-  GridGlow,
-} from "@/components/backgrounds";
 import { PremiumButton } from "@/components/premium-button";
 import BlurText from "@/components/reactbits/BlurText";
 import RotatingText from "@/components/reactbits/RotatingText";
@@ -26,9 +21,6 @@ export function Hero() {
   return (
     <section className="relative isolate overflow-hidden pb-16 pt-28 sm:pb-20 sm:pt-36">
       {/* Background */}
-      <AuroraBackground opacity={0.28} />
-      <ParticleBackground count={120} />
-      <GridGlow />
 
       <Container className="relative">
         {/* Centered copy */}
