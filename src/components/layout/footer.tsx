@@ -12,6 +12,7 @@ import {
   faInstagram,
   faGooglePlay,
   faSpotify,
+  faApple,
 } from "@fortawesome/free-brands-svg-icons";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
@@ -24,6 +25,7 @@ const socials = [
   { icon: faInstagram, href: siteConfig.links.instagram, label: "Instagram" },
   { icon: faGooglePlay, href: siteConfig.links.playStore, label: "Google Play" },
   { icon: faSpotify, href: siteConfig.links.podcast, label: "Podcast on Spotify" },
+  { icon: faApple, href: siteConfig.links.podcastApple, label: "Podcast on Apple Podcasts" },
 ].filter((s) => s.href);
 
 export function Footer({

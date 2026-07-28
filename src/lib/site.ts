@@ -125,6 +125,7 @@ export const siteConfig = {
      * URL; the RSS feed is the machine-readable one.
      */
     podcast: "https://open.spotify.com/show/033X7FZ7Z2eoDwq5wj60y9",
+    podcastApple: "https://podcasts.apple.com/us/podcast/setups-works/id6795401285",
     podcastFeed: "https://anchor.fm/s/115683bdc/podcast/rss",
   },
   keywords: [
