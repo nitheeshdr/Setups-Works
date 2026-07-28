@@ -105,6 +105,7 @@ export default async function FounderPage() {
   const awards = founder.awards ?? [];
   // Apps he publishes under the verified Play developer account.
   const published = products.filter((x) => x.downloadLink);
+  const skillGroups = founder.skillGroups ?? [];
 
   // Profiles Google already associates with this person. Linking out to them
   // from a page that states the name is what lets an unknown page borrow
@@ -220,20 +221,33 @@ export default async function FounderPage() {
             <div className="space-y-6">
               <Reveal>
                 <div className="rounded-2xl border border-border/60 bg-card/50 p-6 sm:p-8">
-                  <h2 className="font-display text-xl font-bold tracking-tight">
-                    About {name.split(" ")[0]}
-                  </h2>
-                  <p className="mt-4 leading-relaxed text-muted-foreground">
-                    {founder.bio || p.description}
-                  </p>
-                  <p className="mt-4 leading-relaxed text-muted-foreground">
+                  {founder.story ? (
+                    // Long-form biography, authored in the admin.
+                    <div
+                      className="article-content"
+                      dangerouslySetInnerHTML={{ __html: founder.story }}
+                    />
+                  ) : (
+                    <>
+                      <h2 className="font-display text-xl font-bold tracking-tight">
+                        About {name.split(" ")[0]}
+                      </h2>
+                      <p className="mt-4 leading-relaxed text-muted-foreground">
+                        {founder.bio || p.description}
+                      </p>
+                    </>
+                  )}
+                  <p className="mt-6 border-t border-border/60 pt-6 leading-relaxed text-muted-foreground">
                     {name} founded{" "}
                     <Link href="/" className="text-brand-500 hover:underline">
                       {siteConfig.name}
                     </Link>{" "}
-                    in {siteConfig.foundingDate.slice(0, 4)}. The agency works across
-                    web, mobile, AI, design and growth from {siteConfig.address.region},
-                    India, for clients worldwide.
+                    in {siteConfig.foundingDate.slice(0, 4)}, offering{" "}
+                    <Link href="/services" className="text-brand-500 hover:underline">
+                      22 services
+                    </Link>{" "}
+                    across web, mobile, AI, design and growth from{" "}
+                    {siteConfig.address.region}, India.
                   </p>
                 </div>
               </Reveal>
@@ -258,6 +272,14 @@ export default async function FounderPage() {
                     <FontAwesomeIcon icon={faGraduationCap} className="size-4 text-brand-500" />
                     Education
                   </h2>
+                  {founder.degree && (
+                    <p className="mt-3 font-medium">{founder.degree}</p>
+                  )}
+                  {founder.fieldOfStudy && (
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      {founder.fieldOfStudy}
+                    </p>
+                  )}
                   <p className="mt-3">
                     {educationUrl ? (
                       <a
@@ -271,6 +293,13 @@ export default async function FounderPage() {
                     ) : (
                       <span className="font-medium">{education}</span>
                     )}
+                    {(founder.educationStart || founder.educationEnd) && (
+                      <span className="ml-2 text-sm text-muted-foreground">
+                        {founder.educationStart}
+                        {founder.educationStart && founder.educationEnd ? " – " : ""}
+                        {founder.educationEnd}
+                      </span>
+                    )}
                   </p>
                 </div>
               </Reveal>
@@ -278,18 +307,40 @@ export default async function FounderPage() {
               <Reveal delay={0.15}>
                 <div className="rounded-2xl border border-border/60 bg-card/50 p-6 sm:p-8">
                   <h2 className="font-display text-xl font-bold tracking-tight">
-                    Works on
+                    Technical skills
                   </h2>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {skills.map((topic) => (
-                      <span
-                        key={topic}
-                        className="rounded-lg border border-border/60 bg-surface-2/50 px-3 py-1.5 text-sm text-muted-foreground"
-                      >
-                        {topic}
-                      </span>
-                    ))}
-                  </div>
+                  {skillGroups.length > 0 ? (
+                    <div className="mt-5 space-y-5">
+                      {skillGroups.map((group) => (
+                        <div key={group.label}>
+                          <p className="text-xs font-semibold uppercase tracking-wider text-brand-500">
+                            {group.label}
+                          </p>
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {group.items.map((item) => (
+                              <span
+                                key={item}
+                                className="rounded-lg border border-border/60 bg-surface-2/50 px-3 py-1.5 text-sm text-muted-foreground"
+                              >
+                                {item}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {skills.map((topic) => (
+                        <span
+                          key={topic}
+                          className="rounded-lg border border-border/60 bg-surface-2/50 px-3 py-1.5 text-sm text-muted-foreground"
+                        >
+                          {topic}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </Reveal>
 

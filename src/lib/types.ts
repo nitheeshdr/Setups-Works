@@ -249,6 +249,15 @@ export interface Founder {
    */
   birthDate?: string;
   birthPlace?: string;
+  /** Long-form biography as HTML. Edited in the admin, rendered as the page body. */
+  story?: string;
+  /** Technical skills grouped by discipline, e.g. { label: "Frontend", items: [...] }. */
+  skillGroups?: { label: string; items: string[] }[];
+  /* Education detail beyond the institution name. */
+  degree?: string;
+  fieldOfStudy?: string;
+  educationStart?: string;
+  educationEnd?: string;
 }
 
 export interface SiteSettings {

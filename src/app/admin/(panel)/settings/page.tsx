@@ -22,6 +22,11 @@ interface Founder {
   location?: string;
   birthDate?: string;
   birthPlace?: string;
+  story?: string;
+  degree?: string;
+  fieldOfStudy?: string;
+  educationStart?: string;
+  educationEnd?: string;
   name?: string;
   role?: string;
   handle?: string;
@@ -131,8 +136,15 @@ export default function AdminSettingsPage() {
             <Field label="Location" hint="City / region"><TextInput value={form.founder?.location ?? ""} onChange={(e) => setNested("founder", "location", e.target.value)} /></Field>
             <Field label="Date of birth" hint="YYYY-MM-DD — emitted as Person.birthDate"><TextInput type="date" value={form.founder?.birthDate ?? ""} onChange={(e) => setNested("founder", "birthDate", e.target.value)} /></Field>
             <Field label="Birthplace"><TextInput value={form.founder?.birthPlace ?? ""} onChange={(e) => setNested("founder", "birthPlace", e.target.value)} /></Field>
+            <Field label="Degree"><TextInput value={form.founder?.degree ?? ""} onChange={(e) => setNested("founder", "degree", e.target.value)} /></Field>
+            <Field label="Field of study"><TextInput value={form.founder?.fieldOfStudy ?? ""} onChange={(e) => setNested("founder", "fieldOfStudy", e.target.value)} /></Field>
+            <Field label="Study start year"><TextInput value={form.founder?.educationStart ?? ""} onChange={(e) => setNested("founder", "educationStart", e.target.value)} /></Field>
+            <Field label="Study end year"><TextInput value={form.founder?.educationEnd ?? ""} onChange={(e) => setNested("founder", "educationEnd", e.target.value)} /></Field>
           </div>
           <Field label="Quote / note"><TextArea rows={3} value={form.founder?.quote ?? ""} onChange={(e) => setNested("founder", "quote", e.target.value)} /></Field>
+          <Field label="Full biography" hint="HTML — rendered as the body of the founder page. Use <h2> for sections.">
+            <TextArea rows={14} value={form.founder?.story ?? ""} onChange={(e) => setNested("founder", "story", e.target.value)} />
+          </Field>
           <Field label="Bio" hint="Longer profile text — shown on the founder page and used as its meta description">
             <TextArea rows={5} value={form.founder?.bio ?? ""} onChange={(e) => setNested("founder", "bio", e.target.value)} />
           </Field>

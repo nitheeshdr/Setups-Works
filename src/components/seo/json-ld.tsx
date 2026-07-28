@@ -339,7 +339,13 @@ export function personSchema(founder?: Founder) {
         }
       : {}),
     mainEntityOfPage: { "@id": `${siteConfig.url}${FOUNDER_PATH}#profilepage` },
-    knowsAbout: founder?.skills?.length ? founder.skills : p.knowsAbout,
+    // Grouped skills flatten into knowsAbout so the schema stays in step with
+    // what the page shows, rather than maintaining two lists.
+    knowsAbout: founder?.skillGroups?.length
+      ? Array.from(new Set(founder.skillGroups.flatMap((g) => g.items)))
+      : founder?.skills?.length
+        ? founder.skills
+        : p.knowsAbout,
     // Personal profiles only. Filter out the company's brand accounts so the
     // org's X/LinkedIn/etc. can never leak into the founder's identity, which
     // would confuse Knowledge Panel entity reconciliation.
