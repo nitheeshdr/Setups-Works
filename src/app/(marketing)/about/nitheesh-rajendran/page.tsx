@@ -157,69 +157,67 @@ export default async function FounderPage() {
             />
           </div>
         }
-      />
+      >
+        {/* Identity facts sit with the name, not in a sidebar — role, place
+            and the profiles Google already links to this person. */}
+        <div className="mt-8 space-y-4">
+          <div className="rounded-2xl border border-border/60 bg-card/50 p-5">
+            <dl className="space-y-3.5 text-sm">
+              <div className="flex items-start gap-3">
+                <FontAwesomeIcon icon={faBriefcase} className="mt-0.5 size-3.5 shrink-0 text-brand-500" />
+                <div>
+                  <dt className="text-xs text-muted-foreground">Role</dt>
+                  <dd className="font-medium">
+                    {[role, ...titles].join(" · ")}
+                  </dd>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <FontAwesomeIcon icon={faLocationDot} className="mt-0.5 size-3.5 shrink-0 text-brand-500" />
+                <div>
+                  <dt className="text-xs text-muted-foreground">Based in</dt>
+                  <dd className="font-medium">{location}</dd>
+                </div>
+              </div>
+              {languages.length > 0 && (
+                <div className="flex items-start gap-3">
+                  <FontAwesomeIcon icon={faLanguage} className="mt-0.5 size-3.5 shrink-0 text-brand-500" />
+                  <div>
+                    <dt className="text-xs text-muted-foreground">Languages</dt>
+                    <dd className="font-medium">{languages.join(", ")}</dd>
+                  </div>
+                </div>
+              )}
+            </dl>
+          </div>
+
+          {profiles.length > 0 && (
+            <div className="rounded-2xl border border-border/60 bg-card/50 p-5">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Elsewhere
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {profiles.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="me noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-surface-2/50 px-3 py-2 text-sm transition-colors hover:border-brand-500/40 hover:text-brand-500"
+                  >
+                    <FontAwesomeIcon icon={s.icon} className="size-3.5" />
+                    {s.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </PageHeader>
 
       <Section className="pt-4">
         <Container>
-          <div className="grid gap-10 lg:grid-cols-[320px_1fr] lg:gap-14">
-            <div className="space-y-6">
-              <Reveal delay={0.04}>
-                <div className="rounded-2xl border border-border/60 bg-card/50 p-5">
-                  <dl className="space-y-3.5 text-sm">
-                    <div className="flex items-start gap-3">
-                      <FontAwesomeIcon icon={faBriefcase} className="mt-0.5 size-3.5 shrink-0 text-brand-500" />
-                      <div>
-                        <dt className="text-xs text-muted-foreground">Role</dt>
-                        <dd className="font-medium">
-                          {[role, ...titles].join(" · ")}
-                        </dd>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <FontAwesomeIcon icon={faLocationDot} className="mt-0.5 size-3.5 shrink-0 text-brand-500" />
-                      <div>
-                        <dt className="text-xs text-muted-foreground">Based in</dt>
-                        <dd className="font-medium">{location}</dd>
-                      </div>
-                    </div>
-                    {languages.length > 0 && (
-                      <div className="flex items-start gap-3">
-                        <FontAwesomeIcon icon={faLanguage} className="mt-0.5 size-3.5 shrink-0 text-brand-500" />
-                        <div>
-                          <dt className="text-xs text-muted-foreground">Languages</dt>
-                          <dd className="font-medium">{languages.join(", ")}</dd>
-                        </div>
-                      </div>
-                    )}
-                  </dl>
-                </div>
-              </Reveal>
-
-              {profiles.length > 0 && (
-                <Reveal delay={0.05}>
-                  <div className="rounded-2xl border border-border/60 bg-card/50 p-5">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                      Elsewhere
-                    </p>
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {profiles.map((s) => (
-                        <a
-                          key={s.label}
-                          href={s.href}
-                          target="_blank"
-                          rel="me noopener noreferrer"
-                          className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-surface-2/50 px-3 py-2 text-sm transition-colors hover:border-brand-500/40 hover:text-brand-500"
-                        >
-                          <FontAwesomeIcon icon={s.icon} className="size-3.5" />
-                          {s.label}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                </Reveal>
-              )}
-            </div>
-
+          <div className="grid gap-10">
             <div className="space-y-6">
               <Reveal>
                 <div className="rounded-2xl border border-border/60 bg-card/50 p-6 sm:p-8">
