@@ -118,6 +118,14 @@ export const siteConfig = {
      * organization independently of anything we publish about ourselves.
      */
     playStore: "https://play.google.com/store/apps/dev?id=5478157836712207943",
+    /**
+     * Podcast. Another independent source asserting the same organization
+     * name, founder, and location — which is the corroboration entity
+     * reconciliation runs on. The Spotify show page is the canonical public
+     * URL; the RSS feed is the machine-readable one.
+     */
+    podcast: "https://open.spotify.com/show/033X7FZ7Z2eoDwq5wj60y9",
+    podcastFeed: "https://anchor.fm/s/115683bdc/podcast/rss",
   },
   keywords: [
     "digital agency",
