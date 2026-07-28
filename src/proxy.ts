@@ -1,14 +1,9 @@
 import { NextResponse, type NextRequest, type NextFetchEvent } from "next/server";
+import { CRAWLER_UA_RE } from "@/lib/crawlers";
 
 const COOKIE_NAME = "sw_token";
 
-/**
- * Crawler user-agent tokens worth recording. Matching on the UA string alone
- * proves nothing — anyone can send "Googlebot" — so this is only a cheap filter
- * to decide what is worth the cost of verifying. /api/crawler-log does the
- * actual reverse-DNS and IP-range check before trusting any of it.
- */
-const CRAWLER_UA = /googlebot|google-inspectiontool|google-extended|bingbot|duckduckbot|yandex|applebot|slurp|baiduspider|petalbot/i;
+
 
 /**
  * Runs before every matched request.
@@ -47,7 +42,7 @@ export function proxy(req: NextRequest, event: NextFetchEvent) {
 
   /* ---------------------------- crawler logging -------------------------- */
   const ua = req.headers.get("user-agent") ?? "";
-  if (CRAWLER_UA.test(ua)) {
+  if (CRAWLER_UA_RE.test(ua)) {
     const ip =
       req.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
       req.headers.get("x-real-ip") ??

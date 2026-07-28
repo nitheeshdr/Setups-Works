@@ -3,6 +3,7 @@ import { requireDB } from "@/lib/db";
 import { CrawlerHit } from "@/models";
 import { ok, requireAuth, serverError, unauthorized } from "@/lib/api-utils";
 import { verifyGoogleRequest } from "@/lib/verify-google";
+import { crawlerName } from "@/lib/crawlers";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,21 +14,6 @@ const schema = z.object({
   ip: z.string().default(""),
 });
 
-/** Which crawler the user-agent claims to be. Claimed, not proven. */
-function crawlerName(ua: string): string {
-  const u = ua.toLowerCase();
-  if (u.includes("google-inspectiontool")) return "Google-InspectionTool";
-  if (u.includes("google-extended")) return "Google-Extended";
-  if (u.includes("googlebot")) return "Googlebot";
-  if (u.includes("bingbot")) return "Bingbot";
-  if (u.includes("duckduckbot")) return "DuckDuckBot";
-  if (u.includes("yandex")) return "YandexBot";
-  if (u.includes("applebot")) return "Applebot";
-  if (u.includes("slurp")) return "Yahoo Slurp";
-  if (u.includes("baiduspider")) return "Baiduspider";
-  if (u.includes("petalbot")) return "PetalBot";
-  return "other";
-}
 
 /**
  * Records a crawler visit. Called only by proxy.ts, gated on a shared secret —

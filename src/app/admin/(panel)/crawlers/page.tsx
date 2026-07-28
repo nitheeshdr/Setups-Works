@@ -12,6 +12,7 @@ import { AdminHeader, Spinner, EmptyState } from "@/components/admin/ui";
 import { api } from "@/lib/admin/api";
 import { formatDate } from "@/lib/helpers";
 import { cn } from "@/lib/utils";
+import { crawlerKind } from "@/lib/crawlers";
 
 interface Hit {
   _id: string;
@@ -43,7 +44,7 @@ export default function AdminCrawlersPage() {
     <>
       <AdminHeader
         title="Crawlers"
-        description="Verified search-engine activity on the site. Answers whether Googlebot is actually visiting, rather than assuming."
+        description="Crawler activity on the site — search engines and AI answer engines. Answers whether Googlebot and GPTBot are actually visiting, rather than assuming."
       />
 
       <div className="mb-6 flex items-center gap-2">
@@ -90,7 +91,14 @@ export default function AdminCrawlersPage() {
               )}
               tone="warn"
             />
-            <Stat label="Distinct crawlers" value={String(data.byCrawler.length)} />
+            <Stat
+              label="AI answer engines"
+              value={String(
+                data.byCrawler
+                  .filter((c) => crawlerKind(c._id).startsWith("ai"))
+                  .reduce((n, c) => n + c.hits, 0),
+              )}
+            />
           </div>
 
           <div className="grid gap-6 lg:grid-cols-2">
@@ -104,6 +112,11 @@ export default function AdminCrawlersPage() {
                     <span className="flex items-center gap-2 font-medium">
                       <FontAwesomeIcon icon={faRobot} className="size-3.5 text-brand-500" />
                       {c._id}
+                      {crawlerKind(c._id).startsWith("ai") && (
+                        <span className="rounded-md bg-brand-500/10 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-brand-500">
+                          {crawlerKind(c._id) === "ai-search" ? "AI search" : "AI training"}
+                        </span>
+                      )}
                     </span>
                     <span className="text-muted-foreground">
                       {c.hits} hits
