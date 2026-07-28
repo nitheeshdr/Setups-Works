@@ -17,12 +17,15 @@ export function PageHeader({
   description,
   crumbs,
   children,
+  media,
 }: {
   eyebrow?: string;
   title: ReactNode;
   description?: ReactNode;
   crumbs?: Crumb[];
   children?: ReactNode;
+  /** Optional visual (portrait, logo) shown beside the title. */
+  media?: ReactNode;
 }) {
   return (
     <section className="relative isolate overflow-hidden pb-12 pt-28 sm:pb-16 sm:pt-32">
@@ -48,25 +51,38 @@ export function PageHeader({
             </nav>
           </Reveal>
         )}
-        <div className="max-w-3xl">
-          {eyebrow && (
-            <Reveal>
-              <Eyebrow>{eyebrow}</Eyebrow>
+        <div
+          className={
+            media
+              ? "grid gap-8 lg:grid-cols-[1fr_300px] lg:items-center lg:gap-14"
+              : undefined
+          }
+        >
+          <div className="max-w-3xl">
+            {eyebrow && (
+              <Reveal>
+                <Eyebrow>{eyebrow}</Eyebrow>
+              </Reveal>
+            )}
+            <Reveal delay={0.05}>
+              <h1 className="mt-5 font-display text-4xl font-bold tracking-tight text-balance sm:text-5xl md:text-6xl">
+                {title}
+              </h1>
+            </Reveal>
+            {description && (
+              <Reveal delay={0.1}>
+                <p className="mt-5 max-w-2xl text-lg text-muted-foreground text-balance">
+                  {description}
+                </p>
+              </Reveal>
+            )}
+            {children && <Reveal delay={0.15}>{children}</Reveal>}
+          </div>
+          {media && (
+            <Reveal delay={0.08}>
+              <div className="order-first lg:order-0">{media}</div>
             </Reveal>
           )}
-          <Reveal delay={0.05}>
-            <h1 className="mt-5 font-display text-4xl font-bold tracking-tight text-balance sm:text-5xl md:text-6xl">
-              {title}
-            </h1>
-          </Reveal>
-          {description && (
-            <Reveal delay={0.1}>
-              <p className="mt-5 max-w-2xl text-lg text-muted-foreground text-balance">
-                {description}
-              </p>
-            </Reveal>
-          )}
-          {children && <Reveal delay={0.15}>{children}</Reveal>}
         </div>
       </Container>
     </section>

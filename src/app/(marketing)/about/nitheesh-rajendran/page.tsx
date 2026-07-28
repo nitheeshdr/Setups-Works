@@ -142,25 +142,26 @@ export default async function FounderPage() {
           `${role} of ${siteConfig.name}, a digital agency building websites, mobile apps and AI products.`
         }
         crumbs={[{ label: "About", href: "/about" }, { label: name }]}
+        media={
+          // The portrait sits with the H1 so the name and the face are the
+          // first thing both a reader and an image crawler see.
+          <div className="relative aspect-square w-40 overflow-hidden rounded-3xl border border-border/60 sm:w-52 lg:w-full">
+            <Image
+              src={photo}
+              alt={`${name}, ${role} of ${siteConfig.name}`}
+              fill
+              sizes="(max-width: 640px) 160px, (max-width: 1024px) 208px, 300px"
+              className="object-cover"
+              preload
+            />
+          </div>
+        }
       />
 
       <Section className="pt-4">
         <Container>
           <div className="grid gap-10 lg:grid-cols-[320px_1fr] lg:gap-14">
             <div className="space-y-6">
-              <Reveal>
-                <div className="relative aspect-square overflow-hidden rounded-3xl border border-border/60">
-                  <Image
-                    src={photo}
-                    alt={`${name}, ${role} of ${siteConfig.name}`}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 320px"
-                    className="object-cover"
-                    priority
-                  />
-                </div>
-              </Reveal>
-
               <Reveal delay={0.04}>
                 <div className="rounded-2xl border border-border/60 bg-card/50 p-5">
                   <dl className="space-y-3.5 text-sm">
