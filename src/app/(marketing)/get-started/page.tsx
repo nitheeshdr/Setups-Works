@@ -153,7 +153,7 @@ export default async function GetStartedPage() {
                       ))}
                     </span>
                     <span className="font-semibold">4.9/5</span>
-                    <span className="text-muted-foreground">from 120+ clients</span>
+                    <span className="text-muted-foreground">from 10+ clients</span>
                   </span>
                   <span className="flex items-center gap-2 text-sm text-muted-foreground">
                     <FontAwesomeIcon icon={faLocationDot} className="size-3.5 text-brand-500" />

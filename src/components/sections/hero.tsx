@@ -123,7 +123,7 @@ export function Hero() {
               ))}
             </span>
             <span className="font-medium text-foreground">4.9/5</span>
-            from 120+ happy clients
+            from 10+ happy clients
           </motion.div>
         </div>
       </Container>

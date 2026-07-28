@@ -26,8 +26,8 @@ export interface Stat {
 }
 
 export const stats: Stat[] = [
-  { label: "Projects Delivered", value: 240, suffix: "+", icon: faRocket },
-  { label: "Happy Clients", value: 120, suffix: "+", icon: faUsers },
+  { label: "Projects Delivered", value: 15, suffix: "+", icon: faRocket },
+  { label: "Happy Clients", value: 10, suffix: "+", icon: faUsers },
   { label: "Avg. Client Rating", value: 4.9, suffix: "/5", icon: faStar },
   { label: "Years of Craft", value: 8, suffix: "+", icon: faTrophy },
 ];
