@@ -113,6 +113,19 @@ export function organizationSchema() {
       postalCode: siteConfig.address.postalCode,
       addressCountry: siteConfig.address.country,
     },
+    // Business identifiers Google recommends for Organization. Spread in only
+    // when set, so the markup never carries empty strings.
+    ...Object.fromEntries(
+      Object.entries(siteConfig.identifiers).filter(([, v]) => v),
+    ),
+    ...(siteConfig.numberOfEmployees
+      ? {
+          numberOfEmployees: {
+            "@type": "QuantitativeValue",
+            value: siteConfig.numberOfEmployees,
+          },
+        }
+      : {}),
     // Currency and payment terms are business facts, not guesses — add them to
     // siteConfig when known. Deliberately absent rather than invented.
     //

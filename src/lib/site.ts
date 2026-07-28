@@ -23,6 +23,33 @@ export const siteConfig = {
     postalCode: "601201",
     country: "IN",
   },
+  /**
+   * Business identifiers Google lists as recommended Organization properties
+   * (developers.google.com/search/docs/appearance/structured-data/organization).
+   * Each is emitted only when non-empty — a blank identifier is worse than an
+   * absent one. Nothing here is guessed; fill in what the business actually has.
+   *
+   * For an Indian services business, realistically only two of these apply:
+   *   taxID            — your GSTIN (or PAN). The one worth filling in.
+   *   numberOfEmployees — a plain count, e.g. "12".
+   *
+   * The rest are registry-specific and only apply if you're enrolled:
+   *   vatID   — EU/UK VAT. India uses GST, so normally blank.
+   *   duns    — Dun & Bradstreet, only if you hold a DUNS number.
+   *   leiCode — ISO 17442, effectively finance-sector only.
+   *   naics   — North American industry classification.
+   *   globalLocationNumber — GS1, supply-chain/retail.
+   */
+  identifiers: {
+    taxID: "",
+    vatID: "",
+    duns: "",
+    leiCode: "",
+    naics: "",
+    globalLocationNumber: "",
+  },
+  /** Headcount for Organization.numberOfEmployees. Blank = not emitted. */
+  numberOfEmployees: "",
   geo: { lat: 13.459948725379245, lng: 80.11290785179675 },
   googleBusiness: "https://share.google/Du9pH2y5ZFtvl847t",
   /** Canonical Google Maps listing URL (CID form) — stable entity anchor for hasMap. */
