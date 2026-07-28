@@ -71,6 +71,12 @@ export const siteConfig = {
   mapEmbed:
     "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3385.096180109854!2d80.11040097442232!3d13.459936386902154!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a4d8367c3c32a81%3A0xb1945ebd28bc8f98!2sSetups%20Works!5e1!3m2!1sen!2sin!4v1784478521137!5m2!1sen!2sin",
   wikidata: "https://www.wikidata.org/wiki/Q140500419",
+  /**
+   * Crunchbase profile. Independent corroboration of the organization from a
+   * database Google already trusts — the kind of third-party source the
+   * Knowledge Graph weights far above anything self-published here.
+   */
+  crunchbase: "https://www.crunchbase.com/organization/setups-works",
   areaServed: ["Chennai", "Tamil Nadu", "India", "Worldwide"],
   founderProfile: {
     name: "Nitheesh Rajendran",
@@ -129,6 +135,11 @@ export const siteConfig = {
       // Google Knowledge Panel share link — helps Google reconcile this Person
       // entity with its existing panel.
       "https://share.google/R49gz3hj0ZA74MmQt",
+      // Crunchbase person profile. Deliberately the person URL, not the
+      // organization one — the org's Crunchbase page belongs in `orgSameAs`,
+      // and crossing the two is what makes a search engine merge the person
+      // and the company into a single entity.
+      "https://www.crunchbase.com/person/nitheesh-rajendran",
     ],
   },
   ogImage: "/opengraph-image",

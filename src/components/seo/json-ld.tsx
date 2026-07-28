@@ -54,6 +54,7 @@ const orgSameAs: string[] = [
   siteConfig.googleBusiness, // GBP share link
   siteConfig.googleMaps, // canonical Maps listing (CID) — local entity anchor
   siteConfig.wikidata, // wikidata.org/wiki/Q140500419 — entity anchor
+  siteConfig.crunchbase, // independent company database
 ].filter(Boolean);
 /**
  * Founding date as a full ISO 8601 datetime, for the schemas that require one.
