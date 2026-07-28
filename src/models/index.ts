@@ -259,6 +259,29 @@ const LeadSchema = new Schema(
 );
 
 /* ------------------------------------------------------------------ *
+ *  Crawler hit — verified search-engine visits
+ * ------------------------------------------------------------------ */
+const CrawlerHitSchema = new Schema(
+  {
+    path: { type: String, required: true, index: true },
+    userAgent: { type: String, default: "" },
+    ip: { type: String, default: "" },
+    /** Which crawler the UA claims to be. Claimed, not proven. */
+    crawler: { type: String, default: "other", index: true },
+    /**
+     * Whether the IP actually belongs to Google. A UA string is trivially
+     * forged, so this is the only field worth trusting — an unverified hit
+     * claiming to be Googlebot is a spoof, and worth seeing as such.
+     */
+    verified: { type: Boolean, default: false, index: true },
+    method: { type: String, enum: ["ip-range", "dns", "none"], default: "none" },
+  },
+  { timestamps: true },
+);
+// Keep the collection self-trimming; crawl logs are only useful while recent.
+CrawlerHitSchema.index({ createdAt: 1 }, { expireAfterSeconds: 60 * 60 * 24 * 30 });
+
+/* ------------------------------------------------------------------ *
  *  Newsletter subscriber
  * ------------------------------------------------------------------ */
 const SubscriberSchema = new Schema(
@@ -353,6 +376,8 @@ export const Portfolio = models.Portfolio || model("Portfolio", PortfolioSchema)
 export const Testimonial = models.Testimonial || model("Testimonial", TestimonialSchema);
 export const Contact = models.Contact || model("Contact", ContactSchema);
 export const Lead = models.Lead || model("Lead", LeadSchema);
+export const CrawlerHit =
+  models.CrawlerHit || model("CrawlerHit", CrawlerHitSchema);
 export const Subscriber = models.Subscriber || model("Subscriber", SubscriberSchema);
 export const Settings = models.Settings || model("Settings", SettingsSchema);
 

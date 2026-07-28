@@ -12,6 +12,7 @@ import {
   faScrewdriverWrench,
   faUserPlus,
   faInbox,
+  faRobot,
   faComments,
   faEnvelope,
   faUsers,
@@ -45,6 +46,7 @@ const nav = [
   { label: "Messages", href: "/admin/messages", icon: faEnvelope },
   { label: "Subscribers", href: "/admin/subscribers", icon: faUsers },
   { label: "Media", href: "/admin/media", icon: faImages },
+  { label: "Crawlers", href: "/admin/crawlers", icon: faRobot },
   { label: "Settings", href: "/admin/settings", icon: faGear },
 ];
 
