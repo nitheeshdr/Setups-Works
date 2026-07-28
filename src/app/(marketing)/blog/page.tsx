@@ -6,7 +6,7 @@ import { getBlogs, getBlogCategories } from "@/lib/content";
 import { JsonLd, pageSchemas } from "@/components/seo/json-ld";
 
 const description =
-  "Deep dives on engineering, design, AI, and building great digital products from the team at Setups Works.";
+  "Deep dives on engineering, design, and AI from the Setups Works team — practical writing on building web apps, mobile products, and digital experiences.";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/blog" },

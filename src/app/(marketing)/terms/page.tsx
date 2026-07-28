@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/terms" },
   title: "Terms of Service",
   description:
-    "The terms and conditions governing your use of the Setups Works website and services.",
+    "The terms governing your use of the Setups Works website and services — acceptable use, intellectual property, liability, and how these terms may change.",
 };
 
 export default function TermsPage() {

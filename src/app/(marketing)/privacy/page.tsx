@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/privacy" },
   title: "Privacy Policy",
   description:
-    "How Setups Works collects, uses, and protects your personal data.",
+    "How Setups Works collects, uses, and protects your personal data — what we gather, why we gather it, who it is shared with, and the rights you have over it.",
 };
 
 export default function PrivacyPage() {
