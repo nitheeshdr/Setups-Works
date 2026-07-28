@@ -25,6 +25,12 @@ export const mainNav: NavLink[] = [
  */
 export const sitelinkNav: NavLink[] = [
   {
+    label: "Get a Quote",
+    href: "/get-started",
+    description:
+      "Request a quotation or send an enquiry to Setups Works and get a reply within one business day.",
+  },
+  {
     label: "Services",
     href: "/services",
     description:
@@ -78,6 +84,7 @@ export const footerNav: { title: string; links: NavLink[] }[] = [
   {
     title: "Company",
     links: [
+      { label: "Get a Quote", href: "/get-started" },
       { label: "About", href: "/about" },
       { label: "Careers", href: "/careers" },
       { label: "Portfolio", href: "/portfolio" },

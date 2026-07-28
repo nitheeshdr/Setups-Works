@@ -32,6 +32,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const pages: MetadataRoute.Sitemap = [
     { path: "", priority: 1, freq: "daily" as const },
+    // The conversion page every "Start a project" CTA points at — it was
+    // missing here entirely, so it only reached Google via internal links.
+    { path: "/get-started", priority: 0.9, freq: "monthly" as const },
     { path: "/about", priority: 0.9, freq: "monthly" as const },
     { path: "/services", priority: 0.9, freq: "monthly" as const },
     { path: "/products", priority: 0.9, freq: "weekly" as const },
