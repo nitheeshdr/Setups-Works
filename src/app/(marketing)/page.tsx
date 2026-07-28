@@ -50,6 +50,17 @@ export const metadata: Metadata = {
     url: siteConfig.url,
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.description,
+    // Setting `openGraph` at all opts the page out of the `opengraph-image`
+    // file convention, so the image has to be named here. Without this the
+    // homepage shared with no preview image at all.
+    images: [
+      {
+        url: siteConfig.ogImage,
+        width: 1200,
+        height: 630,
+        alt: `${siteConfig.name} — ${siteConfig.tagline}`,
+      },
+    ],
   },
 };
 

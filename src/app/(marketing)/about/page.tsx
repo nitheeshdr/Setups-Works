@@ -17,13 +17,14 @@ import {
 } from "@/components/seo/json-ld";
 import { companyValues } from "@/data/site-content";
 import { getFounder, getTimeline } from "@/lib/content";
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/about" },
+export const metadata: Metadata = pageMetadata({
   title: "About",
   description:
     "Setups Works is a premium digital agency of designers, engineers, and strategists building software that moves businesses forward. Meet the team and our story.",
-};
+  path: "/about",
+});
 
 export const revalidate = 300;
 

@@ -6,15 +6,16 @@ import { CTASection } from "@/components/sections/cta";
 import { FAQSection } from "@/components/sections/faq";
 import { getServices } from "@/lib/content";
 import { JsonLd, pageSchemas } from "@/components/seo/json-ld";
+import { pageMetadata } from "@/lib/site";
 
 const description =
   "From software and mobile development to Spring Boot, DevOps, AI, design, and growth — explore the services Setups Works offers to build and scale your product.";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/services" },
+export const metadata: Metadata = pageMetadata({
   title: "Services",
   description,
-};
+  path: "/services",
+});
 
 export const revalidate = 300;
 

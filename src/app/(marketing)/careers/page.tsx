@@ -13,15 +13,16 @@ import { Reveal } from "@/components/motion-primitives";
 import { CTASection } from "@/components/sections/cta";
 import { jobOpenings, benefits } from "@/data/site-content";
 import { JsonLd, pageSchemas } from "@/components/seo/json-ld";
+import { pageMetadata } from "@/lib/site";
 
 const description =
   "Join Setups Works — a remote-first team of designers, engineers, and strategists building premium digital products. See our open roles.";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/careers" },
+export const metadata: Metadata = pageMetadata({
   title: "Careers",
   description,
-};
+  path: "/careers",
+});
 
 export default function CareersPage() {
   return (

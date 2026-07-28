@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 export const siteConfig = {
   name: "Setups Works",
   shortName: "Setups Works",
@@ -73,6 +75,13 @@ export const siteConfig = {
   founderProfile: {
     name: "Nitheesh Rajendran",
     jobTitle: "Founder & CEO",
+    /**
+     * Where the founder is based, which is not the agency's registered
+     * locality. `address.locality` stays "Gummidipoondi" because it has to
+     * match postcode 601201 and the Business Profile; the person lives in the
+     * village the street address is actually in.
+     */
+    homeLocation: "Elavur, Tamil Nadu",
     /** 1500x1500. Used when the CMS founder record has no photo of its own. */
     image: {
       url: "https://res.cloudinary.com/dvtsr6ch/image/upload/v1783274785/setupsworks/jtlq18stwgen5swe3dwv.jpg",
@@ -166,3 +175,56 @@ export const siteConfig = {
 } as const;
 
 export type SiteConfig = typeof siteConfig;
+
+/**
+ * One page description, fanned out to every tag that carries one.
+ *
+ * Next inherits an un-set `openGraph` object from the root layout wholesale —
+ * setting only `description` on a page leaves `og:description` and
+ * `twitter:description` as the site-wide blurb. Every index page did exactly
+ * that, so a crawler saw the same sentence on /careers, /blog and /portfolio
+ * no matter what the meta description said, and shares of those URLs previewed
+ * the generic agency line instead of the page's own.
+ *
+ * Pass `openGraph` to add or override fields (images, `type`) without losing
+ * the description wiring.
+ */
+export function pageMetadata({
+  title,
+  description,
+  path,
+  openGraph,
+}: {
+  /** Page title, unqualified — the root layout appends the site name. */
+  title: string;
+  description: string;
+  /** Root-relative, e.g. "/careers". Resolved against `metadataBase`. */
+  path: string;
+  openGraph?: Metadata["openGraph"];
+}): Metadata {
+  // og:title gets the site name spelled out, because the root layout's
+  // `%s · Setups Works` template applies to <title> only.
+  const qualified = `${title} · ${siteConfig.name}`;
+  // Matches the `alt` exported by app/opengraph-image.tsx.
+  const ogAlt = `${siteConfig.name} — ${siteConfig.tagline}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      type: "website",
+      url: path,
+      title: qualified,
+      description,
+      siteName: siteConfig.name,
+      // Declared, not inherited. Next injects the `opengraph-image` file
+      // convention only into pages that don't set `openGraph` themselves —
+      // declaring the object to fix the description would otherwise drop
+      // og:image entirely, which is what happened to the homepage.
+      images: [{ url: siteConfig.ogImage, width: 1200, height: 630, alt: ogAlt }],
+      ...openGraph,
+    },
+    twitter: { title: qualified, description, images: [siteConfig.ogImage] },
+  };
+}

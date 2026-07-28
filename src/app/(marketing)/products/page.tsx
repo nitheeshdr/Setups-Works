@@ -6,15 +6,16 @@ import { ProductCard } from "@/components/cards";
 import { CTASection } from "@/components/sections/cta";
 import { getProducts } from "@/lib/content";
 import { JsonLd, pageSchemas } from "@/components/seo/json-ld";
+import { pageMetadata } from "@/lib/site";
 
 const description =
   "Beyond client work, Setups Works builds its own products — starting with CodeForge AI, an AI-powered development platform.";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/products" },
+export const metadata: Metadata = pageMetadata({
   title: "Products",
   description,
-};
+  path: "/products",
+});
 
 export const revalidate = 300;
 

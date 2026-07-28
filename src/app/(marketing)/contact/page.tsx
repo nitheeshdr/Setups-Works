@@ -22,14 +22,14 @@ import {
   faqSchema,
 } from "@/components/seo/json-ld";
 import { faqs } from "@/data/site-content";
-import { siteConfig } from "@/lib/site";
+import { siteConfig, pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/contact" },
+export const metadata: Metadata = pageMetadata({
   title: "Contact",
   description:
     "Tell us about your project. Setups Works replies within one business day. Start a conversation about your website, app, or AI product today.",
-};
+  path: "/contact",
+});
 
 const details = [
   { icon: faEnvelope, label: "Email us", value: siteConfig.email, href: `mailto:${siteConfig.email}` },

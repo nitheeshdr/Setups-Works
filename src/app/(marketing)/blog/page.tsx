@@ -4,15 +4,16 @@ import { Container, Section } from "@/components/section";
 import { BlogExplorer } from "@/components/blog-explorer";
 import { getBlogs, getBlogCategories } from "@/lib/content";
 import { JsonLd, pageSchemas } from "@/components/seo/json-ld";
+import { pageMetadata } from "@/lib/site";
 
 const description =
   "Deep dives on engineering, design, and AI from the Setups Works team — practical writing on building web apps, mobile products, and digital experiences.";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/blog" },
+export const metadata: Metadata = pageMetadata({
   title: "Blog",
   description,
-};
+  path: "/blog",
+});
 
 export const revalidate = 300;
 

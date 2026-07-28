@@ -7,6 +7,7 @@ import {
   faQuoteLeft,
   faGraduationCap,
   faLocationDot,
+  faCakeCandles,
   faLanguage,
   faTrophy,
   faMicrophone,
@@ -98,8 +99,9 @@ export default async function FounderPage() {
   const education = founder.education || p.alumniOf.name;
   const educationUrl = founder.educationUrl || p.alumniOf.url;
   const skills = founder.skills?.length ? founder.skills : p.knowsAbout;
-  const location =
-    founder.location || `${siteConfig.address.locality}, ${siteConfig.address.region}`;
+  // The person's own place, not the company's registered address.
+  const location = founder.location || p.homeLocation;
+  const birthPlace = founder.birthPlace;
   const titles = founder.titles ?? [];
   const languages = founder.languages ?? [];
   const awards = founder.awards ?? [];
@@ -179,6 +181,17 @@ export default async function FounderPage() {
                   <dd className="font-medium">{location}</dd>
                 </div>
               </div>
+              {birthPlace && (
+                // Already asserted as Person.birthPlace in the schema — stating
+                // it on the page too means the markup and the visible text agree.
+                <div className="flex items-start gap-3">
+                  <FontAwesomeIcon icon={faCakeCandles} className="mt-0.5 size-3.5 shrink-0 text-brand-500" />
+                  <div>
+                    <dt className="text-xs text-muted-foreground">Born in</dt>
+                    <dd className="font-medium">{birthPlace}</dd>
+                  </div>
+                </div>
+              )}
               {languages.length > 0 && (
                 <div className="flex items-start gap-3">
                   <FontAwesomeIcon icon={faLanguage} className="mt-0.5 size-3.5 shrink-0 text-brand-500" />

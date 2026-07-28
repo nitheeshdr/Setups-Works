@@ -10,15 +10,16 @@ import {
   getTestimonials,
 } from "@/lib/content";
 import { JsonLd, pageSchemas } from "@/components/seo/json-ld";
+import { pageMetadata } from "@/lib/site";
 
 const description =
   "Selected work from Setups Works — web apps, AI products, e-commerce, mobile apps, and marketing sites built for clients worldwide.";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/portfolio" },
+export const metadata: Metadata = pageMetadata({
   title: "Portfolio",
   description,
-};
+  path: "/portfolio",
+});
 
 export const revalidate = 300;
 
