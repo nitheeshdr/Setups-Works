@@ -7,7 +7,7 @@ import {
   faClock,
   faComments,
 } from "@fortawesome/free-solid-svg-icons";
-import { faXTwitter, faGithub, faLinkedinIn, faDribbble } from "@fortawesome/free-brands-svg-icons";
+import { faXTwitter, faGithub, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 import { PageHeader } from "@/components/page-header";
 import { Container, Section } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
@@ -42,8 +42,8 @@ const socials = [
   { icon: faXTwitter, href: siteConfig.links.twitter },
   { icon: faGithub, href: siteConfig.links.github },
   { icon: faLinkedinIn, href: siteConfig.links.linkedin },
-  { icon: faDribbble, href: siteConfig.links.dribbble },
-];
+  // Same guard as the footer — never render an icon with an empty href.
+].filter((s) => s.href);
 
 export default function ContactPage() {
   return (

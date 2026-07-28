@@ -117,7 +117,7 @@ export default function AdminSettingsPage() {
         <div className={card}>
           <p className="text-sm font-semibold">Social links</p>
           <div className="grid gap-4 sm:grid-cols-2">
-            {["twitter", "github", "linkedin", "dribbble", "instagram"].map((s) => (
+            {["twitter", "github", "linkedin", "instagram"].map((s) => (
               <Field key={s} label={s[0].toUpperCase() + s.slice(1)}>
                 <TextInput value={form.social?.[s] ?? ""} onChange={(e) => setNested("social", s, e.target.value)} />
               </Field>

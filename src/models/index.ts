@@ -286,7 +286,6 @@ const SettingsSchema = new Schema(
       twitter: String,
       github: String,
       linkedin: String,
-      dribbble: String,
       instagram: String,
     },
     seo: {

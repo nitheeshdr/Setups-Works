@@ -9,19 +9,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faXTwitter,
   faLinkedinIn,
-  faDribbble,
   faInstagram,
   faGooglePlay,
 } from "@fortawesome/free-brands-svg-icons";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
+// Filtered on href: a social with no URL rendered as href="", which points at
+// the current page — the icon looked live but just reloaded. Filter rather
+// than trust the config to be fully populated.
 const socials = [
   { icon: faXTwitter, href: siteConfig.links.twitter, label: "X / Twitter" },
   { icon: faLinkedinIn, href: siteConfig.links.linkedin, label: "LinkedIn" },
-  { icon: faDribbble, href: siteConfig.links.dribbble, label: "Dribbble" },
   { icon: faInstagram, href: siteConfig.links.instagram, label: "Instagram" },
   { icon: faGooglePlay, href: siteConfig.links.playStore, label: "Google Play" },
-];
+].filter((s) => s.href);
 
 export function Footer({
   logoLight,
