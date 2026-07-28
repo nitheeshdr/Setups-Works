@@ -71,6 +71,9 @@ const FOUNDED_DATETIME = (() => {
   return `${full}T00:00:00+05:30`;
 })();
 
+/** Canonical path for the founder's own page. */
+export const FOUNDER_PATH = "/about/nitheesh-rajendran";
+
 const ORG_ID = `${siteConfig.url}/#organization`;
 const WEBSITE_ID = `${siteConfig.url}/#website`;
 
@@ -93,7 +96,7 @@ const personReference = {
   "@id": `${siteConfig.url}/#founder`,
   "@type": "Person",
   name: siteConfig.founderProfile.name,
-  url: `${siteConfig.url}/about`,
+  url: `${siteConfig.url}${FOUNDER_PATH}`,
 };
 
 /* --------------------------- Organization ------------------------------ */
@@ -260,7 +263,7 @@ export function personSchema(founder?: Founder) {
     name: founder?.name || p.name,
     jobTitle: founder?.role || p.jobTitle,
     description: founder?.bio || p.description,
-    url: `${siteConfig.url}/about`,
+    url: `${siteConfig.url}${FOUNDER_PATH}`,
     // The CMS photo wins; the configured portrait is the fallback so the
     // Person node always carries an image. ImageObject either way — a bare URL
     // tells a consumer nothing about dimensions.
@@ -329,8 +332,8 @@ export function profilePageSchema(founder?: Founder) {
   return {
     "@context": "https://schema.org",
     "@type": "ProfilePage",
-    "@id": `${siteConfig.url}/about/#profilepage`,
-    url: `${siteConfig.url}/about`,
+    "@id": `${siteConfig.url}${FOUNDER_PATH}#profilepage`,
+    url: `${siteConfig.url}${FOUNDER_PATH}`,
     name: `${founder?.name || p.name} — ${founder?.role || p.jobTitle}`,
     // Google's ProfilePage requires full ISO 8601 datetime (with time + offset),
     // not a bare date. +05:30 = IST (Chennai).
@@ -338,7 +341,7 @@ export function profilePageSchema(founder?: Founder) {
     dateModified: FOUNDED_DATETIME,
     mainEntity: { "@id": `${siteConfig.url}/#founder` },
     isPartOf: { "@id": WEBSITE_ID },
-    breadcrumb: { "@id": `${siteConfig.url}/about#breadcrumb` },
+    breadcrumb: { "@id": `${siteConfig.url}${FOUNDER_PATH}#breadcrumb` },
   };
 }
 

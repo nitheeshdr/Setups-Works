@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBullseye, faEye, faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
 import { PageHeader } from "@/components/page-header";
@@ -10,8 +11,6 @@ import { CTASection } from "@/components/sections/cta";
 import { FounderCard } from "@/components/founder-card";
 import {
   JsonLd,
-  personSchema,
-  profilePageSchema,
   organizationSchema,
   websiteSchema,
   breadcrumbSchema,
@@ -35,8 +34,6 @@ export default async function AboutPage() {
     <>
       <JsonLd
         data={[
-          profilePageSchema(founder),
-          personSchema(founder),
           organizationSchema(),
           // profilePageSchema() declares isPartOf #website, so the WebSite node
           // has to be present here for that reference to resolve.
@@ -105,7 +102,12 @@ export default async function AboutPage() {
                   {founder.quote}
                 </blockquote>
                 <div className="mt-6">
-                  <p className="font-semibold">{founder.name}</p>
+                  <Link
+                    href="/about/nitheesh-rajendran"
+                    className="font-semibold hover:text-brand-500"
+                  >
+                    {founder.name}
+                  </Link>
                   <p className="text-sm text-muted-foreground">{founder.role}</p>
                 </div>
               </div>

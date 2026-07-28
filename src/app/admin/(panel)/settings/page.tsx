@@ -9,6 +9,7 @@ import { AdminHeader, Field, TextInput, TextArea, ImageUploader, Spinner } from 
 import { api } from "@/lib/admin/api";
 
 interface Founder {
+  bio?: string;
   name?: string;
   role?: string;
   handle?: string;
@@ -99,7 +100,7 @@ export default function AdminSettingsPage() {
         </div>
 
         <div className={card}>
-          <p className="text-sm font-semibold">Founder (About page)</p>
+          <p className="text-sm font-semibold">Founder profile</p>
           <Field label="Photo">
             <ImageUploader value={form.founder?.photo} onChange={(url) => setNested("founder", "photo", url)} label="Founder photo" />
           </Field>
@@ -112,6 +113,9 @@ export default function AdminSettingsPage() {
             <Field label="LinkedIn URL"><TextInput value={form.founder?.linkedin ?? ""} onChange={(e) => setNested("founder", "linkedin", e.target.value)} /></Field>
           </div>
           <Field label="Quote / note"><TextArea rows={3} value={form.founder?.quote ?? ""} onChange={(e) => setNested("founder", "quote", e.target.value)} /></Field>
+          <Field label="Bio" hint="Longer profile text — shown on the founder page and used as its meta description">
+            <TextArea rows={5} value={form.founder?.bio ?? ""} onChange={(e) => setNested("founder", "bio", e.target.value)} />
+          </Field>
         </div>
 
         <div className={card}>
