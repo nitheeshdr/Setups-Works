@@ -25,7 +25,7 @@ export default async function ServicesPage() {
   return (
     <>
       <JsonLd
-        data={pageSchemas({ path: "/services", label: "Services", description })}
+        data={pageSchemas({ path: "/services", label: "Services", description, services })}
       />
       <PageHeader
         eyebrow="Our services"

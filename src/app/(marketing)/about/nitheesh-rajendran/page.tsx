@@ -123,7 +123,7 @@ export default async function FounderPage() {
       <JsonLd
         data={[
           profilePageSchema(founder),
-          personSchema(founder),
+          personSchema(founder, published),
           organizationSchema(),
           websiteSchema(),
           breadcrumbSchema([

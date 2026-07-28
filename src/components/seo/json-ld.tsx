@@ -106,7 +106,7 @@ const personReference = {
  * while still carrying the local-business signals (geo, hours, price range)
  * that power Maps / the local pack alongside the brand/Knowledge-Panel data.
  */
-export function organizationSchema() {
+export function organizationSchema(services?: Service[]) {
   return {
     "@context": "https://schema.org",
     // LocalBusiness is stated explicitly even though ProfessionalService is
@@ -249,18 +249,64 @@ export function organizationSchema() {
       },
     ],
     founder: personReference,
+    // The founder is also staff. Stating it separately means the org node
+    // carries a person relationship even where the Person node is not present.
+    employee: personReference,
+    // Brand and legal entity are the same here, but naming the Brand explicitly
+    // gives the marketing identity its own node for consumers that separate the
+    // two — Google's own Organization docs treat brand as distinct.
+    brand: {
+      "@type": "Brand",
+      "@id": `${siteConfig.url}/#brand`,
+      name: siteConfig.name,
+      logo: `${siteConfig.url}/icon-512.png`,
+      slogan: siteConfig.tagline,
+    },
+    // Wikidata as a typed identifier, not only a sameAs link. sameAs says "this
+    // page is also me"; identifier says "this is my id in that authority".
+    identifier: {
+      "@type": "PropertyValue",
+      propertyID: "Wikidata",
+      value: siteConfig.wikidata.split("/").pop(),
+      url: siteConfig.wikidata,
+    },
+    // Every service actually sold, as a catalogue of Offers. This is the single
+    // largest factual expansion available to the org node — 22 real services
+    // already in the database, previously described only in prose.
+    ...(services?.length
+      ? {
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            "@id": `${siteConfig.url}/#services`,
+            name: `${siteConfig.name} services`,
+            itemListElement: services.map((svc) => ({
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                "@id": `${siteConfig.url}/services/${svc.slug}#service`,
+                name: svc.title,
+                serviceType: svc.category,
+                url: `${siteConfig.url}/services/${svc.slug}`,
+              },
+            })),
+          },
+        }
+      : {}),
+    serviceArea: siteConfig.areaServed.map((name) => ({ "@type": "Place", name })),
     sameAs: orgSameAs,
   };
 }
 
 /* ------------------------- Person (the founder) ------------------------ */
-export function personSchema(founder?: Founder) {
+export function personSchema(founder?: Founder, products?: Product[]) {
   const p = siteConfig.founderProfile;
   return {
     "@context": "https://schema.org",
     "@type": "Person",
     "@id": `${siteConfig.url}/#founder`,
     name: founder?.name || p.name,
+    givenName: (founder?.name || p.name).split(" ")[0],
+    familyName: (founder?.name || p.name).split(" ").slice(1).join(" "),
     // Multiple titles when set — Google's own panel describes him as director,
     // web designer and digital marketer, not only as a founder.
     jobTitle: founder?.titles?.length
@@ -360,6 +406,33 @@ export function personSchema(founder?: Founder) {
         }
       : {}),
     mainEntityOfPage: { "@id": `${siteConfig.url}${FOUNDER_PATH}#profilepage` },
+    email: `mailto:${siteConfig.email}`,
+    // Products published under his verified Play developer account. Android
+    // apps are MobileApplication, a SoftwareApplication subtype — the more
+    // specific type carries more meaning at no cost.
+    ...(products?.length
+      ? {
+          owns: products.map((prod) => ({
+            "@type": prod.downloadLink?.includes("play.google.com")
+              ? "MobileApplication"
+              : "SoftwareApplication",
+            "@id": `${siteConfig.url}/products/${prod.slug}#product`,
+            name: prod.name,
+            url: `${siteConfig.url}/products/${prod.slug}`,
+            ...(prod.downloadLink ? { installUrl: prod.downloadLink } : {}),
+            operatingSystem: prod.downloadLink?.includes("play.google.com")
+              ? "Android"
+              : "Web",
+            applicationCategory: "BusinessApplication",
+          })),
+        }
+      : {}),
+    identifier: {
+      "@type": "PropertyValue",
+      propertyID: "Wikidata",
+      value: "Q140500455",
+      url: p.sameAs.find((u) => u.includes("wikidata")),
+    },
     // Grouped skills flatten into knowsAbout so the schema stays in step with
     // what the page shows, rather than maintaining two lists.
     knowsAbout: founder?.skillGroups?.length
@@ -652,10 +725,13 @@ export function pageSchemas({
   path,
   label,
   description,
+  services,
 }: {
   path: string;
   label: string;
   description: string;
+  /** When supplied, the org node carries its full service catalogue. */
+  services?: Service[];
 }) {
   return [
     // The Organization and WebSite nodes ship on every page rather than only on
@@ -663,7 +739,7 @@ export function pageSchemas({
     // a reference whose target isn't defined in the same document is a dangling
     // edge. Crawlers do consolidate nodes across a site, but making each page's
     // graph resolve on its own removes the dependency on that happening.
-    organizationSchema(),
+    organizationSchema(services),
     websiteSchema(),
     webPageSchema({ path, name: `${label} · ${siteConfig.name}`, description }),
     breadcrumbSchema([{ name: label, url: path }]),
