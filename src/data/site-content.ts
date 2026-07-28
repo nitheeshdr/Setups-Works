@@ -294,9 +294,30 @@ export interface JobOpening {
   slug: string;
   title: string;
   team: string;
+  /** Human label, e.g. "Full-time". Mapped to schema.org employmentType. */
   type: string;
   location: string;
   description: string;
+
+  /**
+   * ISO 8601 date the role was opened. REQUIRED by Google for JobPosting, and
+   * deliberately not defaulted: JobPosting schema is only emitted when this is
+   * set, so an unset date means no markup rather than a fabricated one.
+   */
+  datePosted?: string;
+  /**
+   * ISO 8601 date the posting closes. Google expects expired roles to be taken
+   * down or marked closed — leaving stale postings live risks a manual action,
+   * so set this whenever the role has a known end date.
+   */
+  validThrough?: string;
+  /** Whether the role is fully remote (schema jobLocationType TELECOMMUTE). */
+  remote?: boolean;
+  /** Optional salary range. Omitted from markup entirely when unset. */
+  salary?: { min: number; max: number; currency: string; unit: "HOUR" | "MONTH" | "YEAR" };
+  /** Longer detail shown on the job page. */
+  responsibilities?: string[];
+  requirements?: string[];
 }
 
 export const jobOpenings: JobOpening[] = [
@@ -308,6 +329,19 @@ export const jobOpenings: JobOpening[] = [
     location: "Remote",
     description:
       "Lead the frontend on premium client products using React, Next.js, and TypeScript. You care deeply about performance, motion, and craft.",
+    remote: true,
+    responsibilities: [
+      "Lead frontend architecture on premium client products",
+      "Build and maintain design systems teams can extend",
+      "Own performance budgets and Core Web Vitals",
+      "Mentor engineers through code review and pairing",
+    ],
+    requirements: [
+      "Strong React and TypeScript experience in production",
+      "Comfortable with Next.js App Router and server components",
+      "An eye for motion, spacing, and interface detail",
+      "Experience with automated testing and CI",
+    ],
   },
   {
     slug: "product-designer",
@@ -317,6 +351,19 @@ export const jobOpenings: JobOpening[] = [
     location: "Remote",
     description:
       "Own product design end-to-end — research, systems, hi-fi UI, and motion. Figma is your home; prototypes are your language.",
+    remote: true,
+    responsibilities: [
+      "Own product design end to end, from research to hi-fi UI",
+      "Build and maintain the design system and tokens",
+      "Produce prototypes that answer questions before code",
+      "Work directly with engineers through implementation",
+    ],
+    requirements: [
+      "A portfolio of shipped product work, not just concepts",
+      "Fluent in Figma, components, and design tokens",
+      "Comfortable running lightweight user research",
+      "Understanding of what is cheap or expensive to build",
+    ],
   },
   {
     slug: "ai-engineer",
@@ -326,6 +373,19 @@ export const jobOpenings: JobOpening[] = [
     location: "Remote",
     description:
       "Build LLM-powered products and agents — RAG pipelines, evals, and Claude-driven tools that ship to production.",
+    remote: true,
+    responsibilities: [
+      "Build LLM features: retrieval, agents, and tool use",
+      "Design evaluation harnesses that catch regressions",
+      "Add guardrails for when a model is confidently wrong",
+      "Take prototypes to production reliability",
+    ],
+    requirements: [
+      "Hands-on experience with LLM APIs in production",
+      "Understanding of RAG, embeddings, and vector search",
+      "Strong Python or TypeScript",
+      "Judgement about where AI does and does not belong",
+    ],
   },
   {
     slug: "fullstack-engineer",
@@ -335,6 +395,19 @@ export const jobOpenings: JobOpening[] = [
     location: "Remote",
     description:
       "Ship full features across the MERN stack. Comfortable owning both the database schema and the pixel-perfect UI.",
+    remote: true,
+    responsibilities: [
+      "Ship features across the stack on client projects",
+      "Model data and design APIs other teams consume",
+      "Keep deploys boring with tests and CI",
+      "Work directly with clients on scope and trade-offs",
+    ],
+    requirements: [
+      "Production experience across frontend and backend",
+      "Comfortable with TypeScript, Node, and a SQL or document store",
+      "Able to work independently on a contract basis",
+      "Clear written communication",
+    ],
   },
 ];
 

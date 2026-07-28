@@ -1,5 +1,6 @@
 import { siteConfig } from "@/lib/site";
 import type { Blog, Product, Portfolio, Founder, Service } from "@/lib/types";
+import type { JobOpening } from "@/data/site-content";
 import { stripHtml, truncate } from "@/lib/helpers";
 
 /** Renders one or more JSON-LD schema objects as script tags. */
@@ -517,6 +518,112 @@ export function pageSchemas({
     webPageSchema({ path, name: `${label} · ${siteConfig.name}`, description }),
     breadcrumbSchema([{ name: label, url: path }]),
   ];
+}
+
+/* ------------------------------- JobPosting ---------------------------- */
+/** Google's employmentType enum. Anything unrecognised is simply omitted. */
+const EMPLOYMENT_TYPES: Record<string, string> = {
+  "full-time": "FULL_TIME",
+  "part-time": "PART_TIME",
+  contract: "CONTRACTOR",
+  contractor: "CONTRACTOR",
+  internship: "INTERN",
+  temporary: "TEMPORARY",
+  freelance: "CONTRACTOR",
+};
+
+/**
+ * JobPosting for a single role.
+ *
+ * Returns null unless `datePosted` is set. Google requires it, and a fabricated
+ * date on a job listing is exactly the kind of thing that earns a manual
+ * action — so an unset date yields no markup at all rather than a guess. The
+ * same applies to salary, which is omitted unless real figures exist.
+ *
+ * Per Google's guidance this belongs on the individual job page only, never on
+ * the listing page.
+ */
+export function jobPostingSchema(job: JobOpening) {
+  if (!job.datePosted) return null;
+
+  const employmentType = EMPLOYMENT_TYPES[job.type.trim().toLowerCase()];
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "JobPosting",
+    "@id": `${siteConfig.url}/careers/${job.slug}#jobposting`,
+    title: job.title,
+    description: buildJobDescriptionHtml(job),
+    datePosted: job.datePosted,
+    ...(job.validThrough ? { validThrough: job.validThrough } : {}),
+    ...(employmentType ? { employmentType } : {}),
+    identifier: {
+      "@type": "PropertyValue",
+      name: siteConfig.name,
+      value: job.slug,
+    },
+    hiringOrganization: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      sameAs: siteConfig.url,
+      logo: `${siteConfig.url}/icon-512.png`,
+    },
+    // jobLocation is required even for remote roles — it describes the hiring
+    // office, while jobLocationType/applicantLocationRequirements describe
+    // where the person may actually sit.
+    jobLocation: {
+      "@type": "Place",
+      address: {
+        "@type": "PostalAddress",
+        ...(siteConfig.address.street
+          ? { streetAddress: siteConfig.address.street }
+          : {}),
+        addressLocality: siteConfig.address.locality,
+        addressRegion: siteConfig.address.region,
+        postalCode: siteConfig.address.postalCode,
+        addressCountry: siteConfig.address.country,
+      },
+    },
+    ...(job.remote
+      ? {
+          jobLocationType: "TELECOMMUTE",
+          applicantLocationRequirements: {
+            "@type": "Country",
+            name: "India",
+          },
+        }
+      : {}),
+    ...(job.salary
+      ? {
+          baseSalary: {
+            "@type": "MonetaryAmount",
+            currency: job.salary.currency,
+            value: {
+              "@type": "QuantitativeValue",
+              minValue: job.salary.min,
+              maxValue: job.salary.max,
+              unitText: job.salary.unit,
+            },
+          },
+        }
+      : {}),
+    directApply: false,
+  };
+}
+
+/** Google wants the description as HTML, and richer than a single sentence. */
+function buildJobDescriptionHtml(job: JobOpening): string {
+  const list = (title: string, items?: string[]) =>
+    items?.length
+      ? `<h3>${title}</h3><ul>${items.map((i) => `<li>${i}</li>`).join("")}</ul>`
+      : "";
+  return [
+    `<p>${job.description}</p>`,
+    list("Responsibilities", job.responsibilities),
+    list("Requirements", job.requirements),
+  ]
+    .filter(Boolean)
+    .join("");
 }
 
 /* ------------------------------- Breadcrumb ---------------------------- */

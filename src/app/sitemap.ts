@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/lib/site";
+import { jobOpenings } from "@/data/site-content";
 import {
   getBlogs,
   getPortfolio,
@@ -55,6 +56,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority,
   }));
 
+  // Individual job pages — these carry the JobPosting markup, so they need to
+  // be discoverable rather than reachable only from the careers list.
+  const jobRoutes: MetadataRoute.Sitemap = jobOpenings.map((j) => ({
+    url: `${base}/careers/${j.slug}`,
+    lastModified: j.datePosted ? new Date(j.datePosted) : now,
+    changeFrequency: "weekly" as const,
+    priority: 0.6,
+  }));
+
   const serviceRoutes: MetadataRoute.Sitemap = services.map((s) => ({
     url: `${base}/services/${s.slug}`,
     lastModified: now,
@@ -95,6 +105,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...pages,
     ...serviceRoutes,
+    ...jobRoutes,
     ...blogRoutes,
     ...portfolioRoutes,
     ...caseStudyRoutes,

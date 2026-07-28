@@ -101,10 +101,10 @@ export default function CareersPage() {
                     </div>
                   </div>
                   <Link
-                    href={`/contact?role=${job.slug}`}
+                    href={`/careers/${job.slug}`}
                     className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-brand-500 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-600"
                   >
-                    Apply
+                    View role
                     <FontAwesomeIcon
                       icon={faArrowRight}
                       className="size-3 transition-transform group-hover:translate-x-1"
