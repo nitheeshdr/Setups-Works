@@ -80,14 +80,18 @@ export function organizationSchema() {
     // "Setups Works" is two ordinary English words, so brand queries compete
     // with generic results. Listing the spellings people actually type helps
     // Google bind the query to this entity rather than to the dictionary sense.
+    // Only forms that differ from `name` by more than capitalisation. Search
+    // matching is case-insensitive, so "SETUPS WORKS", "setups works" and
+    // "Setups Works" are one string to a crawler — listing them separately adds
+    // length, not reach. What genuinely varies is spacing and punctuation:
+    //   SetupsWorks   — closed up, how it gets typed as one word
+    //   setups.works  — the domain form
+    //   …Digital Agency — descriptive long form
+    // Add a new entry only if it survives lowercasing as something distinct
+    // (a real misspelling or a former trading name would; a case variant won't).
     alternateName: [
-      "Setups Works",
-      "setups works",
       "SetupsWorks",
-      "setupsworks",
-      "Setups.Works",
       "setups.works",
-      "SETUPS WORKS",
       "Setups Works Digital Agency",
     ],
     url: siteConfig.url,
