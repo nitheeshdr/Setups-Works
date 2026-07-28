@@ -261,7 +261,11 @@ export function personSchema(founder?: Founder) {
     "@type": "Person",
     "@id": `${siteConfig.url}/#founder`,
     name: founder?.name || p.name,
-    jobTitle: founder?.role || p.jobTitle,
+    // Multiple titles when set — Google's own panel describes him as director,
+    // web designer and digital marketer, not only as a founder.
+    jobTitle: founder?.titles?.length
+      ? [founder.role || p.jobTitle, ...founder.titles]
+      : founder?.role || p.jobTitle,
     description: founder?.bio || p.description,
     url: `${siteConfig.url}${FOUNDER_PATH}`,
     // The CMS photo wins; the configured portrait is the fallback so the
@@ -296,13 +300,41 @@ export function personSchema(founder?: Founder) {
       url: founder?.educationUrl || p.alumniOf.url,
       sameAs: p.alumniOf.sameAs,
     },
-    nationality: { "@type": "Country", name: "IN" },
     hasOccupation: {
       "@type": "Occupation",
-      name: "Chief Executive Officer",
-      occupationLocation: { "@type": "City", name: "Chennai" },
-      skills: p.knowsAbout.join(", "),
+      name: founder?.role || p.jobTitle,
+      occupationLocation: {
+        "@type": "City",
+        name: founder?.location || siteConfig.address.locality,
+      },
+      skills: (founder?.skills?.length ? founder.skills : p.knowsAbout).join(", "),
     },
+    homeLocation: {
+      "@type": "Place",
+      name: founder?.location || `${siteConfig.address.locality}, ${siteConfig.address.region}, India`,
+    },
+    workLocation: {
+      "@type": "Place",
+      name: `${siteConfig.address.locality}, ${siteConfig.address.region}, India`,
+    },
+    nationality: { "@type": "Country", name: "India" },
+    ...(founder?.languages?.length
+      ? { knowsLanguage: founder.languages.map((name) => ({ "@type": "Language", name })) }
+      : {}),
+    ...(founder?.awards?.length ? { award: founder.awards } : {}),
+    // The podcast he hosts — another entity that names him, stated as a
+    // relationship rather than left for a crawler to infer from a link.
+    ...(siteConfig.links.podcast
+      ? {
+          subjectOf: {
+            "@type": "PodcastSeries",
+            name: siteConfig.name,
+            url: siteConfig.links.podcast,
+            webFeed: siteConfig.links.podcastFeed,
+          },
+        }
+      : {}),
+    mainEntityOfPage: { "@id": `${siteConfig.url}${FOUNDER_PATH}#profilepage` },
     knowsAbout: founder?.skills?.length ? founder.skills : p.knowsAbout,
     // Personal profiles only. Filter out the company's brand accounts so the
     // org's X/LinkedIn/etc. can never leak into the founder's identity, which

@@ -233,6 +233,14 @@ export interface Founder {
   educationUrl?: string;
   /** Topics shown under "Works on" and emitted as Person.knowsAbout. */
   skills?: string[];
+  /** Additional titles beyond `role`, e.g. Director, Web Designer. */
+  titles?: string[];
+  /** Languages spoken — emitted as Person.knowsLanguage. */
+  languages?: string[];
+  /** Awards and recognition. Blank by default; only real ones belong here. */
+  awards?: string[];
+  /** City/region for Person.homeLocation. Falls back to the business location. */
+  location?: string;
 }
 
 export interface SiteSettings {

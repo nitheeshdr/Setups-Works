@@ -16,6 +16,10 @@ interface Founder {
   education?: string;
   educationUrl?: string;
   skills?: string[];
+  titles?: string[];
+  languages?: string[];
+  awards?: string[];
+  location?: string;
   name?: string;
   role?: string;
   handle?: string;
@@ -122,10 +126,20 @@ export default function AdminSettingsPage() {
             <Field label="YouTube URL"><TextInput value={form.founder?.youtube ?? ""} onChange={(e) => setNested("founder", "youtube", e.target.value)} /></Field>
             <Field label="Education"><TextInput value={form.founder?.education ?? ""} onChange={(e) => setNested("founder", "education", e.target.value)} /></Field>
             <Field label="Education URL"><TextInput value={form.founder?.educationUrl ?? ""} onChange={(e) => setNested("founder", "educationUrl", e.target.value)} /></Field>
+            <Field label="Location" hint="City / region"><TextInput value={form.founder?.location ?? ""} onChange={(e) => setNested("founder", "location", e.target.value)} /></Field>
           </div>
           <Field label="Quote / note"><TextArea rows={3} value={form.founder?.quote ?? ""} onChange={(e) => setNested("founder", "quote", e.target.value)} /></Field>
           <Field label="Bio" hint="Longer profile text — shown on the founder page and used as its meta description">
             <TextArea rows={5} value={form.founder?.bio ?? ""} onChange={(e) => setNested("founder", "bio", e.target.value)} />
+          </Field>
+          <Field label="Other titles" hint="Beyond the main role — e.g. Director, Web Designer">
+            <TagInput value={form.founder?.titles ?? []} onChange={(titles) => setForm((f) => ({ ...f, founder: { ...f.founder, titles } }))} />
+          </Field>
+          <Field label="Languages" hint="Emitted as Person.knowsLanguage">
+            <TagInput value={form.founder?.languages ?? []} onChange={(languages) => setForm((f) => ({ ...f, founder: { ...f.founder, languages } }))} />
+          </Field>
+          <Field label="Awards & recognition" hint="Only real ones — these appear publicly and in schema">
+            <TagInput value={form.founder?.awards ?? []} onChange={(awards) => setForm((f) => ({ ...f, founder: { ...f.founder, awards } }))} />
           </Field>
           <Field label="Works on" hint="Topics shown on the founder page and emitted as Person.knowsAbout">
             <TagInput
