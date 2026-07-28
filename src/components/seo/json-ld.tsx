@@ -52,7 +52,12 @@ const orgReference = {
 export function organizationSchema() {
   return {
     "@context": "https://schema.org",
-    "@type": ["Organization", "ProfessionalService"],
+    // LocalBusiness is stated explicitly even though ProfessionalService is
+    // already one of its subtypes. The hierarchy is Organization >
+    // LocalBusiness > ProfessionalService, so this adds no contradiction — it
+    // just spares any consumer that doesn't resolve schema.org subtypes from
+    // having to infer it.
+    "@type": ["Organization", "LocalBusiness", "ProfessionalService"],
     "@id": ORG_ID,
     name: siteConfig.name,
     // "Setups Works" is two ordinary English words, so brand queries compete
@@ -98,11 +103,24 @@ export function organizationSchema() {
     keywords: siteConfig.keywords.join(", "),
     address: {
       "@type": "PostalAddress",
+      // Only emitted when set — an empty streetAddress is worse than none,
+      // and it must match the Google Business Profile listing.
+      ...(siteConfig.address.street
+        ? { streetAddress: siteConfig.address.street }
+        : {}),
       addressLocality: siteConfig.address.locality,
       addressRegion: siteConfig.address.region,
       postalCode: siteConfig.address.postalCode,
       addressCountry: siteConfig.address.country,
     },
+    // Currency and payment terms are business facts, not guesses — add them to
+    // siteConfig when known. Deliberately absent rather than invented.
+    //
+    // NOTE: no aggregateRating here on purpose. Google does not allow
+    // self-serving reviews for LocalBusiness/Organization — ratings a business
+    // collects and publishes about itself are ineligible for review rich
+    // results and risk a manual action. The 4.9/5 shown on the site is fine as
+    // page content; it must not be marked up as aggregateRating on this entity.
     geo: {
       "@type": "GeoCoordinates",
       latitude: siteConfig.geo.lat,

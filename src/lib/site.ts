@@ -11,9 +11,16 @@ export const siteConfig = {
   foundingDate: "2020",
   priceRange: "$$",
   address: {
+    /**
+     * Street address for LocalBusiness schema. Google treats a PostalAddress
+     * without a street as a weak local signal, and it should match the Google
+     * Business Profile listing exactly. Left blank rather than guessed —
+     * emitted only when filled in.
+     */
+    street: "1009g,govintha reddy street,elavur,gummidipoondi",
     locality: "Chennai",
     region: "Tamil Nadu",
-    postalCode: "600001",
+    postalCode: "601201",
     country: "IN",
   },
   geo: { lat: 13.459948725379245, lng: 80.11290785179675 },
