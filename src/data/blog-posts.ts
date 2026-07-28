@@ -13,7 +13,11 @@ import type { Blog } from "@/lib/types";
  * to a crawler as inactive. Every article below is written from what this
  * agency actually does — no invented clients, metrics, or case studies.
  *
- * Images are Unsplash URLs, already allowed in next.config remotePatterns.
+ * Covers are rendered from Poster/blog-cover-template-light.html and hosted on
+ * Cloudinary under setupsworks/blog, matching where the rest of the site's
+ * media lives. Branded rather than stock: no licensing question, and the set
+ * reads as one publication. Originals stay in /public/blog as the source of
+ * truth if they ever need re-uploading.
  */
 
 const AUTHOR = {
@@ -31,7 +35,8 @@ export const blogPosts: Blog[] = [
     category: "Business",
     tags: ["Website Cost", "Pricing", "Web Development", "India", "Hiring an Agency"],
     featuredImage:
-      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80",
+      
+      "https://res.cloudinary.com/dvtsr6ch/image/upload/v1785218760/setupsworks/blog/how-much-does-a-website-cost-in-india.png",
     readingTime: 9,
     status: "published",
     featured: true,
@@ -96,7 +101,8 @@ export const blogPosts: Blog[] = [
     category: "Technology",
     tags: ["Core Web Vitals", "Performance", "SEO", "Web Development"],
     featuredImage:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1600&q=80",
+      
+      "https://res.cloudinary.com/dvtsr6ch/image/upload/v1785218761/setupsworks/blog/why-your-website-is-slow.png",
     readingTime: 8,
     status: "published",
     featured: true,
@@ -151,7 +157,8 @@ export const blogPosts: Blog[] = [
     category: "Business",
     tags: ["Custom Software", "SaaS", "Business", "Software Development"],
     featuredImage:
-      "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?auto=format&fit=crop&w=1600&q=80",
+      
+      "https://res.cloudinary.com/dvtsr6ch/image/upload/v1785218764/setupsworks/blog/custom-software-vs-off-the-shelf.png",
     readingTime: 8,
     status: "published",
     publishedAt: "2026-04-08T09:00:00.000Z",
@@ -205,7 +212,8 @@ export const blogPosts: Blog[] = [
     category: "Technology",
     tags: ["Next.js", "WordPress", "Headless CMS", "Web Development"],
     featuredImage:
-      "https://images.unsplash.com/photo-1522199755839-a2bacb67c546?auto=format&fit=crop&w=1600&q=80",
+      
+      "https://res.cloudinary.com/dvtsr6ch/image/upload/v1785218766/setupsworks/blog/nextjs-or-wordpress.png",
     readingTime: 7,
     status: "published",
     publishedAt: "2026-05-20T09:00:00.000Z",
@@ -250,7 +258,8 @@ export const blogPosts: Blog[] = [
     category: "Business",
     tags: ["Shopify", "WooCommerce", "E-commerce", "Online Store"],
     featuredImage:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1600&q=80",
+      
+      "https://res.cloudinary.com/dvtsr6ch/image/upload/v1785218767/setupsworks/blog/shopify-or-woocommerce.png",
     readingTime: 7,
     status: "published",
     publishedAt: "2026-06-10T09:00:00.000Z",
@@ -294,7 +303,8 @@ export const blogPosts: Blog[] = [
     category: "AI",
     tags: ["AI", "Automation", "LLM", "Small Business"],
     featuredImage:
-      "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1600&q=80",
+      
+      "https://res.cloudinary.com/dvtsr6ch/image/upload/v1785218768/setupsworks/blog/what-ai-can-actually-do-for-a-small-business.png",
     readingTime: 8,
     status: "published",
     featured: true,
@@ -347,7 +357,8 @@ export const blogPosts: Blog[] = [
     category: "Programming",
     tags: ["Play Store", "Android", "App Publishing", "Mobile App Development"],
     featuredImage:
-      "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1600&q=80",
+      
+      "https://res.cloudinary.com/dvtsr6ch/image/upload/v1785218769/setupsworks/blog/publishing-your-first-app-to-the-play-store.png",
     readingTime: 7,
     status: "published",
     publishedAt: "2026-07-02T09:00:00.000Z",
@@ -392,7 +403,8 @@ export const blogPosts: Blog[] = [
     category: "Business",
     tags: ["Mobile App Development", "Web Development", "Product Strategy"],
     featuredImage:
-      "https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?auto=format&fit=crop&w=1600&q=80",
+      
+      "https://res.cloudinary.com/dvtsr6ch/image/upload/v1785218770/setupsworks/blog/do-you-need-an-app-or-a-better-website.png",
     readingTime: 6,
     status: "published",
     publishedAt: "2026-07-09T09:00:00.000Z",
@@ -436,7 +448,8 @@ export const blogPosts: Blog[] = [
     category: "Marketing",
     tags: ["SEO", "Search Console", "Content Strategy", "New Website"],
     featuredImage:
-      "https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?auto=format&fit=crop&w=1600&q=80",
+      
+      "https://res.cloudinary.com/dvtsr6ch/image/upload/v1785218772/setupsworks/blog/seo-first-90-days-new-website.png",
     readingTime: 8,
     status: "published",
     publishedAt: "2026-07-16T09:00:00.000Z",
@@ -486,7 +499,8 @@ export const blogPosts: Blog[] = [
     category: "Technology",
     tags: ["DevOps", "CI/CD", "Deployment", "Infrastructure"],
     featuredImage:
-      "https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?auto=format&fit=crop&w=1600&q=80",
+      
+      "https://res.cloudinary.com/dvtsr6ch/image/upload/v1785218773/setupsworks/blog/what-devops-means-for-a-small-team.png",
     readingTime: 7,
     status: "published",
     publishedAt: "2026-07-23T09:00:00.000Z",
