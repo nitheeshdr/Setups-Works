@@ -31,6 +31,22 @@ const orgSameAs: string[] = [
   siteConfig.googleMaps, // canonical Maps listing (CID) — local entity anchor
   siteConfig.wikidata, // wikidata.org/wiki/Q140500419 — entity anchor
 ].filter(Boolean);
+/**
+ * Founding date as a full ISO 8601 datetime, for the schemas that require one.
+ *
+ * Google's ProfilePage needs a datetime with time and offset, not a bare date.
+ * This normalizes whatever `foundingDate` holds — a bare year like "2020" or a
+ * full "2020-06-20" — into a valid value. The previous code appended
+ * "-01-01T00:00:00+05:30" unconditionally, which silently produced the
+ * malformed "2020-06-20-01-01T00:00:00+05:30" the moment the config gained a
+ * real date. +05:30 is IST.
+ */
+const FOUNDED_DATETIME = (() => {
+  const d = siteConfig.foundingDate;
+  const full = /^\d{4}$/.test(d) ? `${d}-01-01` : d;
+  return `${full}T00:00:00+05:30`;
+})();
+
 const ORG_ID = `${siteConfig.url}/#organization`;
 const WEBSITE_ID = `${siteConfig.url}/#website`;
 
@@ -225,8 +241,8 @@ export function profilePageSchema(founder?: Founder) {
     name: `${founder?.name || p.name} — ${founder?.role || p.jobTitle}`,
     // Google's ProfilePage requires full ISO 8601 datetime (with time + offset),
     // not a bare date. +05:30 = IST (Chennai).
-    dateCreated: `${siteConfig.foundingDate}-01-01T00:00:00+05:30`,
-    dateModified: `${siteConfig.foundingDate}-01-01T00:00:00+05:30`,
+    dateCreated: FOUNDED_DATETIME,
+    dateModified: FOUNDED_DATETIME,
     mainEntity: { "@id": `${siteConfig.url}/#founder` },
     isPartOf: { "@id": WEBSITE_ID },
     breadcrumb: { "@id": `${siteConfig.url}/about#breadcrumb` },

@@ -8,7 +8,8 @@ export const siteConfig = {
   email: "info@setups.works",
   phone: "+91 6383984698",
   location: "Chennai, Tamil Nadu, India",
-  foundingDate: "2020",
+  /** ISO 8601. Full dates are preferred over a bare year. */
+  foundingDate: "2020-06-20",
   priceRange: "$$",
   address: {
     /**
@@ -49,7 +50,7 @@ export const siteConfig = {
     globalLocationNumber: "",
   },
   /** Headcount for Organization.numberOfEmployees. Blank = not emitted. */
-  numberOfEmployees: "",
+  numberOfEmployees: "10",
   geo: { lat: 13.459948725379245, lng: 80.11290785179675 },
   googleBusiness: "https://share.google/Du9pH2y5ZFtvl847t",
   /** Canonical Google Maps listing URL (CID form) — stable entity anchor for hasMap. */
