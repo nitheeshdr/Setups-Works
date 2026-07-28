@@ -356,6 +356,8 @@ const SettingsSchema = new Schema(
       fieldOfStudy: String,
       educationStart: String,
       educationEnd: String,
+      credentialCategory: String,
+      educationalLevel: String,
     },
   },
   { timestamps: true },

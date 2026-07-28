@@ -258,6 +258,13 @@ export interface Founder {
   fieldOfStudy?: string;
   educationStart?: string;
   educationEnd?: string;
+  /**
+   * Awarded qualification. Emitted as Person.hasCredential only when
+   * credentialCategory is set — a credential is a claim that it has been
+   * conferred, so it stays absent until someone states it deliberately.
+   */
+  credentialCategory?: string;
+  educationalLevel?: string;
 }
 
 export interface SiteSettings {

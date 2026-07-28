@@ -67,6 +67,8 @@ const skillGroups = [
     "founder.fieldOfStudy": "Computer Science and Engineering (Artificial Intelligence & Machine Learning)",
     "founder.educationStart": "2022",
     "founder.educationEnd": "2026",
+    "founder.credentialCategory": "Bachelor's degree",
+    "founder.educationalLevel": "Bachelor",
     "founder.titles": ["Software Developer", "Web Designer", "Digital Marketer", "Film Director"],
     "founder.bio": "Nitheesh Rajendran is an Indian entrepreneur, software developer, and technology enthusiast from Tamil Nadu. He is the Founder & CEO of Setups Works, a digital agency building websites, mobile apps, and AI-powered software.",
   }}, { upsert: true });

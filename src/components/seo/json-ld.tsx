@@ -318,6 +318,27 @@ export function personSchema(founder?: Founder) {
       name: `${siteConfig.address.locality}, ${siteConfig.address.region}, India`,
     },
     nationality: { "@type": "Country", name: "India" },
+    // The awarded qualification. recognizedBy reuses the same institution as
+    // alumniOf, so the two can never name different universities.
+    ...(founder?.credentialCategory
+      ? {
+          hasCredential: {
+            "@type": "EducationalOccupationalCredential",
+            credentialCategory: founder.credentialCategory,
+            ...(founder.educationalLevel
+              ? { educationalLevel: founder.educationalLevel }
+              : {}),
+            recognizedBy: {
+              "@type": "CollegeOrUniversity",
+              name: founder.education || p.alumniOf.name,
+              ...(founder.educationUrl || p.alumniOf.url
+                ? { url: founder.educationUrl || p.alumniOf.url }
+                : {}),
+              sameAs: p.alumniOf.sameAs,
+            },
+          },
+        }
+      : {}),
     ...(founder?.birthDate ? { birthDate: founder.birthDate } : {}),
     ...(founder?.birthPlace
       ? { birthPlace: { "@type": "Place", name: founder.birthPlace } }

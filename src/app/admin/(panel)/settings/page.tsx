@@ -27,6 +27,8 @@ interface Founder {
   fieldOfStudy?: string;
   educationStart?: string;
   educationEnd?: string;
+  credentialCategory?: string;
+  educationalLevel?: string;
   name?: string;
   role?: string;
   handle?: string;
@@ -140,6 +142,8 @@ export default function AdminSettingsPage() {
             <Field label="Field of study"><TextInput value={form.founder?.fieldOfStudy ?? ""} onChange={(e) => setNested("founder", "fieldOfStudy", e.target.value)} /></Field>
             <Field label="Study start year"><TextInput value={form.founder?.educationStart ?? ""} onChange={(e) => setNested("founder", "educationStart", e.target.value)} /></Field>
             <Field label="Study end year"><TextInput value={form.founder?.educationEnd ?? ""} onChange={(e) => setNested("founder", "educationEnd", e.target.value)} /></Field>
+            <Field label="Credential" hint='e.g. "Bachelor&apos;s degree" — leave blank until conferred'><TextInput value={form.founder?.credentialCategory ?? ""} onChange={(e) => setNested("founder", "credentialCategory", e.target.value)} /></Field>
+            <Field label="Educational level" hint='e.g. "Bachelor"'><TextInput value={form.founder?.educationalLevel ?? ""} onChange={(e) => setNested("founder", "educationalLevel", e.target.value)} /></Field>
           </div>
           <Field label="Quote / note"><TextArea rows={3} value={form.founder?.quote ?? ""} onChange={(e) => setNested("founder", "quote", e.target.value)} /></Field>
           <Field label="Full biography" hint="HTML — rendered as the body of the founder page. Use <h2> for sections.">
