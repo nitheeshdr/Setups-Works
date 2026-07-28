@@ -80,7 +80,7 @@ function PortfolioStackCard({
             priority={index === 0}
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-500/25 via-surface-2 to-violet-500/20 p-6 text-center font-display text-2xl font-bold text-foreground/70">
+          <div className="flex h-full w-full items-center justify-center bg-brand-500/15 p-6 text-center font-display text-2xl font-bold text-foreground/70">
             {p.title}
           </div>
         )}

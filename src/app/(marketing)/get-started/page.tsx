@@ -14,7 +14,6 @@ import {
 import { Container, Section } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
 import { AuroraBackground, GridGlow } from "@/components/backgrounds";
-import GradientText from "@/components/reactbits/GradientText";
 import { LeadForm } from "@/components/lead-form";
 import { JsonLd, pageSchemas } from "@/components/seo/json-ld";
 import { getServices, getTestimonials, getClientLogos } from "@/lib/content";
@@ -109,10 +108,6 @@ export default async function GetStartedPage() {
             {/* Form */}
             <Reveal className="order-2">
               <div className="relative">
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute -inset-4 -z-10 rounded-[2.5rem] bg-gradient-to-br from-brand-500/20 via-transparent to-violet-500/20 blur-2xl"
-                />
                 <div className="rounded-3xl border border-border/60 bg-card/80 p-6 backdrop-blur-xl sm:p-8">
                   <LeadForm
                     services={services.map((s) => s.title)}
@@ -136,12 +131,7 @@ export default async function GetStartedPage() {
                   Tell us what
                   <br />
                   you&apos;re{" "}
-                  <GradientText
-                    colors={["#4D86F7", "#8B5CF6", "#4D86F7"]}
-                    className="!mx-0 inline-block"
-                  >
-                    building
-                  </GradientText>
+<span className="text-brand-500">building</span>
                 </h1>
               </Reveal>
 
@@ -347,7 +337,7 @@ export default async function GetStartedPage() {
             ))}
 
             <Reveal delay={0.15}>
-              <div className="h-full rounded-2xl border border-brand-500/30 bg-gradient-to-br from-brand-500/10 to-violet-500/5 p-6">
+              <div className="h-full rounded-2xl border border-brand-500/30 bg-brand-500/10 p-6">
                 <h3 className="font-display text-base font-semibold tracking-tight">
                   Prefer to talk?
                 </h3>

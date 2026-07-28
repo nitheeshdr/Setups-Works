@@ -109,7 +109,7 @@ function ProductStackCard({
             priority={index === 0}
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-500/25 via-surface-2 to-violet-500/20">
+          <div className="flex h-full w-full items-center justify-center bg-brand-500/10">
             <Image
               src={p.logo}
               alt={p.name}

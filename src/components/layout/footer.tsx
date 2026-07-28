@@ -39,7 +39,7 @@ export function Footer({
       />
       <Container className="relative py-16">
         {/* CTA row */}
-        <div className="mb-14 flex flex-col items-start justify-between gap-6 rounded-3xl border border-border/60 bg-gradient-to-br from-brand-500/10 via-transparent to-violet-500/10 p-8 sm:p-10 md:flex-row md:items-center">
+        <div className="mb-14 flex flex-col items-start justify-between gap-6 rounded-3xl border border-border/60 bg-brand-500/10 p-8 sm:p-10 md:flex-row md:items-center">
           <div>
             <h3 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
               Let&apos;s build something remarkable.

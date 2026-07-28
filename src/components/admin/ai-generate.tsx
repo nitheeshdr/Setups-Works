@@ -36,7 +36,7 @@ export function AIGenerate({
   }
 
   return (
-    <div className="rounded-2xl border border-brand-500/30 bg-gradient-to-br from-brand-500/10 to-violet-500/5 p-4">
+    <div className="rounded-2xl border border-brand-500/30 bg-brand-500/10 p-4">
       <div className="mb-2.5 flex items-center gap-2">
         <FontAwesomeIcon icon={faWandMagicSparkles} className="size-4 text-brand-500" />
         <p className="text-sm font-semibold">Generate with AI</p>

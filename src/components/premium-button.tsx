@@ -43,7 +43,7 @@ export function PremiumButton({
     "group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-xl font-semibold tracking-tight transition-all duration-300 disabled:opacity-60",
     sizes[size],
     variant === "primary" &&
-      "bg-gradient-to-b from-brand-400 to-brand-600 text-white shadow-lg shadow-brand-500/25 hover:shadow-xl hover:shadow-brand-500/35 hover:-translate-y-0.5",
+      "bg-brand-500 text-white shadow-lg shadow-brand-500/25 hover:shadow-xl hover:shadow-brand-500/35 hover:-translate-y-0.5",
     variant === "glass" &&
       "glass text-foreground hover:border-brand-500/40 hover:-translate-y-0.5",
     variant === "outline" &&

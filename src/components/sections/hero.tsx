@@ -18,7 +18,6 @@ import { PremiumButton } from "@/components/premium-button";
 import BlurText from "@/components/reactbits/BlurText";
 import RotatingText from "@/components/reactbits/RotatingText";
 import ShinyText from "@/components/reactbits/ShinyText";
-import GradientText from "@/components/reactbits/GradientText";
 import TextType from "@/components/reactbits/TextType";
 
 const easeOut = [0.22, 1, 0.36, 1] as const;
@@ -67,12 +66,7 @@ export function Hero() {
               className="justify-center"
             />
             <span className="mt-1 flex flex-wrap items-center justify-center gap-x-3">
-              <GradientText
-                colors={["#4D86F7", "#8B5CF6", "#4D86F7"]}
-                className="!mx-0 inline-block"
-              >
-                digital products
-              </GradientText>
+<span className="text-brand-500">digital products</span>
               <span className="text-muted-foreground">that</span>
             </span>
             <span className="mt-1 flex justify-center">

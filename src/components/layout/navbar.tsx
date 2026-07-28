@@ -270,7 +270,7 @@ function MegaMenu({ services }: { services: Service[] }) {
           </div>
 
           {/* Featured panel */}
-          <div className="relative flex flex-col justify-between gap-4 border-t border-border/60 bg-gradient-to-br from-brand-500/15 via-transparent to-violet-500/10 p-6 lg:border-l lg:border-t-0">
+          <div className="relative flex flex-col justify-between gap-4 border-t border-border/60 bg-brand-500/10 p-6 lg:border-l lg:border-t-0">
             <div>
               <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-500 px-2.5 py-0.5 text-[11px] font-semibold text-white">
                 Featured

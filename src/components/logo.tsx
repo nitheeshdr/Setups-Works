@@ -64,7 +64,7 @@ export function LogoMark({ className }: { className?: string }) {
   return (
     <span
       className={cn(
-        "inline-grid place-items-center rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 font-display font-bold text-white shadow-lg shadow-brand-500/30",
+        "inline-grid place-items-center rounded-xl bg-brand-500 font-display font-bold text-white shadow-lg shadow-brand-500/30",
         className,
       )}
     >

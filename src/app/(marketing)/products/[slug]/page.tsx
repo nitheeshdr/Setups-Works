@@ -209,7 +209,7 @@ export default async function ProductDetailPage({
               </div>
             </Reveal>
             <Reveal delay={0.1}>
-              <div className="flex h-full flex-col justify-center rounded-2xl border border-brand-500/30 bg-gradient-to-br from-brand-500/10 to-violet-500/10 p-8">
+              <div className="flex h-full flex-col justify-center rounded-2xl border border-brand-500/30 bg-brand-500/10 p-8">
                 <FontAwesomeIcon icon={faArrowRight} className="size-6 text-brand-500" />
                 <h3 className="mt-4 font-display text-2xl font-bold tracking-tight">
                   Join the waitlist

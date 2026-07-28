@@ -74,7 +74,7 @@ export default function ContactPage() {
               <Reveal>
                 <div className="glow-border rounded-3xl">
                   <div className="rounded-3xl bg-card p-6">
-                    <span className="grid size-12 place-items-center rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 text-white shadow-lg shadow-brand-500/25">
+                    <span className="grid size-12 place-items-center rounded-2xl bg-brand-500 text-white shadow-lg shadow-brand-500/25">
                       <FontAwesomeIcon icon={faComments} className="size-5" />
                     </span>
                     <h2 className="mt-5 font-display text-xl font-bold tracking-tight">
