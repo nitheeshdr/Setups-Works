@@ -273,20 +273,20 @@ function MegaMenu({ services }: { services: Service[] }) {
           <div className="relative flex flex-col justify-between gap-4 border-t border-border/60 bg-brand-500/10 p-6 lg:border-l lg:border-t-0">
             <div>
               <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-500 px-2.5 py-0.5 text-[11px] font-semibold text-white">
-                Featured
+                Start a project
               </span>
               <h4 className="mt-3 font-display text-lg font-bold tracking-tight">
-                CodeForge AI
+                Not sure which service?
               </h4>
               <p className="mt-1.5 text-sm text-muted-foreground">
-                Our AI-powered platform that helps developers ship software
-                faster. Coming soon.
+                Describe the problem and we&apos;ll tell you honestly whether
+                we&apos;re the right team — and what it would take.
               </p>
               <Link
-                href="/products/codeforgeai-io"
+                href="/get-started"
                 className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-500 transition-all hover:gap-2.5"
               >
-                Join the waitlist
+                Get a quote
                 <FontAwesomeIcon icon={faArrowRight} className="size-3" />
               </Link>
             </div>

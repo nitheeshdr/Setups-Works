@@ -31,15 +31,15 @@ export function Hero() {
             transition={{ duration: 0.6, ease: easeOut }}
           >
             <Link
-              href="/products/codeforgeai-io"
+              href="/services"
               className="group mb-7 inline-flex items-center gap-2 rounded-full glass py-1.5 pl-1.5 pr-4 text-sm transition-colors hover:border-brand-500/40"
             >
               <span className="flex items-center gap-1 rounded-full bg-brand-500 px-2.5 py-0.5 text-xs font-semibold text-white">
                 <FontAwesomeIcon icon={faBolt} className="size-2.5" />
-                New
+                22 services
               </span>
               <ShinyText
-                text="Introducing CodeForge AI"
+                text="Design, engineering, AI & growth — one team"
                 speed={4}
                 className="font-medium"
               />
