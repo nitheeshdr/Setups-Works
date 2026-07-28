@@ -18,8 +18,18 @@ export const siteConfig = {
      * Business Profile listing exactly. Left blank rather than guessed —
      * emitted only when filled in.
      */
-    street: "1009g,govintha reddy street,elavur,gummidipoondi",
-    locality: "Chennai",
+    street: "1009G, Govintha Reddy Street, Elavur",
+    /**
+     * The town the street address is actually in. This said "Chennai", which
+     * contradicted every other geographic field: the street is in Elavur, the
+     * postcode 601201 is Gummidipoondi, and the coordinates below sit ~45km
+     * north of central Chennai. Google cross-checks locality against postcode,
+     * coordinates, and the Business Profile — a mismatch weakens all of them.
+     * Chennai is still claimed, honestly, through `areaServed`.
+     *
+     * Must match the Google Business Profile listing exactly.
+     */
+    locality: "Gummidipoondi",
     region: "Tamil Nadu",
     postalCode: "601201",
     country: "IN",
@@ -63,6 +73,12 @@ export const siteConfig = {
   founderProfile: {
     name: "Nitheesh Rajendran",
     jobTitle: "Founder & CEO",
+    /** 1500x1500. Used when the CMS founder record has no photo of its own. */
+    image: {
+      url: "https://res.cloudinary.com/dvtsr6ch/image/upload/v1783274785/setupsworks/jtlq18stwgen5swe3dwv.jpg",
+      width: 1500,
+      height: 1500,
+    },
     description:
       "Founder & CEO of Setups Works. Passionate about Artificial Intelligence, software engineering, and building developer tools that help programmers prepare for coding interviews.",
     /**

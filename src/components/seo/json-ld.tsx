@@ -3,19 +3,38 @@ import type { Blog, Product, Portfolio, Founder, Service } from "@/lib/types";
 import type { JobOpening } from "@/data/site-content";
 import { stripHtml, truncate } from "@/lib/helpers";
 
-/** Renders one or more JSON-LD schema objects as script tags. */
+/**
+ * Renders every schema for a page as ONE `@graph` document.
+ *
+ * Previously each node became its own `<script>` tag with its own `@context`,
+ * which repeated the context on every node and left consumers to work out that
+ * separate tags describe one connected graph. A single `@graph` states the
+ * relationship directly: the nodes are siblings, and an `@id` in one resolves
+ * against the others in the same document.
+ *
+ * Per-node `@context` keys are stripped here rather than at each call site, so
+ * the builders below stay independently usable and there is one place that
+ * decides how the document is assembled.
+ */
 export function JsonLd({ data }: { data: object | object[] }) {
-  const json = Array.isArray(data) ? data : [data];
+  const nodes = (Array.isArray(data) ? data : [data]).filter(Boolean);
+  if (!nodes.length) return null;
+
+  const graph = nodes.map((node) => {
+    const { "@context": _context, ...rest } = node as Record<string, unknown>;
+    return rest;
+  });
+
   return (
-    <>
-      {json.map((schema, i) => (
-        <script
-          key={i}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
-        />
-      ))}
-    </>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": graph,
+        }),
+      }}
+    />
   );
 }
 
@@ -61,6 +80,20 @@ const orgReference = {
   "@type": "Organization",
   name: siteConfig.name,
   url: siteConfig.url,
+};
+
+/**
+ * Mirror of the above for the other direction. Carrying a name and url rather
+ * than a bare `@id` means `Organization.founder` resolves inside every page's
+ * graph, not only on /about where the full Person node lives. Same `@id`, so
+ * the two merge into one entity rather than competing — which is exactly what
+ * `@graph` is for.
+ */
+const personReference = {
+  "@id": `${siteConfig.url}/#founder`,
+  "@type": "Person",
+  name: siteConfig.founderProfile.name,
+  url: `${siteConfig.url}/about`,
 };
 
 /* --------------------------- Organization ------------------------------ */
@@ -115,15 +148,30 @@ export function organizationSchema() {
       width: 512,
       height: 512,
     },
-    image: `${siteConfig.url}/opengraph-image`,
+    // ImageObject rather than a bare URL: dimensions let a consumer decide
+    // whether the image suits a given surface without fetching it first.
+    image: {
+      "@type": "ImageObject",
+      url: `${siteConfig.url}/opengraph-image`,
+      width: 1200,
+      height: 630,
+    },
     description: siteConfig.description,
     email: siteConfig.email,
     telephone: siteConfig.phone,
     legalName: siteConfig.name,
     foundingDate: siteConfig.foundingDate,
+    // Derived from the same address fields as `address`, so the two can never
+    // drift apart the way a hand-written string would.
     foundingLocation: {
       "@type": "Place",
       name: `${siteConfig.address.locality}, ${siteConfig.address.region}, India`,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: siteConfig.address.locality,
+        addressRegion: siteConfig.address.region,
+        addressCountry: siteConfig.address.country,
+      },
     },
     slogan: siteConfig.tagline,
     priceRange: siteConfig.priceRange,
@@ -197,7 +245,7 @@ export function organizationSchema() {
         availableLanguage: ["English"],
       },
     ],
-    founder: { "@id": `${siteConfig.url}/#founder` },
+    founder: personReference,
     sameAs: orgSameAs,
   };
 }
@@ -213,7 +261,17 @@ export function personSchema(founder?: Founder) {
     jobTitle: founder?.role || p.jobTitle,
     description: founder?.bio || p.description,
     url: `${siteConfig.url}/about`,
-    ...(founder?.photo ? { image: founder.photo } : {}),
+    // The CMS photo wins; the configured portrait is the fallback so the
+    // Person node always carries an image. ImageObject either way — a bare URL
+    // tells a consumer nothing about dimensions.
+    image: founder?.photo
+      ? { "@type": "ImageObject", url: founder.photo }
+      : {
+          "@type": "ImageObject",
+          url: p.image.url,
+          width: p.image.width,
+          height: p.image.height,
+        },
     // Explicit (not just @id) so Google reads the employment relationship
     // unambiguously — this is what surfaces the company in his Knowledge Panel.
     //
@@ -405,7 +463,14 @@ export function webPageSchema({
     publisher: { "@id": ORG_ID },
     inLanguage: "en",
     ...(isHomePage
-      ? { primaryImageOfPage: { "@type": "ImageObject", url: `${siteConfig.url}/opengraph-image` } }
+      ? {
+          primaryImageOfPage: {
+            "@type": "ImageObject",
+            url: `${siteConfig.url}/opengraph-image`,
+            width: 1200,
+            height: 630,
+          },
+        }
       : { breadcrumb: { "@id": `${url}#breadcrumb` } }),
   };
 }
