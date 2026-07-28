@@ -101,11 +101,13 @@ export default async function GetStartedPage() {
         <GridGlow />
 
         <Container className="relative">
-          {/* Form leads on desktop; on mobile the pitch comes first so the page
-              still opens with context rather than a wall of inputs. */}
-          <div className="grid items-start gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+          {/* Pitch on the left, form on the right. The form column is the wider
+              of the two so the inputs never feel cramped. Order classes are the
+              same on mobile and desktop — the pitch reads first either way, so
+              the page opens with context rather than a wall of inputs. */}
+          <div className="grid items-start gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
             {/* Form */}
-            <Reveal className="order-2 lg:order-1">
+            <Reveal className="order-2">
               <div className="relative">
                 <div
                   aria-hidden
@@ -121,7 +123,7 @@ export default async function GetStartedPage() {
             </Reveal>
 
             {/* Pitch */}
-            <div className="order-1 lg:order-2 lg:sticky lg:top-28">
+            <div className="order-1 lg:sticky lg:top-28">
               <Reveal>
                 <span className="inline-flex items-center gap-2 rounded-full glass px-3.5 py-1.5 text-xs font-semibold uppercase tracking-wider text-brand-500">
                   <span className="size-1.5 rounded-full bg-brand-500" />
