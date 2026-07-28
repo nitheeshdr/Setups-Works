@@ -8,212 +8,191 @@
   <h1>Setups Works</h1>
 
   <p><strong>The Digital Agency.</strong></p>
-  <p>The official website and content platform for Setups Works, a premium digital agency crafting high-performance websites, web and mobile apps, AI products, and brand experiences that move businesses forward.</p>
-
   <p>
-    <a href="https://setups.works">Live Site</a>
-    &nbsp;&middot;&nbsp;
-    <a href="#getting-started">Getting Started</a>
-    &nbsp;&middot;&nbsp;
-    <a href="#features">Features</a>
-    &nbsp;&middot;&nbsp;
-    <a href="#project-structure">Structure</a>
+    Marketing site, content platform, and CRM-connected admin for Setups Works —
+    a digital agency building websites, mobile apps, and AI products.
   </p>
 
   <p>
-    <img src="https://img.shields.io/badge/Next.js-15-black.svg" alt="Next.js" />
-    <img src="https://img.shields.io/badge/React-19-149eca.svg" alt="React" />
-    <img src="https://img.shields.io/badge/TypeScript-5-3178c6.svg" alt="TypeScript" />
-    <img src="https://img.shields.io/badge/Tailwind_CSS-4-38bdf8.svg" alt="Tailwind CSS" />
+    <a href="https://setups.works">Live site</a>
+    &nbsp;&middot;&nbsp;
+    <a href="#quick-start">Quick start</a>
+    &nbsp;&middot;&nbsp;
+    <a href="#environment">Environment</a>
+    &nbsp;&middot;&nbsp;
+    <a href="#architecture">Architecture</a>
+  </p>
+
+  <p>
+    <img src="https://img.shields.io/badge/Next.js-16-black.svg" alt="Next.js 16" />
+    <img src="https://img.shields.io/badge/React-19-149eca.svg" alt="React 19" />
+    <img src="https://img.shields.io/badge/TypeScript-5-3178c6.svg" alt="TypeScript 5" />
+    <img src="https://img.shields.io/badge/Tailwind_CSS-4-38bdf8.svg" alt="Tailwind CSS 4" />
     <img src="https://img.shields.io/badge/MongoDB-Mongoose-47a248.svg" alt="MongoDB" />
   </p>
 </div>
 
 ---
 
-## Overview
+## What this is
 
-This repository contains the full source for the Setups Works website: a marketing site and a self-contained content management system in a single Next.js application. It powers the public-facing pages (services, portfolio, case studies, products, blog, and careers) and an authenticated admin panel used to manage that content.
+Three things in one Next.js application:
 
-The application is built on the Next.js App Router with a MongoDB backend, Cloudinary for media, a rich-text editor for authoring, and a structured-data layer engineered for search visibility and entity recognition.
+1. **A public marketing site** — services, products, portfolio, case studies, blog, careers, and a two-step lead capture flow.
+2. **An admin CMS** at `/admin` — every piece of content is database-backed and editable, with no redeploy needed to publish.
+3. **An operations surface** — leads sync to Perfex CRM, a built-in mailbox reads and replies over IMAP/SMTP, and verified search-crawler activity is logged so indexing questions can be answered from data.
 
-- **Live site:** https://setups.works
+> **Next.js 16 note.** This release renamed conventions — `middleware` became `proxy`, and Proxy now defaults to the Node runtime. Read `node_modules/next/dist/docs/` before assuming an API matches an older version. See [`AGENTS.md`](./AGENTS.md).
 
-## Table of Contents
+## Quick start
 
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-- [Environment Variables](#environment-variables)
-- [Available Scripts](#available-scripts)
-- [Content Management](#content-management)
-- [Search and Structured Data](#search-and-structured-data)
-- [Project Structure](#project-structure)
-- [Deployment](#deployment)
-- [License](#license)
-- [Author](#author)
-
-## Features
-
-**Public website**
-
-- Marketing pages for services, portfolio, case studies, products, careers, and company information.
-- A full blog with categories, tags, reading time, and rich media.
-- Contact and enquiry forms with email delivery.
-- Site-wide search across content.
-- Motion and 3D-enhanced interfaces using GSAP, Framer Motion, Lenis smooth scrolling, and Three.js.
-- Light and dark theming.
-
-**Admin and content management**
-
-- Authenticated admin panel for managing all site content.
-- Rich-text authoring with an embedded editor.
-- Cloudinary-backed media uploads and optimization.
-- Database seeding scripts for local development and initial setup.
-
-**Engineering**
-
-- Fully typed codebase with strict TypeScript.
-- Server-rendered and statically optimized routes via the App Router.
-- Reusable, accessible UI primitives built on Radix UI.
-- Form handling and validation with React Hook Form and Zod.
-
-## Tech Stack
-
-| Layer | Technologies |
-| --- | --- |
-| Framework | Next.js 15 (App Router), React 19, TypeScript 5 |
-| Styling | Tailwind CSS v4, next-themes |
-| Database | MongoDB with Mongoose |
-| Media | Cloudinary |
-| Authentication | JWT-based sessions with bcrypt password hashing |
-| Content editor | TinyMCE |
-| Email | Nodemailer (SMTP) |
-| Data and forms | TanStack React Query, Axios, React Hook Form, Zod |
-| Animation and 3D | GSAP, Framer Motion, Lenis, Three.js, React Three Fiber, OGL |
-| UI | Radix UI, Lucide, React Icons, Font Awesome, Sonner, cmdk |
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 20 or later
-- A package manager (pnpm recommended; npm or yarn also supported)
-- A MongoDB connection string (local or hosted, for example MongoDB Atlas)
-- A Cloudinary account for media handling
-
-### Installation
-
-~~~bash
-# 1. Clone the repository
-git clone https://github.com/nitheeshdr/Setups-Works.git
-cd "Setups Works"
-
-# 2. Install dependencies
+```bash
+# 1. Install
 pnpm install
 
-# 3. Create your environment file
-cp .env.example .env.local
+# 2. Configure
+cp .env.example .env.local     # then fill it in — see Environment below
 
-# 4. Fill in the environment variables (see the table below)
-
-# 5. Seed the database with initial content (optional)
+# 3. Create the admin user and settings document
 pnpm seed
 
-# 6. Start the development server
+# 4. Optional: load the built-in service catalogue into the database
+pnpm seed:services
+
+# 5. Run
 pnpm dev
-~~~
+```
 
-The site will be available at `http://localhost:3000`, and the admin panel at `http://localhost:3000/admin`.
+The site runs at `http://localhost:3000`, the admin at `/admin/login`.
 
-## Environment Variables
+**Only `MONGODB_URI` and `JWT_SECRET` are required to boot.** Everything else degrades gracefully: without SMTP the forms still capture leads, without Cloudinary uploads fall back to local disk, and without a seeded database the site serves its built-in content.
 
-Create a `.env.local` file in the project root using the keys below. See `.env.example` for the authoritative list.
+## Environment
 
-| Variable | Description |
+| Variable | Required | Purpose |
+| --- | :---: | --- |
+| `MONGODB_URI` | ● | Database connection string |
+| `JWT_SECRET` | ● | Signs admin session cookies |
+| `NEXT_PUBLIC_SITE_URL` | | Canonical origin. A wrong value breaks canonicals, sitemap, and JSON-LD |
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD` | | Credentials `pnpm seed` creates |
+| `SMTP_HOST` `SMTP_PORT` `SMTP_USER` `SMTP_PASS` | | Lead notifications, admin replies, outbound mail |
+| `SMTP_FROM` / `SMTP_TO` | | Sender identity, and where notifications land |
+| `IMAP_HOST` `IMAP_PORT` `IMAP_USER` `IMAP_PASS` | | Admin inbox. Falls back to the `SMTP_USER`/`SMTP_PASS` mailbox |
+| `CLOUDINARY_*` | | Image hosting. Falls back to `/public/uploads` |
+| `GROQ_API_KEY` / `GROQ_MODEL` | | AI draft generation in the admin |
+| `PERFEX_WTL_URL` | | Perfex web-to-lead endpoint. Defaults to the production form |
+| `CRAWLER_LOG_KEY` | | Shared secret for crawler logging. Logging is off without it |
+| `INDEXNOW_KEY` | | Instant indexing pings to Bing, Yandex, Naver, Seznam |
+
+**Production deploys need these set on the host.** `.env.local` is gitignored and never ships — a missing `SMTP_*` in production means leads still save and still reach the CRM, but no notification email is sent.
+
+## Scripts
+
+| Command | Does |
 | --- | --- |
-| `MONGODB_URI` | MongoDB connection string |
-| `JWT_SECRET` | Secret used to sign admin session tokens |
-| `NEXT_PUBLIC_SITE_URL` | Public base URL of the site, for example `http://localhost:3000` |
-| `ADMIN_EMAIL` | Email for the initial admin account |
-| `ADMIN_PASSWORD` | Password for the initial admin account |
-| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name |
-| `CLOUDINARY_API_KEY` | Cloudinary API key |
-| `CLOUDINARY_API_SECRET` | Cloudinary API secret |
-| `GROQ_API_KEY` | API key for AI-assisted features |
-| `GROQ_MODEL` | Model identifier for AI features |
-| `SMTP_HOST` | SMTP server host for outgoing email |
-| `SMTP_PORT` | SMTP server port |
-| `SMTP_USER` | SMTP username |
-| `SMTP_PASS` | SMTP password |
-| `SMTP_FROM` | From address for outgoing email |
-| `SMTP_TO` | Destination address for enquiry and contact forms |
+| `pnpm dev` | Development server |
+| `pnpm build` / `pnpm start` | Production build and serve |
+| `pnpm typecheck` | `tsc --noEmit` |
+| `pnpm seed` | Create/refresh the admin user and settings document |
+| `pnpm seed:wipe` | Delete all content. **Keeps the admin user.** Destructive |
+| `pnpm seed:services` | Import the built-in service catalogue. Idempotent; `--force` overwrites |
 
-## Available Scripts
+## Architecture
 
-| Command | Description |
+```
+src/
+├── app/
+│   ├── (marketing)/          Public site — one folder per route
+│   ├── admin/(panel)/        CMS, auth-gated
+│   ├── api/                  Route handlers
+│   ├── robots.ts             Per-crawler rules
+│   ├── sitemap.ts            Static pages + every dynamic item
+│   └── opengraph-image.tsx   Generated OG image
+├── components/
+│   ├── admin/                Forms, tables, editor, mail thread
+│   ├── sections/             Homepage and page sections
+│   ├── seo/json-ld.tsx       All structured data
+│   └── reactbits/            Animated UI primitives
+├── data/                     Static fallbacks: services, nav, countries
+├── lib/
+│   ├── crud.ts               Resource factory: auth, slugs, revalidation
+│   ├── resources.ts          Per-model CRUD wiring
+│   ├── content.ts            Public data fetching
+│   ├── perfex.ts             Perfex CRM web-to-lead client
+│   ├── mailer.ts             SMTP send + branded templates
+│   ├── imap.ts               Mailbox reading
+│   ├── verify-google.ts      Crawler verification
+│   └── site.ts               Business facts used across the site
+├── models/index.ts           Mongoose schemas
+└── proxy.ts                  Admin gate + crawler logging
+```
+
+### Content is database-backed, with static fallbacks
+
+Services, blogs, products, portfolio, testimonials, timeline, and settings live in MongoDB and are edited from `/admin`. Where a static catalogue exists (`src/data/services.ts`), it is used **only** when the collection is empty — so a fresh install renders a complete site before anything is seeded.
+
+One deliberate asymmetry: `getServiceBySlug` falls back to the built-ins only when the collection is empty. Otherwise a service deleted in the admin would resurrect from seed data.
+
+### CRUD goes through one factory
+
+`lib/crud.ts` builds list/create/read/update/delete handlers for a model, and every resource uses it. Auth, slug uniqueness, cache revalidation, and IndexNow pings are handled once rather than per route. Adding a resource means a schema, a Zod pair, and one entry in `lib/resources.ts`.
+
+### Leads are saved first, then synced
+
+`POST /api/leads` writes to MongoDB **before** attempting the CRM push and notification email. Both are best-effort, and their outcome is recorded on the record as `crmStatus` / `emailStatus`. A CRM outage or SMTP failure shows up as a failed status in the admin rather than a lost lead.
+
+Perfex runs CodeIgniter, whose CSRF is a matched cookie/field pair that rotates, so each submission does a two-step handshake: fetch the form for a fresh token, then post `multipart/form-data` carrying it.
+
+### Structured data
+
+`components/seo/json-ld.tsx` is the single source. It emits Organization + LocalBusiness (one node, one `@id`), WebSite, WebPage, BreadcrumbList, Service, BlogPosting, SoftwareApplication, FAQPage, ProfilePage, Person, ItemList, and JobPosting.
+
+Three rules the file enforces, all easy to get wrong:
+
+- **No `aggregateRating` on the Organization.** Google disallows self-serving reviews for LocalBusiness/Organization; ratings a business publishes about itself are ineligible and risk a manual action. The rating shown on the site is page content, not markup.
+- **JobPosting only when `datePosted` is set.** Google requires it, and stale or invented dates can earn a manual action, so the builder returns `null` rather than guessing.
+- **Founder is stated once, on Organization.** `Organization.founder` points at the Person. schema.org defines no inverse — `founderOf` and `foundingOrganization` are not real properties and validators reject them.
+
+### Crawler verification
+
+`proxy.ts` records crawler visits on public routes via `waitUntil`, so nothing blocks the response. `/api/crawler-log` verifies Google claims against reverse-then-forward DNS and Google's published IP ranges before marking a hit verified — a forged `Googlebot` user-agent is recorded as unverified rather than believed. Results are at **Admin → Crawlers**.
+
+## Admin
+
+`/admin` — session-cookie auth. `proxy.ts` handles the redirect; the admin layout does the real JWT verification.
+
+| Section | What it does |
 | --- | --- |
-| `pnpm dev` | Start the development server |
-| `pnpm build` | Create a production build |
-| `pnpm start` | Start the production server |
-| `pnpm seed` | Seed the database with initial content |
-| `pnpm seed:wipe` | Wipe and reseed the database |
-| `pnpm typecheck` | Run the TypeScript compiler with no emit |
+| Blogs, Services, Products, Portfolio, Testimonials, Timeline, Client Logos | Full CRUD with rich-text editing and image upload |
+| Leads | Website enquiries with CRM sync status and CSV export |
+| Messages | Contact form submissions, with threaded in-app replies |
+| Inbox | Read and reply to the business mailbox over IMAP |
+| Crawlers | Verified search-engine activity |
+| Media | Upload browser |
+| Settings | Site identity, logos, social links, founder profile |
 
-## Content Management
-
-All site content is managed through the authenticated admin panel at `/admin`. The initial administrator account is provisioned from the `ADMIN_EMAIL` and `ADMIN_PASSWORD` environment variables. Content authoring uses an embedded rich-text editor, and media is uploaded to and served from Cloudinary.
-
-## Search and Structured Data
-
-The site includes a dedicated SEO layer:
-
-- A generated `sitemap.xml` and `robots.txt`.
-- Open Graph and social metadata, including a dynamic Open Graph image.
-- A comprehensive JSON-LD structured-data implementation covering the organization, its founder, website, breadcrumbs, articles, products, services, and portfolio work. The organization and local-business signals are unified into a single business entity, the founder is modelled as a distinct linked person, and both entities are linked to their Wikidata identifiers for search-engine entity recognition.
-
-## Project Structure
-
-~~~text
-Setups Works/
-├── public/               Static assets, including logos and icons
-├── scripts/              Database seeding and build helper scripts
-├── src/
-│   ├── app/
-│   │   ├── (marketing)/  Public pages (about, blog, portfolio, services, ...)
-│   │   ├── admin/        Authenticated admin panel
-│   │   ├── api/          Route handlers
-│   │   ├── sitemap.ts    SEO endpoints (sitemap, robots, manifest)
-│   │   └── layout.tsx
-│   ├── components/       Reusable UI and section components
-│   ├── data/            Static content and configuration
-│   ├── lib/             Utilities, database, and integrations
-│   ├── models/          Mongoose data models
-│   └── middleware.ts    Route middleware
-├── .env.example         Example environment configuration
-└── README.md
-~~~
+Blogs, products, portfolio, and services support AI-assisted drafting through Groq. Generated drafts are validated before use — an unknown icon key or category is dropped rather than written, and slugs are always derived locally so a model can never decide a public URL.
 
 ## Deployment
 
-The application is optimized for deployment on Vercel.
+Deploys as a standard Next.js application; this project runs on **Vercel**.
 
-1. Push the repository to your Git provider.
-2. Import the project into Vercel.
-3. Configure the environment variables in the Vercel project settings.
-4. Deploy.
+Before going live:
 
-Any platform that supports Next.js 15 can host the application, provided the MongoDB, Cloudinary, and SMTP services are reachable from the deployment environment.
+1. Set every environment variable your features need — `.env.local` does not ship.
+2. Point `NEXT_PUBLIC_SITE_URL` at the production origin. Canonicals, the sitemap, and all JSON-LD derive from it.
+3. Run `pnpm seed` once against the production database to create the admin user.
+4. Submit `sitemap.xml` in Google Search Console.
+
+## Tech stack
+
+**Next.js 16** (App Router, React 19, TypeScript) · **Tailwind CSS 4** · **MongoDB + Mongoose** · **TanStack Query** · **Framer Motion + GSAP** · **TinyMCE** · **Cloudinary** · **Nodemailer + ImapFlow** · **Groq**
 
 ## License
 
-This project is proprietary. All rights reserved by Setups Works. It is not licensed for redistribution or reuse without prior written permission.
+Proprietary. © Setups Works. All rights reserved.
 
 ## Author
 
-**Nitheesh Rajendran** — Founder, Setups Works
-
-- Website: https://setups.works
-- Email: info@setups.works
-
-Designed and built by Setups Works, a digital agency crafting high-performance websites, web and mobile apps, AI products, and brand experiences.
+**Nitheesh Rajendran** — Founder & CEO, Setups Works
+[setups.works](https://setups.works) · [LinkedIn](https://www.linkedin.com/in/nitheeshdr/) · [GitHub](https://github.com/nitheeshdr)

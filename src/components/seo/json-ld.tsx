@@ -211,10 +211,16 @@ export function personSchema(founder?: Founder) {
     description: founder?.bio || p.description,
     url: `${siteConfig.url}/about`,
     ...(founder?.photo ? { image: founder.photo } : {}),
-    // Explicit (not just @id) so Google reads "founder of Setups Works"
+    // Explicit (not just @id) so Google reads the employment relationship
     // unambiguously — this is what surfaces the company in his Knowledge Panel.
+    //
+    // "Founded this organization" is expressed only in the other direction, by
+    // Organization.founder pointing at this Person (see organizationSchema).
+    // schema.org defines no inverse on Person: `founderOf` and
+    // `foundingOrganization` both 404, and validators reject the former as an
+    // unrecognised property. The founder edge is not lost by removing it —
+    // it is stated once, on the type that actually defines it.
     worksFor: orgReference,
-    founderOf: orgReference,
     alumniOf: {
       "@type": "CollegeOrUniversity",
       name: p.alumniOf,
