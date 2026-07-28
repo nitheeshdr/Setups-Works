@@ -46,5 +46,8 @@ next-env.d.ts
 # local uploads
 /public/uploads
 
+# rendered blog covers — hosted on Cloudinary, originals in Poster/
+/public/blog
+
 # tinymce self-hosted assets (copied from node_modules)
 /public/tinymce

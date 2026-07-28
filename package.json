@@ -12,7 +12,8 @@
     "seed": "tsx --env-file=.env.local scripts/seed.ts",
     "seed:services": "tsx --env-file=.env.local scripts/seed-services.ts",
     "seed:wipe": "tsx --env-file=.env.local scripts/seed.ts --wipe",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "seed:blogs": "tsx --env-file=.env.local scripts/seed-blogs.ts"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^7.3.0",
