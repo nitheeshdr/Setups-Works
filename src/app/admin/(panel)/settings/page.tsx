@@ -5,11 +5,17 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { AdminHeader, Field, TextInput, TextArea, ImageUploader, Spinner } from "@/components/admin/ui";
+import { AdminHeader, Field, TextInput, TextArea, TagInput, ImageUploader, Spinner } from "@/components/admin/ui";
 import { api } from "@/lib/admin/api";
 
 interface Founder {
   bio?: string;
+  github?: string;
+  imdb?: string;
+  youtube?: string;
+  education?: string;
+  educationUrl?: string;
+  skills?: string[];
   name?: string;
   role?: string;
   handle?: string;
@@ -111,10 +117,23 @@ export default function AdminSettingsPage() {
             <Field label="Status"><TextInput value={form.founder?.status ?? ""} onChange={(e) => setNested("founder", "status", e.target.value)} /></Field>
             <Field label="Twitter URL"><TextInput value={form.founder?.twitter ?? ""} onChange={(e) => setNested("founder", "twitter", e.target.value)} /></Field>
             <Field label="LinkedIn URL"><TextInput value={form.founder?.linkedin ?? ""} onChange={(e) => setNested("founder", "linkedin", e.target.value)} /></Field>
+            <Field label="GitHub URL"><TextInput value={form.founder?.github ?? ""} onChange={(e) => setNested("founder", "github", e.target.value)} /></Field>
+            <Field label="IMDb URL"><TextInput value={form.founder?.imdb ?? ""} onChange={(e) => setNested("founder", "imdb", e.target.value)} /></Field>
+            <Field label="YouTube URL"><TextInput value={form.founder?.youtube ?? ""} onChange={(e) => setNested("founder", "youtube", e.target.value)} /></Field>
+            <Field label="Education"><TextInput value={form.founder?.education ?? ""} onChange={(e) => setNested("founder", "education", e.target.value)} /></Field>
+            <Field label="Education URL"><TextInput value={form.founder?.educationUrl ?? ""} onChange={(e) => setNested("founder", "educationUrl", e.target.value)} /></Field>
           </div>
           <Field label="Quote / note"><TextArea rows={3} value={form.founder?.quote ?? ""} onChange={(e) => setNested("founder", "quote", e.target.value)} /></Field>
           <Field label="Bio" hint="Longer profile text — shown on the founder page and used as its meta description">
             <TextArea rows={5} value={form.founder?.bio ?? ""} onChange={(e) => setNested("founder", "bio", e.target.value)} />
+          </Field>
+          <Field label="Works on" hint="Topics shown on the founder page and emitted as Person.knowsAbout">
+            <TagInput
+              value={form.founder?.skills ?? []}
+              onChange={(skills) =>
+                setForm((f) => ({ ...f, founder: { ...f.founder, skills } }))
+              }
+            />
           </Field>
         </div>
 

@@ -291,9 +291,9 @@ export function personSchema(founder?: Founder) {
     // unambiguous.
     alumniOf: {
       "@type": "CollegeOrUniversity",
-      name: p.alumniOf.name,
+      name: founder?.education || p.alumniOf.name,
       alternateName: p.alumniOf.alternateName,
-      url: p.alumniOf.url,
+      url: founder?.educationUrl || p.alumniOf.url,
       sameAs: p.alumniOf.sameAs,
     },
     nationality: { "@type": "Country", name: "IN" },
@@ -303,7 +303,7 @@ export function personSchema(founder?: Founder) {
       occupationLocation: { "@type": "City", name: "Chennai" },
       skills: p.knowsAbout.join(", "),
     },
-    knowsAbout: p.knowsAbout,
+    knowsAbout: founder?.skills?.length ? founder.skills : p.knowsAbout,
     // Personal profiles only. Filter out the company's brand accounts so the
     // org's X/LinkedIn/etc. can never leak into the founder's identity, which
     // would confuse Knowledge Panel entity reconciliation.
@@ -313,6 +313,9 @@ export function personSchema(founder?: Founder) {
           ...p.sameAs,
           founder?.linkedin,
           founder?.twitter,
+          founder?.github,
+          founder?.imdb,
+          founder?.youtube,
         ].filter(
           (url): url is string => !!url && !orgSameAs.includes(url),
         ),

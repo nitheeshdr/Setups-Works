@@ -221,8 +221,18 @@ export interface Founder {
   photo?: string;
   quote?: string;
   bio?: string;
+  /* Profiles. Each falls back to siteConfig when blank, so the founder page
+     and Person schema always have something to link to. */
   twitter?: string;
   linkedin?: string;
+  github?: string;
+  imdb?: string;
+  youtube?: string;
+  /** Institution name and URL, shown on the founder page and in alumniOf. */
+  education?: string;
+  educationUrl?: string;
+  /** Topics shown under "Works on" and emitted as Person.knowsAbout. */
+  skills?: string[];
 }
 
 export interface SiteSettings {

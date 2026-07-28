@@ -73,15 +73,20 @@ export default async function FounderPage() {
   const name = founder.name || p.name;
   const role = founder.role || p.jobTitle;
   const photo = founder.photo || p.image.url;
+  // Admin values win; siteConfig is the fallback so the page is never blank
+  // before Settings has been filled in.
+  const education = founder.education || p.alumniOf.name;
+  const educationUrl = founder.educationUrl || p.alumniOf.url;
+  const skills = founder.skills?.length ? founder.skills : p.knowsAbout;
 
   // Profiles Google already associates with this person. Linking out to them
   // from a page that states the name is what lets an unknown page borrow
   // relevance from established ones.
   const profiles = [
     { icon: faLinkedinIn, label: "LinkedIn", href: founder.linkedin || p.sameAs.find((u) => u.includes("linkedin")) },
-    { icon: faGithub, label: "GitHub", href: p.sameAs.find((u) => u.includes("github")) },
-    { icon: faImdb, label: "IMDb", href: p.sameAs.find((u) => u.includes("imdb")) },
-    { icon: faYoutube, label: "YouTube", href: p.sameAs.find((u) => u.includes("youtube")) },
+    { icon: faGithub, label: "GitHub", href: founder.github || p.sameAs.find((u) => u.includes("github")) },
+    { icon: faImdb, label: "IMDb", href: founder.imdb || p.sameAs.find((u) => u.includes("imdb")) },
+    { icon: faYoutube, label: "YouTube", href: founder.youtube || p.sameAs.find((u) => u.includes("youtube")) },
     { icon: faXTwitter, label: "X", href: founder.twitter },
   ].filter((x): x is { icon: typeof faGithub; label: string; href: string } => !!x.href);
 
@@ -195,15 +200,18 @@ export default async function FounderPage() {
                     Education
                   </h2>
                   <p className="mt-3">
-                    <a
-                      href={p.alumniOf.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-medium hover:text-brand-500"
-                    >
-                      {p.alumniOf.name}
-                    </a>{" "}
-                    <span className="text-muted-foreground">({p.alumniOf.alternateName})</span>
+                    {educationUrl ? (
+                      <a
+                        href={educationUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium hover:text-brand-500"
+                      >
+                        {education}
+                      </a>
+                    ) : (
+                      <span className="font-medium">{education}</span>
+                    )}
                   </p>
                 </div>
               </Reveal>
@@ -214,7 +222,7 @@ export default async function FounderPage() {
                     Works on
                   </h2>
                   <div className="mt-4 flex flex-wrap gap-2">
-                    {p.knowsAbout.map((topic) => (
+                    {skills.map((topic) => (
                       <span
                         key={topic}
                         className="rounded-lg border border-border/60 bg-surface-2/50 px-3 py-1.5 text-sm text-muted-foreground"
