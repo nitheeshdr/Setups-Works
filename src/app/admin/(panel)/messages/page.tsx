@@ -14,6 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { AdminHeader, Spinner, EmptyState, ConfirmDialog } from "@/components/admin/ui";
 import { api, exportCsv, type Paginated } from "@/lib/admin/api";
+import { MessageThread } from "@/components/admin/message-thread";
 import { formatDate } from "@/lib/helpers";
 import {
   Dialog,
@@ -101,7 +102,7 @@ export default function AdminMessagesPage() {
 
       {/* Read modal */}
       <Dialog open={!!active} onOpenChange={(o) => !o && setActive(null)}>
-        <DialogContent>
+        <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
             <DialogTitle>{active?.subject}</DialogTitle>
             <DialogDescription>
@@ -110,10 +111,14 @@ export default function AdminMessagesPage() {
               {active?.budget ? ` · Budget: ${active.budget}` : ""}
             </DialogDescription>
           </DialogHeader>
-          <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground/90">{active?.message}</p>
-          <div className="flex justify-end gap-2 pt-2">
-            <a href={`mailto:${active?.email}?subject=Re: ${active?.subject}`} className="rounded-lg bg-brand-500 px-4 py-2 text-sm font-semibold text-white">Reply by email</a>
-          </div>
+          {active && (
+            <MessageThread
+              message={active}
+              // Keep the open dialog showing the reply that was just sent
+              // instead of making the user close and reopen it.
+              onSent={() => setActive((m) => (m ? { ...m, replied: true } : m))}
+            />
+          )}
         </DialogContent>
       </Dialog>
 

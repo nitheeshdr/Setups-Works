@@ -143,6 +143,14 @@ export interface Testimonial {
   createdAt?: string;
 }
 
+export interface MessageReply {
+  body: string;
+  sentAt: string;
+  sentBy?: string;
+  status: "sent" | "failed";
+  error?: string;
+}
+
 export interface ContactMessage {
   _id?: string;
   name: string;
@@ -152,6 +160,7 @@ export interface ContactMessage {
   subject: string;
   message: string;
   replied: boolean;
+  replies?: MessageReply[];
   createdAt?: string;
 }
 

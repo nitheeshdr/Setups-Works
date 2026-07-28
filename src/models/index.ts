@@ -184,6 +184,24 @@ const ContactSchema = new Schema(
     subject: { type: String, default: "New inquiry" },
     message: { type: String, required: true },
     replied: { type: Boolean, default: false },
+    /**
+     * Outbound replies, oldest first — this is what turns a message into a
+     * thread. Stored here rather than only sent, so the admin shows the whole
+     * conversation instead of just the inbound half, and a delivery failure
+     * stays visible instead of vanishing.
+     */
+    replies: {
+      type: [
+        {
+          body: String,
+          sentAt: { type: Date, default: Date.now },
+          sentBy: String,
+          status: { type: String, enum: ["sent", "failed"], default: "sent" },
+          error: String,
+        },
+      ],
+      default: [],
+    },
   },
   { timestamps: true },
 );
