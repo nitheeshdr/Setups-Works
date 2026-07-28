@@ -213,6 +213,28 @@ export interface Milestone {
   createdAt?: string;
 }
 
+/**
+ * A directing/writing credit, emitted as a schema.org Movie whose `director`
+ * points back at the Person node.
+ *
+ * The founder's Knowledge Panel is a film-industry panel built almost entirely
+ * from IMDb — Google leads with "Director", and the credits come from a single
+ * source. Publishing the same credits here gives that claim a second,
+ * independent origin on a domain we control.
+ */
+export interface FounderFilm {
+  title: string;
+  /** Release year, as a bare "2024". Emitted as Movie.datePublished. */
+  year?: string;
+  /** Credited role, e.g. "Director" or "Director, Writer". */
+  role?: string;
+  /** Short film, feature, music video — free text, shown as a label. */
+  format?: string;
+  /** IMDb, YouTube or wherever the work actually lives. */
+  url?: string;
+  description?: string;
+}
+
 export interface Founder {
   name: string;
   role: string;
@@ -253,6 +275,8 @@ export interface Founder {
   story?: string;
   /** Technical skills grouped by discipline, e.g. { label: "Frontend", items: [...] }. */
   skillGroups?: { label: string; items: string[] }[];
+  /** Directing and writing credits. Rendered as a filmography and as Movie schema. */
+  films?: FounderFilm[];
   /* Education detail beyond the institution name. */
   degree?: string;
   fieldOfStudy?: string;

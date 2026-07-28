@@ -12,6 +12,7 @@ import {
   faTrophy,
   faMicrophone,
   faBriefcase,
+  faFilm,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faLinkedinIn,
@@ -34,6 +35,7 @@ import {
   organizationSchema,
   websiteSchema,
   breadcrumbSchema,
+  filmSchemas,
   FOUNDER_PATH,
 } from "@/components/seo/json-ld";
 import { getFounder, getProducts, getTimeline } from "@/lib/content";
@@ -108,6 +110,7 @@ export default async function FounderPage() {
   // Apps he publishes under the verified Play developer account.
   const published = products.filter((x) => x.downloadLink);
   const skillGroups = founder.skillGroups ?? [];
+  const films = (founder.films ?? []).filter((f) => f.title?.trim());
 
   // Profiles Google already associates with this person. Linking out to them
   // from a page that states the name is what lets an unknown page borrow
@@ -132,6 +135,8 @@ export default async function FounderPage() {
             { name: "About", url: "/about" },
             { name, url: FOUNDER_PATH },
           ]),
+          // Credits as Movie nodes, each pointing back at the Person by @id.
+          ...filmSchemas(founder),
         ]}
       />
 
@@ -414,6 +419,54 @@ export default async function FounderPage() {
                   </div>
                 </div>
               </Reveal>
+
+              {films.length > 0 && (
+                <Reveal delay={0.17}>
+                  <div className="rounded-2xl border border-border/60 bg-card/50 p-6 sm:p-8">
+                    <h2 className="flex items-center gap-2.5 font-display text-xl font-bold tracking-tight">
+                      <FontAwesomeIcon icon={faFilm} className="size-4 text-brand-500" />
+                      Filmography
+                    </h2>
+                    <ul className="mt-5 space-y-4">
+                      {films.map((f) => (
+                        <li
+                          key={f.title}
+                          className="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-border/60 pb-4 last:border-0 last:pb-0"
+                        >
+                          <span className="font-medium">
+                            {f.url ? (
+                              <a
+                                href={f.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="transition-colors hover:text-brand-500"
+                              >
+                                {f.title}
+                              </a>
+                            ) : (
+                              f.title
+                            )}
+                          </span>
+                          {f.year && (
+                            <span className="text-sm text-muted-foreground">{f.year}</span>
+                          )}
+                          {f.role && (
+                            <span className="rounded-md bg-brand-500/10 px-2 py-0.5 text-xs font-medium text-brand-500">
+                              {f.role}
+                            </span>
+                          )}
+                          {f.format && (
+                            <span className="text-sm text-muted-foreground">{f.format}</span>
+                          )}
+                          {f.description && (
+                            <p className="w-full text-sm text-muted-foreground">{f.description}</p>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </Reveal>
+              )}
 
               {awards.length > 0 && (
                 <Reveal delay={0.18}>

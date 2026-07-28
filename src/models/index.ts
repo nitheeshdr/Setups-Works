@@ -352,6 +352,19 @@ const SettingsSchema = new Schema(
         type: [{ label: String, items: [String] }],
         default: [],
       },
+      films: {
+        type: [
+          {
+            title: String,
+            year: String,
+            role: String,
+            format: String,
+            url: String,
+            description: String,
+          },
+        ],
+        default: [],
+      },
       degree: String,
       fieldOfStudy: String,
       educationStart: String,

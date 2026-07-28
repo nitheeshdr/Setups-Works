@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFloppyDisk, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { AdminHeader, Field, TextInput, TextArea, TagInput, ImageUploader, Spinner } from "@/components/admin/ui";
+import type { FounderFilm } from "@/lib/types";
 import { api } from "@/lib/admin/api";
 
 interface Founder {
@@ -19,6 +20,7 @@ interface Founder {
   titles?: string[];
   languages?: string[];
   awards?: string[];
+  films?: FounderFilm[];
   location?: string;
   birthDate?: string;
   birthPlace?: string;
@@ -79,6 +81,15 @@ export default function AdminSettingsPage() {
   const set = (k: keyof Settings, v: unknown) => setForm((f) => ({ ...f, [k]: v }));
   const setNested = (group: "social" | "seo" | "analytics" | "founder", k: string, v: string) =>
     setForm((f) => ({ ...f, [group]: { ...(f[group] as object), [k]: v } }));
+
+  /* ----------------------------- filmography ---------------------------- */
+  const films = () => form.founder?.films ?? [];
+  const putFilms = (next: FounderFilm[]) =>
+    setForm((f) => ({ ...f, founder: { ...f.founder, films: next } }));
+  const setFilm = (i: number, patch: Partial<FounderFilm>) =>
+    putFilms(films().map((f, n) => (n === i ? { ...f, ...patch } : f)));
+  const addFilm = () => putFilms([...films(), { title: "" }]);
+  const removeFilm = (i: number) => putFilms(films().filter((_, n) => n !== i));
 
   const card = "space-y-4 rounded-2xl border border-border/60 bg-card/50 p-6";
 
@@ -168,6 +179,66 @@ export default function AdminSettingsPage() {
                 setForm((f) => ({ ...f, founder: { ...f.founder, skills } }))
               }
             />
+          </Field>
+
+          <Field
+            label="Filmography"
+            hint="Directing / writing credits. Emitted as Movie schema pointing back at the Person, so these must match IMDb exactly — a title that disagrees weakens both."
+          >
+            <div className="space-y-3">
+              {(form.founder?.films ?? []).map((film, i) => (
+                <div key={i} className="rounded-xl border border-border/60 bg-surface-2/40 p-3">
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <TextInput
+                      placeholder="Title"
+                      value={film.title ?? ""}
+                      onChange={(e) => setFilm(i, { title: e.target.value })}
+                    />
+                    <TextInput
+                      placeholder="Year — e.g. 2024"
+                      value={film.year ?? ""}
+                      onChange={(e) => setFilm(i, { year: e.target.value })}
+                    />
+                    <TextInput
+                      placeholder="Role — Director, Writer"
+                      value={film.role ?? ""}
+                      onChange={(e) => setFilm(i, { role: e.target.value })}
+                    />
+                    <TextInput
+                      placeholder="Format — Short film, Feature"
+                      value={film.format ?? ""}
+                      onChange={(e) => setFilm(i, { format: e.target.value })}
+                    />
+                  </div>
+                  <div className="mt-2 grid gap-2">
+                    <TextInput
+                      placeholder="URL — IMDb or YouTube"
+                      value={film.url ?? ""}
+                      onChange={(e) => setFilm(i, { url: e.target.value })}
+                    />
+                    <TextInput
+                      placeholder="Short description (optional)"
+                      value={film.description ?? ""}
+                      onChange={(e) => setFilm(i, { description: e.target.value })}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => removeFilm(i)}
+                    className="mt-2 text-xs font-medium text-rose-500 hover:underline"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={addFilm}
+                className="rounded-lg border border-border/60 px-3 py-2 text-sm font-medium transition-colors hover:border-brand-500/40 hover:text-brand-500"
+              >
+                + Add credit
+              </button>
+            </div>
           </Field>
         </div>
 

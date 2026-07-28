@@ -1,7 +1,7 @@
 import { siteConfig } from "@/lib/site";
 import type { Blog, Product, Portfolio, Founder, Service } from "@/lib/types";
 import type { JobOpening } from "@/data/site-content";
-import { stripHtml, truncate } from "@/lib/helpers";
+import { stripHtml, truncate, slugify } from "@/lib/helpers";
 
 /**
  * Renders every schema for a page as ONE `@graph` document.
@@ -483,6 +483,41 @@ export function profilePageSchema(founder?: Founder) {
     isPartOf: { "@id": WEBSITE_ID },
     breadcrumb: { "@id": `${siteConfig.url}${FOUNDER_PATH}#breadcrumb` },
   };
+}
+
+/* -------------------------------- Movies -------------------------------- */
+/**
+ * Directing/writing credits as Movie nodes.
+ *
+ * The founder's Knowledge Panel is a film-industry panel: Google labels him
+ * "Director" and renders a Movies carousel, all of it sourced from IMDb. A
+ * single-source fact is one Google hedges on and one it cannot corroborate, so
+ * these publish the same credits from a domain we control.
+ *
+ * `director` points at the Person by @id rather than repeating the person
+ * inline, which is what lets a consumer merge these with the existing node
+ * instead of inventing a second one. schema.org defines the edge on the work,
+ * not on the Person — there is no `Person.directorOf`.
+ */
+export function filmSchemas(founder?: Founder) {
+  const films = founder?.films ?? [];
+  return films
+    .filter((f) => f.title?.trim())
+    .map((f) => ({
+      "@context": "https://schema.org",
+      "@type": "Movie",
+      "@id": `${siteConfig.url}${FOUNDER_PATH}#film-${slugify(f.title)}`,
+      name: f.title,
+      ...(f.description ? { description: f.description } : {}),
+      // Bare year is valid ISO 8601 and is all we can honestly claim; a
+      // fabricated month/day would be a worse signal than a coarse one.
+      ...(f.year ? { datePublished: f.year } : {}),
+      ...(f.format ? { genre: f.format } : {}),
+      director: personReference,
+      // Writing credit is a separate schema.org edge from directing.
+      ...(f.role?.toLowerCase().includes("writ") ? { author: personReference } : {}),
+      ...(f.url ? { sameAs: [f.url] } : {}),
+    }));
 }
 
 /* ------------------------------ ContactPage ---------------------------- */
