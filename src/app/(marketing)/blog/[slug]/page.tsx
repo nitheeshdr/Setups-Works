@@ -8,7 +8,8 @@ import { Container, Section } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
 import { BlogCard } from "@/components/cards";
 import { JsonLd, articleSchema, breadcrumbSchema } from "@/components/seo/json-ld";
-import { getAllBlogSlugs, getBlogBySlug, getRelatedBlogs } from "@/lib/content";
+import { getAllBlogSlugs, getBlogBySlug, getRelatedBlogs, getServices } from "@/lib/content";
+import { BlogQuoteCTA } from "@/components/blog-quote-cta";
 import { formatDate } from "@/lib/helpers";
 
 export async function generateStaticParams() {
@@ -54,7 +55,20 @@ export default async function BlogDetailPage({
   const { slug } = await params;
   const blog = await getBlogBySlug(slug);
   if (!blog) notFound();
-  const related = await getRelatedBlogs(blog, 3);
+  const [related, services] = await Promise.all([
+    getRelatedBlogs(blog, 3),
+    getServices(),
+  ]);
+
+  // Pre-select the closest service to what the reader just read, so the form
+  // opens pointed at their topic rather than a blank dropdown. Matched on tags
+  // first — they name technologies — then on title.
+  const serviceNames = services.map((s) => s.title);
+  const matchedService = serviceNames.find(
+    (name) =>
+      blog.tags.some((t) => t.toLowerCase() === name.toLowerCase()) ||
+      blog.title.toLowerCase().includes(name.toLowerCase()),
+  );
 
   return (
     <>
@@ -133,6 +147,12 @@ export default async function BlogDetailPage({
             <div
               className="article-content"
               dangerouslySetInnerHTML={{ __html: blog.content }}
+            />
+
+            <BlogQuoteCTA
+              service={matchedService}
+              services={serviceNames}
+              source={`/blog/${blog.slug}`}
             />
 
             {blog.tags.length > 0 && (

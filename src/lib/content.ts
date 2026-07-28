@@ -11,6 +11,7 @@ import {
 } from "@/models";
 import { journey as defaultJourney } from "@/data/site-content";
 import { services as defaultServices } from "@/data/services";
+import { blogPosts as defaultPosts } from "@/data/blog-posts";
 import type {
   Blog as TBlog,
   Product as TProduct,
@@ -57,11 +58,39 @@ interface BlogQuery {
   featured?: boolean;
 }
 
+/**
+ * Filter/paginate the built-in catalogue. Used when the DB is unreachable or
+ * the collection is empty, so /blog is never an empty page — an unpublished
+ * blog reads to a crawler as an inactive site.
+ */
+function staticBlogs(q: BlogQuery, page: number, limit: number): Paginated<TBlog> {
+  let items = [...defaultPosts];
+  if (q.category && q.category !== "All")
+    items = items.filter((b) => b.category === q.category);
+  if (q.tag) items = items.filter((b) => b.tags.includes(q.tag!));
+  if (q.featured) items = items.filter((b) => b.featured);
+  if (q.search) {
+    const needle = q.search.toLowerCase();
+    items = items.filter((b) =>
+      `${b.title} ${b.excerpt} ${b.tags.join(" ")}`.toLowerCase().includes(needle),
+    );
+  }
+  items.sort((a, b) => +new Date(b.publishedAt ?? 0) - +new Date(a.publishedAt ?? 0));
+  const total = items.length;
+  return {
+    items: items.slice((page - 1) * limit, page * limit),
+    total,
+    page,
+    pages: Math.max(1, Math.ceil(total / limit)),
+    limit,
+  };
+}
+
 export async function getBlogs(q: BlogQuery = {}): Promise<Paginated<TBlog>> {
   const page = Math.max(1, q.page ?? 1);
   const limit = q.limit ?? 9;
   const conn = await connectDB();
-  if (!conn) return emptyPage<TBlog>(page, limit);
+  if (!conn) return staticBlogs(q, page, limit);
 
   const filter: Record<string, unknown> = { status: "published" };
   if (q.category && q.category !== "All") filter.category = q.category;
@@ -76,6 +105,8 @@ export async function getBlogs(q: BlogQuery = {}): Promise<Paginated<TBlog>> {
     .limit(limit)
     .lean();
 
+  if (total === 0) return staticBlogs(q, page, limit);
+
   return {
     items: serialize<TBlog[]>(items),
     total,
@@ -87,9 +118,15 @@ export async function getBlogs(q: BlogQuery = {}): Promise<Paginated<TBlog>> {
 
 export async function getBlogBySlug(slug: string): Promise<TBlog | null> {
   const conn = await connectDB();
-  if (!conn) return null;
-  const doc = await Blog.findOne({ slug }).lean();
-  return doc ? serialize<TBlog>(doc) : null;
+  if (conn) {
+    const doc = await Blog.findOne({ slug }).lean();
+    if (doc) return serialize<TBlog>(doc);
+    // Same asymmetry as services: only fall back when the collection is empty,
+    // otherwise a post deleted in the admin would resurrect from the built-ins.
+    const published = await Blog.countDocuments({ status: "published" });
+    if (published > 0) return null;
+  }
+  return defaultPosts.find((b) => b.slug === slug) ?? null;
 }
 
 export async function getRelatedBlogs(blog: TBlog, limit = 3): Promise<TBlog[]> {
