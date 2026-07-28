@@ -318,6 +318,10 @@ export function personSchema(founder?: Founder) {
       name: `${siteConfig.address.locality}, ${siteConfig.address.region}, India`,
     },
     nationality: { "@type": "Country", name: "India" },
+    ...(founder?.birthDate ? { birthDate: founder.birthDate } : {}),
+    ...(founder?.birthPlace
+      ? { birthPlace: { "@type": "Place", name: founder.birthPlace } }
+      : {}),
     ...(founder?.languages?.length
       ? { knowsLanguage: founder.languages.map((name) => ({ "@type": "Language", name })) }
       : {}),

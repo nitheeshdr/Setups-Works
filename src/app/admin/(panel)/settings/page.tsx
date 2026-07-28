@@ -20,6 +20,8 @@ interface Founder {
   languages?: string[];
   awards?: string[];
   location?: string;
+  birthDate?: string;
+  birthPlace?: string;
   name?: string;
   role?: string;
   handle?: string;
@@ -127,6 +129,8 @@ export default function AdminSettingsPage() {
             <Field label="Education"><TextInput value={form.founder?.education ?? ""} onChange={(e) => setNested("founder", "education", e.target.value)} /></Field>
             <Field label="Education URL"><TextInput value={form.founder?.educationUrl ?? ""} onChange={(e) => setNested("founder", "educationUrl", e.target.value)} /></Field>
             <Field label="Location" hint="City / region"><TextInput value={form.founder?.location ?? ""} onChange={(e) => setNested("founder", "location", e.target.value)} /></Field>
+            <Field label="Date of birth" hint="YYYY-MM-DD — emitted as Person.birthDate"><TextInput type="date" value={form.founder?.birthDate ?? ""} onChange={(e) => setNested("founder", "birthDate", e.target.value)} /></Field>
+            <Field label="Birthplace"><TextInput value={form.founder?.birthPlace ?? ""} onChange={(e) => setNested("founder", "birthPlace", e.target.value)} /></Field>
           </div>
           <Field label="Quote / note"><TextArea rows={3} value={form.founder?.quote ?? ""} onChange={(e) => setNested("founder", "quote", e.target.value)} /></Field>
           <Field label="Bio" hint="Longer profile text — shown on the founder page and used as its meta description">

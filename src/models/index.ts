@@ -345,6 +345,8 @@ const SettingsSchema = new Schema(
       languages: { type: [String], default: [] },
       awards: { type: [String], default: [] },
       location: String,
+      birthDate: String,
+      birthPlace: String,
     },
   },
   { timestamps: true },

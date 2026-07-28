@@ -241,6 +241,14 @@ export interface Founder {
   awards?: string[];
   /** City/region for Person.homeLocation. Falls back to the business location. */
   location?: string;
+  /**
+   * ISO 8601 date of birth, and birthplace. Google's Knowledge Panel already
+   * publishes both, so stating them agrees with a conclusion it reached from
+   * other sources — which is what entity reconciliation rewards. Blank unless
+   * set; never guessed.
+   */
+  birthDate?: string;
+  birthPlace?: string;
 }
 
 export interface SiteSettings {
