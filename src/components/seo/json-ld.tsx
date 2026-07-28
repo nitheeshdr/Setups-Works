@@ -93,6 +93,16 @@ export function organizationSchema() {
       "SetupsWorks",
       "setups.works",
       "Setups Works Digital Agency",
+      // Misspellings. Both words are ordinary nouns that read naturally in the
+      // singular, so dropping either plural is the mistake people actually
+      // make. Kept to the four that are one dropped "s" from the real name —
+      // this is an alternate-name field, not a keyword list, and a long tail of
+      // invented typos would be stuffing. Prune or extend from the real query
+      // data in Search Console once it has accumulated.
+      "Setup Works",
+      "Setups Work",
+      "Setup Work",
+      "Setupworks",
     ],
     url: siteConfig.url,
     logo: {
