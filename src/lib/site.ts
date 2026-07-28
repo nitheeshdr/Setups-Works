@@ -97,6 +97,12 @@ export const siteConfig = {
     linkedin: "https://linkedin.com/company/setups-works",
     dribbble: "",
     instagram: "https://instagram.com/setups.works",
+    /**
+     * Google Play developer page. A strong entity signal: it is a Google-owned
+     * property carrying a verified developer identity, which corroborates the
+     * organization independently of anything we publish about ourselves.
+     */
+    playStore: "https://play.google.com/store/apps/dev?id=5478157836712207943",
   },
   keywords: [
     "digital agency",

@@ -27,6 +27,7 @@ const orgSameAs: string[] = [
   siteConfig.links.twitter, // x.com/setupsworks
   siteConfig.links.linkedin, // linkedin.com/company/setups-works
   siteConfig.links.instagram, // instagram.com/setups.works
+  siteConfig.links.playStore, // Google Play developer page — verified publisher
   siteConfig.googleBusiness, // GBP share link
   siteConfig.googleMaps, // canonical Maps listing (CID) — local entity anchor
   siteConfig.wikidata, // wikidata.org/wiki/Q140500419 — entity anchor
