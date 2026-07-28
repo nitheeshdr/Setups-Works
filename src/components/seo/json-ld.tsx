@@ -221,9 +221,16 @@ export function personSchema(founder?: Founder) {
     // unrecognised property. The founder edge is not lost by removing it —
     // it is stated once, on the type that actually defines it.
     worksFor: orgReference,
+    // Carries url + sameAs so the institution resolves to the same entity
+    // Google already lists this person under as notable alumni. A bare name
+    // string leaves the match to string similarity; the identifiers make it
+    // unambiguous.
     alumniOf: {
       "@type": "CollegeOrUniversity",
-      name: p.alumniOf,
+      name: p.alumniOf.name,
+      alternateName: p.alumniOf.alternateName,
+      url: p.alumniOf.url,
+      sameAs: p.alumniOf.sameAs,
     },
     nationality: { "@type": "Country", name: "IN" },
     hasOccupation: {

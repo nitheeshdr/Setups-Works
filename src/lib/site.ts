@@ -65,7 +65,23 @@ export const siteConfig = {
     jobTitle: "Founder & CEO",
     description:
       "Founder & CEO of Setups Works. Passionate about Artificial Intelligence, software engineering, and building developer tools that help programmers prepare for coding interviews.",
-    alumniOf: "Vels University",
+    /**
+     * The university exactly as Google's own entity names it — the founder is
+     * already listed under its "Notable alumni", so matching that string and
+     * pointing at the same Wikidata/Wikipedia identifiers lets Google tie our
+     * Person node to the institution it already knows rather than to a
+     * differently-named one. "Vels University" is the former/common name and
+     * does not match the entity.
+     */
+    alumniOf: {
+      name: "Vels Institute of Science, Technology & Advanced Studies",
+      alternateName: "VISTAS",
+      url: "https://vistas.ac.in",
+      sameAs: [
+        "https://www.wikidata.org/wiki/Q7919327",
+        "https://en.wikipedia.org/wiki/Vels_Institute_of_Science,_Technology_%26_Advanced_Studies",
+      ],
+    },
     knowsAbout: [
       "Artificial Intelligence",
       "Software Engineering",
