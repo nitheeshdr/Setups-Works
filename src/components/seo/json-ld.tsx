@@ -81,7 +81,10 @@ export function organizationSchema() {
     // with generic results. Listing the spellings people actually type helps
     // Google bind the query to this entity rather than to the dictionary sense.
     alternateName: [
+      "Setups Works",
+      "setups works",
       "SetupsWorks",
+      "setupsworks",
       "Setups.Works",
       "setups.works",
       "SETUPS WORKS",
