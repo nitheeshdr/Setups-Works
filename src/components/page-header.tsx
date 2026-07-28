@@ -54,7 +54,7 @@ export function PageHeader({
         <div
           className={
             media
-              ? "grid gap-8 lg:grid-cols-[1fr_300px] lg:items-center lg:gap-14"
+              ? "grid gap-10 lg:grid-cols-[1fr_560px] lg:items-center lg:gap-14"
               : undefined
           }
         >
@@ -79,9 +79,11 @@ export function PageHeader({
             {children && <Reveal delay={0.15}>{children}</Reveal>}
           </div>
           {media && (
-            <Reveal delay={0.08}>
-              <div className="order-first lg:order-0">{media}</div>
-            </Reveal>
+            // The order classes sit on the grid item itself, not inside
+            // Reveal — media leads on mobile, sits beside the title on lg.
+            <div className="order-first lg:order-0">
+              <Reveal delay={0.08}>{media}</Reveal>
+            </div>
           )}
         </div>
       </Container>

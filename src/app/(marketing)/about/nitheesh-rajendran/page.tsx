@@ -144,14 +144,15 @@ export default async function FounderPage() {
         crumbs={[{ label: "About", href: "/about" }, { label: name }]}
         media={
           // The portrait sits with the H1 so the name and the face are the
-          // first thing both a reader and an image crawler see.
-          <div className="relative aspect-square w-40 overflow-hidden rounded-3xl border border-border/60 sm:w-52 lg:w-full">
+          // first thing both a reader and an image crawler see. Uncapped: it
+          // fills its column on desktop and the full container on mobile.
+          <div className="relative aspect-4/5 w-full overflow-hidden rounded-3xl border border-border/60 lg:aspect-square">
             <Image
               src={photo}
               alt={`${name}, ${role} of ${siteConfig.name}`}
               fill
-              sizes="(max-width: 640px) 160px, (max-width: 1024px) 208px, 300px"
-              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 560px"
+              className="object-cover object-center"
               preload
             />
           </div>
