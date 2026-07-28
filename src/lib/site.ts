@@ -126,6 +126,13 @@ export const siteConfig = {
      */
     podcast: "https://open.spotify.com/show/033X7FZ7Z2eoDwq5wj60y9",
     podcastApple: "https://podcasts.apple.com/us/podcast/setups-works/id6795401285",
+    /**
+     * Amazon Music. All regional domains (.com/.in/.co.uk) serve the same show
+     * id and Amazon declares no canonical, so the region here is arbitrary —
+     * switch to music.amazon.in if you'd rather point at the home market.
+     */
+    podcastAmazon:
+      "https://music.amazon.co.uk/podcasts/b084455b-d0c3-4048-b8c3-bde624ba7fb8/setups-works",
     podcastFeed: "https://anchor.fm/s/115683bdc/podcast/rss",
   },
   keywords: [

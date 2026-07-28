@@ -31,6 +31,7 @@ const orgSameAs: string[] = [
   siteConfig.links.playStore, // Google Play developer page — verified publisher
   siteConfig.links.podcast, // Spotify show — third-party corroboration
   siteConfig.links.podcastApple, // Apple Podcasts — second independent directory
+  siteConfig.links.podcastAmazon, // Amazon Music — third
   siteConfig.googleBusiness, // GBP share link
   siteConfig.googleMaps, // canonical Maps listing (CID) — local entity anchor
   siteConfig.wikidata, // wikidata.org/wiki/Q140500419 — entity anchor
