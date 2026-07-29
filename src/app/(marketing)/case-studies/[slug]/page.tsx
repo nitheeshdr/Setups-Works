@@ -11,7 +11,7 @@ import { PageHeader } from "@/components/page-header";
 import { Container, Section } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
 import { CTASection } from "@/components/sections/cta";
-import { JsonLd, breadcrumbSchema } from "@/components/seo/json-ld";
+import { JsonLd, breadcrumbSchema, organizationSchema, websiteSchema, caseStudySchema } from "@/components/seo/json-ld";
 import { getPortfolio, getPortfolioBySlug } from "@/lib/content";
 
 export async function generateStaticParams() {
@@ -61,10 +61,17 @@ export default async function CaseStudyDetailPage({
   return (
     <>
       <JsonLd
-        data={breadcrumbSchema([
-          { name: "Case Studies", url: "/case-studies" },
-          { name: project.title, url: `/case-studies/${project.slug}` },
-        ])}
+        data={[
+          organizationSchema(),
+          websiteSchema(),
+          // The write-up itself — the only reason this page exists — was
+          // previously invisible to a crawler.
+          caseStudySchema(project),
+          breadcrumbSchema([
+            { name: "Case Studies", url: "/case-studies" },
+            { name: project.title, url: `/case-studies/${project.slug}` },
+          ]),
+        ]}
       />
       <PageHeader
         eyebrow={`${project.category} · ${project.client}`}

@@ -786,6 +786,42 @@ export function serviceSchema(service: Service) {
 }
 
 /* ------------------------------- CreativeWork -------------------------- */
+/**
+ * A case study, typed as an Article rather than a CreativeWork.
+ *
+ * /case-studies/[slug] shipped with nothing but a breadcrumb — the write-up
+ * itself, which is the only reason the page exists, was invisible to a crawler.
+ * Article is the right type because the page is long-form editorial *about* a
+ * project; the project itself stays a CreativeWork, referenced via `about`, so
+ * the same work isn't claimed twice as two different entities.
+ */
+export function caseStudySchema(project: Portfolio) {
+  const url = `${siteConfig.url}/case-studies/${project.slug}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": `${url}#article`,
+    headline: truncate(project.title, 110),
+    description: project.summary,
+    image: project.coverImage,
+    url,
+    author: { "@id": ORG_ID },
+    publisher: { "@id": ORG_ID },
+    isPartOf: { "@id": WEBSITE_ID },
+    ...(project.year ? { datePublished: project.year } : {}),
+    // The project the article is about, as its own node. `about` is the edge
+    // schema.org defines for subject matter — reusing `mainEntity` would claim
+    // the page *is* the project rather than coverage of it.
+    about: {
+      "@type": "CreativeWork",
+      name: project.title,
+      ...(project.client ? { sourceOrganization: { "@type": "Organization", name: project.client } } : {}),
+      ...(project.liveDemo ? { url: project.liveDemo } : {}),
+    },
+    keywords: project.techStack.join(", "),
+  };
+}
+
 export function portfolioSchema(project: Portfolio) {
   return {
     "@context": "https://schema.org",

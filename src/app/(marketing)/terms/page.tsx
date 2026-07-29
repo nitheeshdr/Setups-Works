@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/page-header";
 import { Container, Section } from "@/components/section";
 import { siteConfig } from "@/lib/site";
+import { JsonLd, pageSchemas } from "@/components/seo/json-ld";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/terms" },
@@ -13,6 +14,16 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <>
+      {/* These pages carried no structured data at all. They are indexable and
+          linked from every footer, so a page with no WebPage node is a hole in
+          the site graph rather than a page not worth describing. */}
+      <JsonLd
+        data={pageSchemas({
+          path: "/terms",
+          label: "Terms of Service",
+          description: "The terms governing use of the Setups Works website and services.",
+        })}
+      />
       <PageHeader
         eyebrow="Legal"
         title="Terms of Service"

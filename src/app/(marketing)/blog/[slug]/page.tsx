@@ -7,7 +7,7 @@ import { faClock, faCalendar, faArrowLeft, faTag } from "@fortawesome/free-solid
 import { Container, Section } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
 import { BlogCard } from "@/components/cards";
-import { JsonLd, articleSchema, breadcrumbSchema } from "@/components/seo/json-ld";
+import { JsonLd, articleSchema, breadcrumbSchema, organizationSchema, websiteSchema } from "@/components/seo/json-ld";
 import { getAllBlogSlugs, getBlogBySlug, getRelatedBlogs, getServices } from "@/lib/content";
 import { BlogQuoteCTA } from "@/components/blog-quote-cta";
 import { formatDate } from "@/lib/helpers";
@@ -74,6 +74,11 @@ export default async function BlogDetailPage({
     <>
       <JsonLd
         data={[
+          // Organization and WebSite ship here too: articleSchema references
+          // both by @id, and a reference whose target isn't in the same
+          // document is a dangling edge.
+          organizationSchema(),
+          websiteSchema(),
           articleSchema(blog),
           breadcrumbSchema([
             { name: "Blog", url: "/blog" },

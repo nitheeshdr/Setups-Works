@@ -10,7 +10,7 @@ import { Container, Section } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
 import { PortfolioCard } from "@/components/cards";
 import { CTASection } from "@/components/sections/cta";
-import { JsonLd, breadcrumbSchema, portfolioSchema } from "@/components/seo/json-ld";
+import { JsonLd, breadcrumbSchema, portfolioSchema, organizationSchema, websiteSchema } from "@/components/seo/json-ld";
 import { getPortfolio, getPortfolioBySlug } from "@/lib/content";
 
 export async function generateStaticParams() {
@@ -63,6 +63,8 @@ export default async function PortfolioDetailPage({
     <>
       <JsonLd
         data={[
+          organizationSchema(),
+          websiteSchema(),
           portfolioSchema(project),
           breadcrumbSchema([
             { name: "Portfolio", url: "/portfolio" },
