@@ -36,7 +36,7 @@ const RANGE_FILES = {
 
 export type GoogleRangeSet = keyof typeof RANGE_FILES;
 
-interface Prefix {
+export interface Prefix {
   ipv4Prefix?: string;
   ipv6Prefix?: string;
 }
@@ -119,12 +119,14 @@ function ipv6InCidr(ip: string, cidr: string): boolean {
   );
 }
 
-/** Is `ip` inside one of Google's published ranges for `set`? */
-export async function isGoogleIp(
-  ip: string,
-  set: GoogleRangeSet = "common",
-): Promise<boolean> {
-  const prefixes = await getPrefixes(set);
+/**
+ * Is `ip` inside any of `prefixes`?
+ *
+ * Exported because Google is no longer the only publisher we check — OpenAI,
+ * Anthropic and Perplexity all publish crawler ranges in this exact shape, so
+ * verify-crawler.ts reuses this rather than reimplementing CIDR maths.
+ */
+export function ipInPrefixes(ip: string, prefixes: Prefix[]): boolean {
   const v6 = ip.includes(":");
   return prefixes.some((p) =>
     v6
@@ -135,6 +137,14 @@ export async function isGoogleIp(
         ? ipv4InCidr(ip, p.ipv4Prefix)
         : false,
   );
+}
+
+/** Is `ip` inside one of Google's published ranges for `set`? */
+export async function isGoogleIp(
+  ip: string,
+  set: GoogleRangeSet = "common",
+): Promise<boolean> {
+  return ipInPrefixes(ip, await getPrefixes(set));
 }
 
 /* ------------------------------- DNS check ------------------------------ */

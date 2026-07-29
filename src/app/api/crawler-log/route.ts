@@ -4,6 +4,7 @@ import { CrawlerHit } from "@/models";
 import { ok, requireAuth, serverError, unauthorized } from "@/lib/api-utils";
 import { verifyGoogleRequest } from "@/lib/verify-google";
 import { crawlerName } from "@/lib/crawlers";
+import { isVerifiableCrawler, verifyAiCrawler } from "@/lib/verify-crawler";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -36,15 +37,26 @@ export async function POST(req: Request) {
 
   const crawler = crawlerName(userAgent);
 
-  // Only Google publishes the data needed to verify; others are recorded as
-  // claimed rather than pretending we checked them.
+  // Google, Anthropic, OpenAI and Perplexity all publish the ranges needed to
+  // prove a crawler is genuine. Anything else is recorded as claimed rather
+  // than pretending we checked it.
   let verified = false;
   let method: "ip-range" | "dns" | "none" = "none";
-  if (crawler.startsWith("Google") && ip) {
-    const res = await verifyGoogleRequest(ip).catch(() => null);
-    if (res) {
-      verified = res.verified;
-      method = res.method;
+  if (ip) {
+    if (crawler.startsWith("Google")) {
+      // Google additionally supports reverse-then-forward DNS, so it keeps the
+      // richer check.
+      const res = await verifyGoogleRequest(ip).catch(() => null);
+      if (res) {
+        verified = res.verified;
+        method = res.method;
+      }
+    } else if (isVerifiableCrawler(crawler)) {
+      const res = await verifyAiCrawler(crawler, ip).catch(() => null);
+      if (res) {
+        verified = res.verified;
+        method = res.method;
+      }
     }
   }
 
