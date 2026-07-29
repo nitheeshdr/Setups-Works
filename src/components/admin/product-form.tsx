@@ -175,6 +175,27 @@ export function ProductForm({ initial }: { initial?: Product }) {
             <Field label="Technologies">
               <TagInput value={form.technologies ?? []} onChange={(t) => set("technologies", t)} />
             </Field>
+            <Field
+              label="Store rating"
+              hint="Real average from the Play Store, e.g. 4.6. Emitted as AggregateRating only when a count is set too — never invent it."
+            >
+              <TextInput
+                type="number"
+                step="0.1"
+                min="1"
+                max="5"
+                value={form.rating ?? ""}
+                onChange={(e) => set("rating", e.target.value === "" ? undefined : Number(e.target.value))}
+              />
+            </Field>
+            <Field label="Number of ratings" hint="How many reviews that average is based on">
+              <TextInput
+                type="number"
+                min="0"
+                value={form.ratingCount ?? ""}
+                onChange={(e) => set("ratingCount", e.target.value === "" ? undefined : Number(e.target.value))}
+              />
+            </Field>
           </div>
 
           <div className="space-y-4 rounded-2xl border border-border/60 bg-card/50 p-5">

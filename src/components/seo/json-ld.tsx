@@ -526,6 +526,9 @@ export function filmSchemas(founder?: Founder) {
       "@type": "Movie",
       "@id": `${siteConfig.url}${FOUNDER_PATH}#film-${slugify(f.title)}`,
       name: f.title,
+      // Google treats a Movie without an image as a critical error, so this is
+      // emitted whenever the record has one.
+      ...(f.image ? { image: f.image } : {}),
       ...(f.description ? { description: f.description } : {}),
       // Bare year is valid ISO 8601 and is all we can honestly claim; a
       // fabricated month/day would be a worse signal than a coarse one.
@@ -716,12 +719,41 @@ export function productSchema(product: Product) {
     ...(product.version ? { softwareVersion: product.version } : {}),
     author: { "@id": ORG_ID },
     publisher: { "@id": ORG_ID },
+    /**
+     * Availability follows the record instead of being hardcoded.
+     *
+     * This said `PreOrder` for every product, including ones already published
+     * and downloadable on the Play Store. Availability is one of the fields
+     * Google reads for product results, so stating PreOrder for a shipped app
+     * is a wrong claim, not a harmless default.
+     */
     offers: {
       "@type": "Offer",
       price: "0",
       priceCurrency: "USD",
-      availability: "https://schema.org/PreOrder",
+      availability:
+        product.downloadLink || product.status === "live"
+          ? "https://schema.org/InStock"
+          : "https://schema.org/PreOrder",
+      ...(product.downloadLink ? { url: product.downloadLink } : {}),
     },
+    /**
+     * Only emitted when a real rating AND a real count exist. Google requires
+     * both, and an AggregateRating a site awards itself is precisely what the
+     * structured-data spam policy targets — so this stays absent until someone
+     * enters the actual store numbers.
+     */
+    ...(typeof product.rating === "number" && typeof product.ratingCount === "number" && product.ratingCount > 0
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: product.rating,
+            ratingCount: product.ratingCount,
+            bestRating: 5,
+            worstRating: 1,
+          },
+        }
+      : {}),
   };
 }
 

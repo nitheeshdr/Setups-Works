@@ -104,6 +104,14 @@ export interface Product {
   category: string;
   status: ProductStatus;
   version?: string;
+  /**
+   * Real store rating, e.g. the Play Store average. Emitted as
+   * AggregateRating only when BOTH this and `ratingCount` are set — Google
+   * requires a count, and a rating with no ratings behind it is exactly the
+   * kind of claim that earns a structured-data manual action.
+   */
+  rating?: number;
+  ratingCount?: number;
   downloadLink?: string;
   githubLink?: string;
   docsLink?: string;
@@ -233,6 +241,13 @@ export interface FounderFilm {
   /** IMDb, YouTube or wherever the work actually lives. */
   url?: string;
   description?: string;
+  /**
+   * Poster. Required, not optional: Google's Movie rich result rejects a node
+   * without `image` as a critical error, which is what the Rich Results Test
+   * flagged on both credits. Self-hosting is safer long term than pointing at
+   * IMDb's CDN, but a working URL beats a missing field either way.
+   */
+  image?: string;
 }
 
 export interface Founder {

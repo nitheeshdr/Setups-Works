@@ -221,6 +221,11 @@ export default function AdminSettingsPage() {
                       value={film.description ?? ""}
                       onChange={(e) => setFilm(i, { description: e.target.value })}
                     />
+                    <TextInput
+                      placeholder="Poster image URL — required by Google for Movie results"
+                      value={film.image ?? ""}
+                      onChange={(e) => setFilm(i, { image: e.target.value })}
+                    />
                   </div>
                   <button
                     type="button"
