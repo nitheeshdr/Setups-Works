@@ -216,6 +216,24 @@ export function organizationSchema(services?: Service[]) {
           },
         }
       : {}),
+    /**
+     * CodeForge AI, stated as a subsidiary on its own domain rather than only
+     * as a product row here.
+     *
+     * The @id is the Organization node codeforgeai.io publishes, and that node
+     * names this one as its `parentOrganization` with a matching @id — so the
+     * relationship is asserted from both sides and from both domains. A
+     * one-directional claim is a company talking about itself; two graphs that
+     * agree is corroboration.
+     */
+    subOrganization: {
+      "@type": "Organization",
+      "@id": "https://codeforgeai.io/#org",
+      name: "CodeForge AI",
+      url: "https://codeforgeai.io",
+      description:
+        "AI-powered coding interview preparation platform — problem bank, multi-language compiler, AI mentoring and skill analytics.",
+    },
     // Currency and payment terms are business facts, not guesses — add them to
     // siteConfig when known. Deliberately absent rather than invented.
     //
