@@ -324,6 +324,13 @@ export function personSchema(founder?: Founder, products?: Product[]) {
     "@type": "Person",
     "@id": `${siteConfig.url}/#founder`,
     name: founder?.name || p.name,
+    /**
+     * Legal name and the variants people actually type. "Rajendran" is a Tamil
+     * patronymic — his father's name — so his legal name is the initialised
+     * form, and both appear in the wild. Matching the aliases on the Wikidata
+     * item means a query for either resolves to one entity rather than two.
+     */
+    alternateName: ["Nitheesh D R", "Nitheesh DR", "Nitheesh D.R."],
     givenName: (founder?.name || p.name).split(" ")[0],
     familyName: (founder?.name || p.name).split(" ").slice(1).join(" "),
     // Multiple titles when set — Google's own panel describes him as director,
