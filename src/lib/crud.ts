@@ -260,6 +260,27 @@ export const serviceCreateSchema = z.object({
 });
 export const serviceUpdateSchema = serviceCreateSchema.partial();
 
+export const teamMemberCreateSchema = z.object({
+  name: z.string().min(2),
+  slug: z.string().optional(),
+  role: z.string().min(1),
+  short: z.string().default(""),
+  bio: z.string().default(""),
+  photo: z.string().default(""),
+  location: z.string().optional(),
+  skills: z.array(z.string()).default([]),
+  linkedin: z.string().optional(),
+  github: z.string().optional(),
+  twitter: z.string().optional(),
+  website: z.string().optional(),
+  email: z.string().optional(),
+  education: z.string().optional(),
+  order: z.number().default(0),
+  featured: z.boolean().default(false),
+  status: z.enum(["draft", "published"]).default("published"),
+});
+export const teamMemberUpdateSchema = teamMemberCreateSchema.partial();
+
 export const portfolioCreateSchema = z.object({
   title: z.string().min(2),
   slug: z.string().optional(),
@@ -274,6 +295,7 @@ export const portfolioCreateSchema = z.object({
   duration: z.string().default(""),
   year: z.string().default(""),
   caseStudy: z.string().optional(),
+  team: z.array(z.string()).default([]),
   featured: z.boolean().default(false),
 });
 export const portfolioUpdateSchema = portfolioCreateSchema.partial();

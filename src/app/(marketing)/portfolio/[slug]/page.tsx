@@ -11,7 +11,7 @@ import { Reveal } from "@/components/motion-primitives";
 import { PortfolioCard } from "@/components/cards";
 import { CTASection } from "@/components/sections/cta";
 import { JsonLd, breadcrumbSchema, portfolioSchema, organizationSchema, websiteSchema } from "@/components/seo/json-ld";
-import { getPortfolio, getPortfolioBySlug } from "@/lib/content";
+import { getPortfolio, getPortfolioBySlug, getTeam } from "@/lib/content";
 
 export async function generateStaticParams() {
   const projects = await getPortfolio();
@@ -51,6 +51,8 @@ export default async function PortfolioDetailPage({
 
   const all = await getPortfolio();
   const related = all.filter((p) => p.slug !== project.slug).slice(0, 2);
+  // Credited members, resolved from slugs so a removed member simply drops out.
+  const team = (await getTeam()).filter((m) => project.team?.includes(m.slug));
 
   const meta = [
     { label: "Client", value: project.client },
@@ -135,6 +137,29 @@ export default async function PortfolioDetailPage({
                     </div>
                   ))}
                 </div>
+                {team.length > 0 && (
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                      Team
+                    </p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {team.map((m) => (
+                        <Link
+                          key={m.slug}
+                          href={`/team/${m.slug}`}
+                          className="group inline-flex items-center gap-2 rounded-full border border-border/60 bg-surface-2/60 py-1 pl-1 pr-3 text-xs font-medium transition-colors hover:border-brand-500/40"
+                        >
+                          {m.photo && (
+                            <span className="relative size-6 shrink-0 overflow-hidden rounded-full">
+                              <Image src={m.photo} alt="" fill sizes="24px" className="object-cover" />
+                            </span>
+                          )}
+                          <span className="group-hover:text-brand-500">{m.name}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                     Tech stack

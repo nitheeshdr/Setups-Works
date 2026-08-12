@@ -8,6 +8,7 @@ import {
   ClientLogo,
   Settings,
   Milestone,
+  TeamMember,
 } from "@/models";
 import { journey as defaultJourney } from "@/data/site-content";
 import { services as defaultServices } from "@/data/services";
@@ -19,6 +20,7 @@ import type {
   Testimonial as TTestimonial,
   ClientLogo as TClientLogo,
   Milestone as TMilestone,
+  TeamMember as TTeamMember,
   Service as TService,
   SiteSettings,
   Founder,
@@ -242,6 +244,33 @@ export async function getPortfolioBySlug(slug: string): Promise<TPortfolio | nul
 export async function getPortfolioCategories(): Promise<string[]> {
   const items = await getPortfolio();
   return ["All", ...Array.from(new Set(items.map((p) => p.category)))];
+}
+
+/* ------------------------------ TEAM ----------------------------- */
+/**
+ * Published members only, in admin order. Drafts stay off the public site and
+ * out of the Organization's `employee` edges — an employee edge to a person
+ * with no page is a claim a crawler cannot check.
+ */
+export async function getTeam(): Promise<TTeamMember[]> {
+  const conn = await connectDB();
+  if (!conn) return [];
+  const docs = await TeamMember.find({ status: { $ne: "draft" } })
+    .sort({ order: 1, createdAt: 1 })
+    .lean();
+  return serialize<TTeamMember[]>(docs);
+}
+
+export async function getTeamMemberBySlug(slug: string): Promise<TTeamMember | null> {
+  const conn = await connectDB();
+  if (!conn) return null;
+  const doc = await TeamMember.findOne({ slug, status: { $ne: "draft" } }).lean();
+  return doc ? serialize<TTeamMember>(doc) : null;
+}
+
+export async function getAllTeamSlugs(): Promise<string[]> {
+  const items = await getTeam();
+  return items.map((m) => m.slug);
 }
 
 /* ---------------------------- SETTINGS --------------------------- */

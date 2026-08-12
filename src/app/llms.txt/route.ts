@@ -5,6 +5,7 @@ import {
   getPortfolio,
   getProducts,
   getServices,
+  getTeam,
 } from "@/lib/content";
 import {
   faqs,
@@ -50,13 +51,14 @@ function oneLine(text: string, max = 180): string {
  * as fact. Publish them once the dates agree.
  */
 export async function GET(): Promise<Response> {
-  const [services, products, portfolio, { items: blogs }, founder] =
+  const [services, products, portfolio, { items: blogs }, founder, team] =
     await Promise.all([
       getServices(),
       getProducts(),
       getPortfolio(),
       getBlogs({ limit: 12 }),
       getFounder(),
+      getTeam(),
     ]);
 
   const name = founder.name || siteConfig.founderProfile.name;

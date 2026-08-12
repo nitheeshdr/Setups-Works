@@ -6,6 +6,7 @@ import {
   getPortfolio,
   getProducts,
   getServices,
+  getTeam,
 } from "@/lib/content";
 
 export const revalidate = 3600;
@@ -24,11 +25,12 @@ const base = siteConfig.url;
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
-  const [{ items: blogs }, portfolio, products, services] = await Promise.all([
+  const [{ items: blogs }, portfolio, products, services, team] = await Promise.all([
     getBlogs({ limit: 1000 }),
     getPortfolio(),
     getProducts(),
     getServices(),
+    getTeam(),
   ]);
 
   const pages: MetadataRoute.Sitemap = [
@@ -37,6 +39,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // missing here entirely, so it only reached Google via internal links.
     { path: "/get-started", priority: 0.9, freq: "monthly" as const },
     { path: "/about", priority: 0.9, freq: "monthly" as const },
+    { path: "/team", priority: 0.8, freq: "monthly" as const },
     // Founder profile — the page that targets his name.
     { path: "/about/nitheesh-rajendran", priority: 0.8, freq: "monthly" as const },
     { path: "/services", priority: 0.9, freq: "monthly" as const },
@@ -64,6 +67,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${base}/careers/${j.slug}`,
     lastModified: j.datePosted ? new Date(j.datePosted) : now,
     changeFrequency: "weekly" as const,
+    priority: 0.6,
+  }));
+
+  // Each member's profile carries its own Person + ProfilePage markup, so the
+  // pages need to be discoverable rather than reachable only from /team.
+  const teamRoutes: MetadataRoute.Sitemap = team.map((m) => ({
+    url: `${base}/team/${m.slug}`,
+    lastModified: new Date(m.updatedAt || m.createdAt || now),
+    changeFrequency: "monthly" as const,
     priority: 0.6,
   }));
 
@@ -106,6 +118,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...pages,
+    ...teamRoutes,
     ...serviceRoutes,
     ...jobRoutes,
     ...blogRoutes,

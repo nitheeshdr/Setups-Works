@@ -14,15 +14,15 @@ import {
   ImageUploader,
   MultiImageUploader,
 } from "@/components/admin/ui";
-import { useResourceMutations } from "@/lib/admin/hooks";
+import { useResourceMutations, useResourceList } from "@/lib/admin/hooks";
 import { AIGenerate } from "@/components/admin/ai-generate";
 import { slugify } from "@/lib/helpers";
-import type { Portfolio } from "@/lib/types";
+import type { Portfolio, TeamMember } from "@/lib/types";
 
 const empty: Partial<Portfolio> = {
   title: "", slug: "", category: "Web App", summary: "", coverImage: "",
   images: [], techStack: [], liveDemo: "", github: "", client: "",
-  duration: "", year: "", caseStudy: "", featured: false,
+  duration: "", year: "", caseStudy: "", team: [], featured: false,
 };
 
 export function PortfolioForm({ initial }: { initial?: Portfolio }) {
@@ -31,6 +31,10 @@ export function PortfolioForm({ initial }: { initial?: Portfolio }) {
   const [form, setForm] = useState<Partial<Portfolio>>(initial ?? empty);
   const [slugTouched, setSlugTouched] = useState(isEdit);
   const { create, update } = useResourceMutations<Portfolio>("portfolio", "Project");
+  // Published members only — crediting a draft would link to a 404.
+  const { data: teamData } = useResourceList<TeamMember>("team", { limit: 100 });
+  const team = (teamData?.items ?? []).filter((m) => m.status !== "draft");
+
   const set = <K extends keyof Portfolio>(k: K, v: Portfolio[K]) => setForm((f) => ({ ...f, [k]: v }));
   const onAI = (data: Record<string, unknown>) =>
     setForm((f) => {
@@ -110,6 +114,43 @@ export function PortfolioForm({ initial }: { initial?: Portfolio }) {
 
           <div className="space-y-4 rounded-2xl border border-border/60 bg-card/50 p-5">
             <Field label="Tech stack"><TagInput value={form.techStack ?? []} onChange={(t) => set("techStack", t)} /></Field>
+            <Field
+              label="Team on this project"
+              hint="Credited on the project page, and the project appears on each member's profile"
+            >
+              {team.length === 0 ? (
+                <p className="text-sm text-muted-foreground">
+                  No published team members yet.
+                </p>
+              ) : (
+                <div className="space-y-1.5">
+                  {team.map((m) => {
+                    const on = (form.team ?? []).includes(m.slug);
+                    return (
+                      <label key={m.slug} className="flex items-center justify-between gap-3 text-sm">
+                        <span className="truncate">
+                          {m.name}
+                          <span className="text-muted-foreground"> · {m.role}</span>
+                        </span>
+                        <input
+                          type="checkbox"
+                          checked={on}
+                          onChange={(e) =>
+                            set(
+                              "team",
+                              e.target.checked
+                                ? [...(form.team ?? []), m.slug]
+                                : (form.team ?? []).filter((s) => s !== m.slug),
+                            )
+                          }
+                          className="size-4 shrink-0 accent-[var(--brand-500)]"
+                        />
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
+            </Field>
             <Field label="Live demo URL"><TextInput value={form.liveDemo ?? ""} onChange={(e) => set("liveDemo", e.target.value)} /></Field>
             <Field label="GitHub URL"><TextInput value={form.github ?? ""} onChange={(e) => set("github", e.target.value)} /></Field>
           </div>

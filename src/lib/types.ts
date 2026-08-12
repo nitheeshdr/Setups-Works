@@ -135,8 +135,50 @@ export interface Portfolio {
   duration: string;
   year: string;
   caseStudy?: string;
+  /**
+   * Slugs of the team members who worked on this project. Slugs rather than
+   * ids so the reference survives a re-seed and reads in the admin.
+   */
+  team?: string[];
   featured?: boolean;
   createdAt?: string;
+}
+
+/**
+ * A team member.
+ *
+ * Separate from the `founder` settings record on purpose: the founder is a
+ * singleton with its own page, entity anchors and Knowledge-Panel work, while
+ * these are a collection. Both end up as schema.org Person nodes pointing at
+ * the same Organization, so the org gains real `employee` edges rather than
+ * claiming a headcount no crawler can see.
+ */
+export interface TeamMember {
+  _id?: string;
+  name: string;
+  slug: string;
+  role: string;
+  /** One-liner for the card. */
+  short?: string;
+  /** Long-form bio, HTML, rendered as the detail page body. */
+  bio?: string;
+  photo: string;
+  location?: string;
+  /** Topics — emitted as Person.knowsAbout. */
+  skills?: string[];
+  /** Profile URLs — emitted as Person.sameAs, the entity anchors for a person. */
+  linkedin?: string;
+  github?: string;
+  twitter?: string;
+  website?: string;
+  email?: string;
+  education?: string;
+  /** Lower sorts first on the team page. */
+  order?: number;
+  featured?: boolean;
+  status?: "draft" | "published";
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Testimonial {

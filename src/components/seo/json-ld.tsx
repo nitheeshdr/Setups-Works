@@ -1,5 +1,5 @@
 import { siteConfig } from "@/lib/site";
-import type { Blog, Product, Portfolio, Founder, Service } from "@/lib/types";
+import type { Blog, Product, Portfolio, Founder, Service, TeamMember } from "@/lib/types";
 import type { JobOpening } from "@/data/site-content";
 import { stripHtml, truncate, slugify } from "@/lib/helpers";
 
@@ -107,7 +107,7 @@ const personReference = {
  * while still carrying the local-business signals (geo, hours, price range)
  * that power Maps / the local pack alongside the brand/Knowledge-Panel data.
  */
-export function organizationSchema(services?: Service[]) {
+export function organizationSchema(services?: Service[], team?: TeamMember[]) {
   return {
     "@context": "https://schema.org",
     // LocalBusiness is stated explicitly even though ProfessionalService is
@@ -268,9 +268,29 @@ export function organizationSchema(services?: Service[]) {
       },
     ],
     founder: personReference,
-    // The founder is also staff. Stating it separately means the org node
-    // carries a person relationship even where the Person node is not present.
-    employee: personReference,
+    /**
+     * The founder is also staff, so he always appears; published team members
+     * follow when the page supplies them.
+     *
+     * One key, not two. This was previously a lone `personReference`, and
+     * adding a second `employee` key earlier in the object literal did nothing
+     * — the later key silently won and the team edges vanished from the output.
+     *
+     * `numberOfEmployees` is a number a crawler must take on trust. An
+     * `employee` edge points at a Person node with its own page and its own
+     * sameAs profiles, which is checkable. Drafts are excluded upstream, so
+     * the graph never claims a colleague who has no page.
+     */
+    employee: [
+      personReference,
+      ...(team ?? []).map((m) => ({
+        "@id": `${siteConfig.url}${teamPath(m.slug)}#person`,
+        "@type": "Person",
+        name: m.name,
+        jobTitle: m.role,
+        url: `${siteConfig.url}${teamPath(m.slug)}`,
+      })),
+    ],
     // Brand and legal entity are the same here, but naming the Brand explicitly
     // gives the marketing identity its own node for consumers that separate the
     // two — Google's own Organization docs treat brand as distinct.
@@ -507,6 +527,70 @@ export function profilePageSchema(founder?: Founder) {
     mainEntity: { "@id": `${siteConfig.url}/#founder` },
     isPartOf: { "@id": WEBSITE_ID },
     breadcrumb: { "@id": `${siteConfig.url}${FOUNDER_PATH}#breadcrumb` },
+  };
+}
+
+/* --------------------------------- Team --------------------------------- */
+/** Canonical path for a team member's page. */
+export const teamPath = (slug: string) => `/team/${slug}`;
+
+/**
+ * A team member as a Person node.
+ *
+ * Same shape as the founder's node, minus the entity anchors he has and they
+ * don't: no Wikidata id, no birth facts. What carries the weight here is
+ * `sameAs` — a LinkedIn or GitHub profile is an independent page about the same
+ * human, which is the only thing that separates a real person from a name on a
+ * marketing page.
+ *
+ * `worksFor` points at the Organization by @id, so each member becomes a real
+ * edge on the company entity rather than a decorative card.
+ */
+export function teamMemberSchema(m: TeamMember) {
+  const url = `${siteConfig.url}${teamPath(m.slug)}`;
+  const sameAs = [m.linkedin, m.github, m.twitter, m.website].filter(Boolean) as string[];
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${url}#person`,
+    name: m.name,
+    givenName: m.name.split(" ")[0],
+    familyName: m.name.split(" ").slice(1).join(" ") || undefined,
+    jobTitle: m.role,
+    description: m.short || stripHtml(m.bio || "").slice(0, 300) || undefined,
+    url,
+    ...(m.photo ? { image: { "@type": "ImageObject", url: m.photo } } : {}),
+    worksFor: orgReference,
+    ...(m.location ? { workLocation: { "@type": "Place", name: m.location } } : {}),
+    ...(m.skills?.length ? { knowsAbout: m.skills } : {}),
+    ...(m.education ? { alumniOf: { "@type": "EducationalOrganization", name: m.education } } : {}),
+    ...(m.email ? { email: m.email } : {}),
+    ...(sameAs.length ? { sameAs } : {}),
+  };
+}
+
+/**
+ * The team index, as an ItemList of URLs.
+ *
+ * Takes name/url pairs rather than TeamMember rows because the founder belongs
+ * in this list but is not a team row — his profile lives at its own path and
+ * his Person node has a different @id. Listing him by URL puts him in the list
+ * without minting a second entity for the same human.
+ */
+export function teamListSchema(people: { name: string; url: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "@id": `${siteConfig.url}/team#list`,
+    name: `The ${siteConfig.name} team`,
+    numberOfItems: people.length,
+    itemListElement: people.map((x, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: x.url,
+      name: x.name,
+    })),
   };
 }
 

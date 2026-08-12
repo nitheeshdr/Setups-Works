@@ -153,6 +153,7 @@ const PortfolioSchema = new Schema(
     duration: { type: String, default: "" },
     year: { type: String, default: "" },
     caseStudy: String,
+    team: { type: [String], default: [] },
     featured: { type: Boolean, default: false },
   },
   { timestamps: true },
@@ -393,6 +394,32 @@ const ClientLogoSchema = new Schema(
 );
 
 /* ------------------------------------------------------------------ *
+ *  Team member
+ * ------------------------------------------------------------------ */
+const TeamMemberSchema = new Schema(
+  {
+    name: { type: String, required: true },
+    slug: { type: String, required: true, unique: true, index: true },
+    role: { type: String, required: true },
+    short: { type: String, default: "" },
+    bio: { type: String, default: "" },
+    photo: { type: String, default: "" },
+    location: String,
+    skills: { type: [String], default: [] },
+    linkedin: String,
+    github: String,
+    twitter: String,
+    website: String,
+    email: String,
+    education: String,
+    order: { type: Number, default: 0 },
+    featured: { type: Boolean, default: false },
+    status: { type: String, enum: ["draft", "published"], default: "published" },
+  },
+  { timestamps: true },
+);
+
+/* ------------------------------------------------------------------ *
  *  Milestone (About page journey timeline)
  * ------------------------------------------------------------------ */
 const MilestoneSchema = new Schema(
@@ -408,6 +435,7 @@ const MilestoneSchema = new Schema(
 export const User = models.User || model("User", UserSchema);
 export const ClientLogo = models.ClientLogo || model("ClientLogo", ClientLogoSchema);
 export const Milestone = models.Milestone || model("Milestone", MilestoneSchema);
+export const TeamMember = models.TeamMember || model("TeamMember", TeamMemberSchema);
 export const Blog = models.Blog || model("Blog", BlogSchema);
 export const Product = models.Product || model("Product", ProductSchema);
 export const Service = models.Service || model("Service", ServiceSchema);

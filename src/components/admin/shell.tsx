@@ -38,6 +38,7 @@ const nav = [
   { label: "Services", href: "/admin/services", icon: faScrewdriverWrench },
   { label: "Products", href: "/admin/products", icon: faCube },
   { label: "Portfolio", href: "/admin/portfolio", icon: faBriefcase },
+  { label: "Team", href: "/admin/team", icon: faUsers },
   { label: "Testimonials", href: "/admin/testimonials", icon: faComments },
   { label: "Client Logos", href: "/admin/logos", icon: faBuildingColumns },
   { label: "Timeline", href: "/admin/timeline", icon: faClockRotateLeft },

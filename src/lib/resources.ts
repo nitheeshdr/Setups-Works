@@ -1,4 +1,4 @@
-import { Blog, Product, Portfolio, Service, Testimonial, ClientLogo, Milestone } from "@/models";
+import { Blog, Product, Portfolio, Service, Testimonial, ClientLogo, Milestone, TeamMember } from "@/models";
 import {
   createResource,
   blogCreateSchema,
@@ -15,6 +15,8 @@ import {
   clientLogoUpdateSchema,
   milestoneCreateSchema,
   milestoneUpdateSchema,
+  teamMemberCreateSchema,
+  teamMemberUpdateSchema,
 } from "@/lib/crud";
 import { readingTime } from "@/lib/helpers";
 
@@ -101,4 +103,16 @@ export const milestoneHandlers = createResource({
   updateSchema: milestoneUpdateSchema,
   searchFields: ["year", "title"],
   defaultSort: "order",
+});
+
+export const teamMemberHandlers = createResource({
+  model: TeamMember,
+  createSchema: teamMemberCreateSchema,
+  updateSchema: teamMemberUpdateSchema,
+  searchFields: ["name", "role", "short"],
+  slugFrom: "name",
+  defaultSort: "order",
+  // Drafts have no public URL, so nothing is submitted for them.
+  urlPaths: (d) =>
+    d.slug && d.status !== "draft" ? [`/team/${d.slug}`, "/team", "/about"] : [],
 });
