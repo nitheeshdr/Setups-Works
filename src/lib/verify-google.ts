@@ -21,8 +21,21 @@ import { promises as dns } from "node:dns";
  * Docs: developers.google.com/crawling/docs/crawlers-fetchers/verify-google-requests
  */
 
-/** Hostnames Google serves crawler PTR records under. */
-const GOOGLE_DOMAINS = [".googlebot.com", ".google.com", ".googleusercontent.com"];
+/**
+ * Hostnames Google serves crawler PTR records under.
+ *
+ * `.gae.googleusercontent.com`, not `.googleusercontent.com`. Google documents
+ * the crawler masks as `crawl-*.googlebot.com`, `geo-crawl-*.geo.googlebot.com`,
+ * `rate-limited-proxy-*.google.com`, `google-proxy-*.google.com` and
+ * `*.gae.googleusercontent.com` — the last is App Engine specifically.
+ *
+ * Matching the bare parent domain was too broad: Google Cloud instances also
+ * get forward-confirmable PTRs under googleusercontent.com, so anyone renting a
+ * VM could pass this check. The crawler log caught it in practice — three
+ * "Google-Extended, verified by dns" hits requesting /@fs/root/.env, a path no
+ * Google crawler has ever asked for.
+ */
+const GOOGLE_DOMAINS = [".googlebot.com", ".google.com", ".gae.googleusercontent.com"];
 
 const RANGE_FILES = {
   /** Googlebot and the other common crawlers. */
