@@ -188,6 +188,17 @@ export const siteConfig = {
 export type SiteConfig = typeof siteConfig;
 
 /**
+ * The full postal address as one display string, built from the same fields
+ * `localBusinessSchema()` emits — so the text visitors (and citation
+ * directories) see can never drift from what's in the structured data or the
+ * Google Business Profile listing. Matches GBP formatting exactly: no comma
+ * before the postal code.
+ */
+export const fullAddress =
+  `${siteConfig.address.street}, ${siteConfig.address.locality}, ` +
+  `${siteConfig.address.region} ${siteConfig.address.postalCode}`;
+
+/**
  * One page description, fanned out to every tag that carries one.
  *
  * Next inherits an un-set `openGraph` object from the root layout wholesale —

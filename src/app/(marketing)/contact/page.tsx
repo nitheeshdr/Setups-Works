@@ -23,7 +23,7 @@ import {
   faqSchema,
 } from "@/components/seo/json-ld";
 import { faqs } from "@/data/site-content";
-import { siteConfig, pageMetadata } from "@/lib/site";
+import { siteConfig, pageMetadata, fullAddress } from "@/lib/site";
 
 export const metadata: Metadata = pageMetadata({
   title: "Contact",
@@ -35,7 +35,7 @@ export const metadata: Metadata = pageMetadata({
 const details = [
   { icon: faEnvelope, label: "Email us", value: siteConfig.email, href: `mailto:${siteConfig.email}` },
   { icon: faPhone, label: "Call us", value: siteConfig.phone, href: `tel:${siteConfig.phone.replace(/\s/g, "")}` },
-  { icon: faLocationDot, label: "Location", value: siteConfig.location },
+  { icon: faLocationDot, label: "Location", value: fullAddress },
   { icon: faClock, label: "Response time", value: "Within 1 business day" },
 ];
 
@@ -152,7 +152,7 @@ export default function ContactPage() {
                   </span>
                   <div>
                     <p className="text-sm font-semibold">Find us on Google Maps</p>
-                    <p className="text-xs text-muted-foreground">{siteConfig.location}</p>
+                    <p className="text-xs text-muted-foreground">{fullAddress}</p>
                   </div>
                 </div>
                 <a

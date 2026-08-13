@@ -4,7 +4,7 @@ import { Container } from "@/components/section";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
 import { FooterWordmark } from "@/components/layout/footer-wordmark";
 import { footerNav } from "@/data/nav";
-import { siteConfig } from "@/lib/site";
+import { siteConfig, fullAddress } from "@/lib/site";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faXTwitter,
@@ -69,6 +69,10 @@ export function Footer({
             <p className="max-w-xs text-sm text-muted-foreground">
               {siteConfig.description}
             </p>
+            {/* Full postal address, matching the Google Business Profile
+                listing exactly — the on-page NAP signal citation directories
+                and Google's local ranking cross-check against. */}
+            <p className="max-w-xs text-xs text-muted-foreground">{fullAddress}</p>
             <div className="space-y-3">
               <p className="text-sm font-semibold">Join our newsletter</p>
               <NewsletterForm />
