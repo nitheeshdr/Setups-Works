@@ -71,6 +71,7 @@ const ProductSchema = new Schema(
       default: "coming-soon",
     },
     version: String,
+    team: { type: [String], default: [] },
     rating: Number,
     ratingCount: Number,
     downloadLink: String,

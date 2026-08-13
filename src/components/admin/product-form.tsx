@@ -16,10 +16,10 @@ import {
   ImageUploader,
   MultiImageUploader,
 } from "@/components/admin/ui";
-import { useResourceMutations } from "@/lib/admin/hooks";
+import { useResourceMutations, useResourceList } from "@/lib/admin/hooks";
 import { AIGenerate } from "@/components/admin/ai-generate";
 import { slugify } from "@/lib/helpers";
-import type { Product } from "@/lib/types";
+import type { Product, TeamMember } from "@/lib/types";
 
 const RichEditor = dynamic(
   () => import("@/components/admin/rich-editor").then((m) => m.RichEditor),
@@ -59,6 +59,10 @@ export function ProductForm({ initial }: { initial?: Product }) {
   const [form, setForm] = useState<Partial<Product>>(initial ?? empty);
   const [slugTouched, setSlugTouched] = useState(isEdit);
   const { create, update } = useResourceMutations<Product>("products", "Product");
+
+  // Published members only — crediting a draft would link to a 404.
+  const { data: teamData } = useResourceList<TeamMember>("team", { limit: 100 });
+  const team = (teamData?.items ?? []).filter((m) => m.status !== "draft");
 
   const set = <K extends keyof Product>(k: K, v: Product[K]) => setForm((f) => ({ ...f, [k]: v }));
   const onAI = (data: Record<string, unknown>) =>
@@ -171,6 +175,41 @@ export function ProductForm({ initial }: { initial?: Product }) {
             </Field>
             <Field label="Version">
               <TextInput value={form.version ?? ""} onChange={(e) => set("version", e.target.value)} />
+            </Field>
+            <Field
+              label="Team on this product"
+              hint="Credited on the product page, and the product appears on each member's profile"
+            >
+              {team.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No published team members yet.</p>
+              ) : (
+                <div className="space-y-1.5">
+                  {team.map((m) => {
+                    const on = (form.team ?? []).includes(m.slug);
+                    return (
+                      <label key={m.slug} className="flex items-center justify-between gap-3 text-sm">
+                        <span className="truncate">
+                          {m.name}
+                          <span className="text-muted-foreground"> · {m.role}</span>
+                        </span>
+                        <input
+                          type="checkbox"
+                          checked={on}
+                          onChange={(e) =>
+                            set(
+                              "team",
+                              e.target.checked
+                                ? [...(form.team ?? []), m.slug]
+                                : (form.team ?? []).filter((x) => x !== m.slug),
+                            )
+                          }
+                          className="size-4 shrink-0 accent-[var(--brand-500)]"
+                        />
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
             </Field>
             <Field label="Technologies">
               <TagInput value={form.technologies ?? []} onChange={(t) => set("technologies", t)} />

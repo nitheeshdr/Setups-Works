@@ -9,8 +9,8 @@ import { PageHeader } from "@/components/page-header";
 import { Container, Section } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
 import { CTASection } from "@/components/sections/cta";
-import { PortfolioCard } from "@/components/cards";
-import { getTeamMemberBySlug, getAllTeamSlugs, getPortfolio } from "@/lib/content";
+import { PortfolioCard, ProductCard } from "@/components/cards";
+import { getTeamMemberBySlug, getAllTeamSlugs, getPortfolio, getProducts } from "@/lib/content";
 import {
   JsonLd,
   organizationSchema,
@@ -74,14 +74,17 @@ export default async function TeamMemberPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [member, portfolio] = await Promise.all([
+  const [member, portfolio, allProducts] = await Promise.all([
     getTeamMemberBySlug(slug),
     getPortfolio(),
+    getProducts(),
   ]);
   if (!member) notFound();
 
-  // Projects this person is credited on, matched by slug.
+  // Everything this person is credited on, matched by slug. Client projects
+  // and in-house products are separate collections, so both are resolved.
   const projects = portfolio.filter((p) => p.team?.includes(member.slug));
+  const products = allProducts.filter((p) => p.team?.includes(member.slug));
 
   const profiles = [
     { icon: faLinkedinIn, label: "LinkedIn", href: member.linkedin },
@@ -213,6 +216,21 @@ export default async function TeamMemberPage({
                       className="article-content mt-4"
                       dangerouslySetInnerHTML={{ __html: member.bio }}
                     />
+                  </div>
+                </Reveal>
+              )}
+
+              {products.length > 0 && (
+                <Reveal delay={0.06}>
+                  <div className="rounded-2xl border border-border/60 bg-card/50 p-6 sm:p-8">
+                    <h2 className="font-display text-xl font-bold tracking-tight">
+                      Products {member.name.split(" ")[0]} built
+                    </h2>
+                    <div className="mt-5 grid gap-5 sm:grid-cols-2">
+                      {products.map((p) => (
+                        <ProductCard key={p.slug} product={p} />
+                      ))}
+                    </div>
                   </div>
                 </Reveal>
               )}

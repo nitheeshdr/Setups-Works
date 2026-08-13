@@ -222,6 +222,7 @@ export const productCreateSchema = z.object({
   githubLink: z.string().optional(),
   docsLink: z.string().optional(),
   releaseNotes: z.string().optional(),
+  team: z.array(z.string()).default([]),
 });
 export const productUpdateSchema = productCreateSchema.partial();
 

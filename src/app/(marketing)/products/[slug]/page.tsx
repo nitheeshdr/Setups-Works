@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import {
@@ -13,7 +14,7 @@ import { Container, Section, SectionHeading } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
 import { JsonLd, productSchema, breadcrumbSchema, organizationSchema, websiteSchema } from "@/components/seo/json-ld";
-import { getProducts, getProductBySlug } from "@/lib/content";
+import { getProducts, getProductBySlug, getTeam } from "@/lib/content";
 
 export async function generateStaticParams() {
   const products = await getProducts();
@@ -58,6 +59,8 @@ export default async function ProductDetailPage({
   const { slug } = await params;
   const product = await getProductBySlug(slug);
   if (!product) notFound();
+  // Credited members, resolved from slugs so a removed member drops out.
+  const team = (await getTeam()).filter((x) => product.team?.includes(x.slug));
 
   const links = [
     product.githubLink && { icon: faGithub, label: "GitHub", href: product.githubLink },
@@ -202,6 +205,27 @@ export default async function ProductDetailPage({
                     </span>
                   ))}
                 </div>
+                {team.length > 0 && (
+                  <>
+                    <h3 className="mt-8 font-display text-xl font-bold tracking-tight">Built by</h3>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {team.map((m) => (
+                        <Link
+                          key={m.slug}
+                          href={`/team/${m.slug}`}
+                          className="group inline-flex items-center gap-2 rounded-full border border-border/60 bg-surface-2/60 py-1 pl-1 pr-3.5 text-sm font-medium transition-colors hover:border-brand-500/40"
+                        >
+                          {m.photo && (
+                            <span className="relative size-7 shrink-0 overflow-hidden rounded-full">
+                              <Image src={m.photo} alt="" fill sizes="28px" className="object-cover" />
+                            </span>
+                          )}
+                          <span className="group-hover:text-brand-500">{m.name}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  </>
+                )}
                 {product.releaseNotes && (
                   <>
                     <h3 className="mt-8 font-display text-xl font-bold tracking-tight">Release notes</h3>

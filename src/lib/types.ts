@@ -104,6 +104,8 @@ export interface Product {
   category: string;
   status: ProductStatus;
   version?: string;
+  /** Slugs of the team members who built it — same convention as Portfolio.team. */
+  team?: string[];
   /**
    * Real store rating, e.g. the Play Store average. Emitted as
    * AggregateRating only when BOTH this and `ratingCount` are set — Google
