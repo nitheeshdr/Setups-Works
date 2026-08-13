@@ -15,6 +15,7 @@ import { CTASection } from "@/components/sections/cta";
 import {
   JsonLd,
   organizationSchema,
+  localBusinessSchema,
   websiteSchema,
   siteNavigationSchema,
   faqSchema,
@@ -82,6 +83,7 @@ export default async function HomePage() {
       <JsonLd
         data={[
           organizationSchema(),
+          localBusinessSchema(),
           websiteSchema(),
           webPageSchema({
             path: "/",

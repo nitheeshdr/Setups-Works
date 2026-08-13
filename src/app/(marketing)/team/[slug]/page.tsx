@@ -14,6 +14,7 @@ import { getTeamMemberBySlug, getAllTeamSlugs, getPortfolio, getProducts } from 
 import {
   JsonLd,
   organizationSchema,
+  localBusinessSchema,
   websiteSchema,
   breadcrumbSchema,
   teamMemberSchema,
@@ -99,6 +100,7 @@ export default async function TeamMemberPage({
       <JsonLd
         data={[
           organizationSchema(),
+          localBusinessSchema(),
           websiteSchema(),
           {
             "@context": "https://schema.org",

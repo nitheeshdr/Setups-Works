@@ -20,6 +20,7 @@ import {
   jobPostingSchema,
   webPageSchema,
   organizationSchema,
+  localBusinessSchema,
   websiteSchema,
 } from "@/components/seo/json-ld";
 import { jobOpenings, benefits } from "@/data/site-content";
@@ -95,6 +96,7 @@ export default async function JobPage({
       <JsonLd
         data={[
           organizationSchema(),
+          localBusinessSchema(),
           websiteSchema(),
           webPageSchema({
             path: `/careers/${job.slug}`,

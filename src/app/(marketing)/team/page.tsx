@@ -9,6 +9,7 @@ import { getTeam, getFounder } from "@/lib/content";
 import {
   JsonLd,
   organizationSchema,
+  localBusinessSchema,
   websiteSchema,
   webPageSchema,
   breadcrumbSchema,
@@ -64,6 +65,7 @@ export default async function TeamPage() {
           // The org node carries `employee` edges to these same people, so the
           // list and the company entity describe one set rather than two.
           organizationSchema(undefined, team),
+          localBusinessSchema(),
           websiteSchema(),
           webPageSchema({
             path: "/team",

@@ -33,6 +33,7 @@ import {
   personSchema,
   profilePageSchema,
   organizationSchema,
+  localBusinessSchema,
   websiteSchema,
   breadcrumbSchema,
   filmSchemas,
@@ -130,6 +131,7 @@ export default async function FounderPage() {
           profilePageSchema(founder),
           personSchema(founder, published),
           organizationSchema(),
+          localBusinessSchema(),
           websiteSchema(),
           breadcrumbSchema([
             { name: "About", url: "/about" },

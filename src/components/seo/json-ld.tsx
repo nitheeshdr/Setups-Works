@@ -76,7 +76,24 @@ const FOUNDED_DATETIME = (() => {
 export const FOUNDER_PATH = "/about/nitheesh-rajendran";
 
 const ORG_ID = `${siteConfig.url}/#organization`;
+const LOCAL_BUSINESS_ID = `${siteConfig.url}/#localbusiness`;
 const WEBSITE_ID = `${siteConfig.url}/#website`;
+
+/**
+ * Spelling/format variants shared by the Organization and LocalBusiness
+ * nodes — same real-world entity, so the same alternate names apply to both.
+ * See the inline comment at each call site for why these specific forms
+ * (and not a longer typo list) are the right set.
+ */
+const ORG_ALT_NAMES = [
+  "SetupsWorks",
+  "setups.works",
+  "Setups Works Digital Agency",
+  "Setup Works",
+  "Setups Work",
+  "Setup Work",
+  "Setupworks",
+];
 
 /** Self-contained Organization reference used by the founder Person node. */
 const orgReference = {
@@ -102,20 +119,18 @@ const personReference = {
 
 /* --------------------------- Organization ------------------------------ */
 /**
- * Single business entity typed as BOTH Organization and ProfessionalService.
- * One @id, one node — so Google shows one "Setups Works" instead of two,
- * while still carrying the local-business signals (geo, hours, price range)
- * that power Maps / the local pack alongside the brand/Knowledge-Panel data.
+ * The brand/legal entity — Knowledge-Panel-facing facts (identity, founder,
+ * staff, offer catalogue, business identifiers). Split from the physical
+ * storefront on purpose: `localBusinessSchema()` below carries the
+ * address/geo/hours/price-range signals that power Maps and the local pack.
+ * The two are the same real-world business, joined by a `department` /
+ * `parentOrganization` edge pair rather than merged into one multi-typed
+ * node, so each can be read (and validated) as its own schema.org type.
  */
 export function organizationSchema(services?: Service[], team?: TeamMember[]) {
   return {
     "@context": "https://schema.org",
-    // LocalBusiness is stated explicitly even though ProfessionalService is
-    // already one of its subtypes. The hierarchy is Organization >
-    // LocalBusiness > ProfessionalService, so this adds no contradiction — it
-    // just spares any consumer that doesn't resolve schema.org subtypes from
-    // having to infer it.
-    "@type": ["Organization", "LocalBusiness", "ProfessionalService"],
+    "@type": "Organization",
     "@id": ORG_ID,
     name: siteConfig.name,
     // "Setups Works" is two ordinary English words, so brand queries compete
@@ -128,23 +143,14 @@ export function organizationSchema(services?: Service[], team?: TeamMember[]) {
     //   SetupsWorks   — closed up, how it gets typed as one word
     //   setups.works  — the domain form
     //   …Digital Agency — descriptive long form
-    // Add a new entry only if it survives lowercasing as something distinct
-    // (a real misspelling or a former trading name would; a case variant won't).
-    alternateName: [
-      "SetupsWorks",
-      "setups.works",
-      "Setups Works Digital Agency",
-      // Misspellings. Both words are ordinary nouns that read naturally in the
-      // singular, so dropping either plural is the mistake people actually
-      // make. Kept to the four that are one dropped "s" from the real name —
-      // this is an alternate-name field, not a keyword list, and a long tail of
-      // invented typos would be stuffing. Prune or extend from the real query
-      // data in Search Console once it has accumulated.
-      "Setup Works",
-      "Setups Work",
-      "Setup Work",
-      "Setupworks",
-    ],
+    // Misspellings: both words are ordinary nouns that read naturally in the
+    // singular, so dropping either plural is the mistake people actually make.
+    // Kept to the four that are one dropped "s" from the real name — this is
+    // an alternate-name field, not a keyword list, and a long tail of invented
+    // typos would be stuffing. Prune or extend from the real query data in
+    // Search Console once it has accumulated. Shared with the LocalBusiness
+    // node via ORG_ALT_NAMES since it's the same entity either way.
+    alternateName: ORG_ALT_NAMES,
     url: siteConfig.url,
     logo: {
       "@type": "ImageObject",
@@ -178,7 +184,6 @@ export function organizationSchema(services?: Service[], team?: TeamMember[]) {
       },
     },
     slogan: siteConfig.tagline,
-    priceRange: siteConfig.priceRange,
     knowsAbout: [
       "Web Development",
       "Mobile App Development",
@@ -191,18 +196,6 @@ export function organizationSchema(services?: Service[], team?: TeamMember[]) {
       "SaaS Products",
     ],
     keywords: siteConfig.keywords.join(", "),
-    address: {
-      "@type": "PostalAddress",
-      // Only emitted when set — an empty streetAddress is worse than none,
-      // and it must match the Google Business Profile listing.
-      ...(siteConfig.address.street
-        ? { streetAddress: siteConfig.address.street }
-        : {}),
-      addressLocality: siteConfig.address.locality,
-      addressRegion: siteConfig.address.region,
-      postalCode: siteConfig.address.postalCode,
-      addressCountry: siteConfig.address.country,
-    },
     // Business identifiers Google recommends for Organization. Spread in only
     // when set, so the markup never carries empty strings.
     ...Object.fromEntries(
@@ -234,6 +227,22 @@ export function organizationSchema(services?: Service[], team?: TeamMember[]) {
       description:
         "AI-powered coding interview preparation platform — problem bank, multi-language compiler, AI mentoring and skill analytics.",
     },
+    /**
+     * The physical storefront, as a department of this Organization —
+     * schema.org's own example for "a store with a pharmacy, or a bakery with
+     * a cafe": same company, different (more location-specific) node. Mirrors
+     * `localBusinessSchema()`'s `parentOrganization` edge back to this @id, so
+     * the relationship holds from both directions like `founder`/`worksFor`
+     * above.
+     */
+    department: [
+      {
+        "@id": LOCAL_BUSINESS_ID,
+        "@type": ["LocalBusiness", "ProfessionalService"],
+        name: siteConfig.name,
+        url: siteConfig.url,
+      },
+    ],
     // Currency and payment terms are business facts, not guesses — add them to
     // siteConfig when known. Deliberately absent rather than invented.
     //
@@ -242,21 +251,6 @@ export function organizationSchema(services?: Service[], team?: TeamMember[]) {
     // collects and publishes about itself are ineligible for review rich
     // results and risk a manual action. The 4.9/5 shown on the site is fine as
     // page content; it must not be marked up as aggregateRating on this entity.
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: siteConfig.geo.lat,
-      longitude: siteConfig.geo.lng,
-    },
-    hasMap: siteConfig.googleMaps,
-    areaServed: siteConfig.areaServed.map((name) => ({ "@type": "Place", name })),
-    openingHoursSpecification: [
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        opens: "09:00",
-        closes: "18:00",
-      },
-    ],
     contactPoint: [
       {
         "@type": "ContactPoint",
@@ -331,7 +325,101 @@ export function organizationSchema(services?: Service[], team?: TeamMember[]) {
           },
         }
       : {}),
+    sameAs: orgSameAs,
+  };
+}
+
+/* -------------------------- LocalBusiness ------------------------------- */
+/**
+ * The physical storefront — everything Google reads for Maps / the local
+ * pack: address, geo, opening hours, price range, and its own `sameAs` so
+ * the location itself (not just the brand) corroborates against the same
+ * social/business profiles. Kept a separate node from `organizationSchema()`
+ * on purpose — see the comment there — and joined to it via
+ * `parentOrganization` (this direction) and `department` (the other).
+ *
+ * Typed `["LocalBusiness", "ProfessionalService"]` rather than bare
+ * LocalBusiness: ProfessionalService is the more specific schema.org subtype
+ * for a business selling expertise/services rather than physical goods,
+ * which is what a digital agency actually is.
+ */
+export function localBusinessSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": ["LocalBusiness", "ProfessionalService"],
+    "@id": LOCAL_BUSINESS_ID,
+    name: siteConfig.name,
+    alternateName: ORG_ALT_NAMES,
+    url: siteConfig.url,
+    image: {
+      "@type": "ImageObject",
+      url: `${siteConfig.url}/opengraph-image`,
+      width: 1200,
+      height: 630,
+    },
+    logo: {
+      "@type": "ImageObject",
+      url: `${siteConfig.url}/icon-512.png`,
+      width: 512,
+      height: 512,
+    },
+    description: siteConfig.description,
+    telephone: siteConfig.phone,
+    email: siteConfig.email,
+    priceRange: siteConfig.priceRange,
+    address: {
+      "@type": "PostalAddress",
+      // Only emitted when set — an empty streetAddress is worse than none,
+      // and it must match the Google Business Profile listing exactly.
+      ...(siteConfig.address.street
+        ? { streetAddress: siteConfig.address.street }
+        : {}),
+      addressLocality: siteConfig.address.locality,
+      addressRegion: siteConfig.address.region,
+      postalCode: siteConfig.address.postalCode,
+      addressCountry: siteConfig.address.country,
+    },
+    geo: {
+      "@type": "GeoCoordinates",
+      latitude: siteConfig.geo.lat,
+      longitude: siteConfig.geo.lng,
+    },
+    hasMap: siteConfig.googleMaps,
+    areaServed: siteConfig.areaServed.map((name) => ({ "@type": "Place", name })),
     serviceArea: siteConfig.areaServed.map((name) => ({ "@type": "Place", name })),
+    openingHoursSpecification: [
+      {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        opens: "09:00",
+        closes: "18:00",
+      },
+    ],
+    // Same-direction mirror of Organization.department — see that field's
+    // comment. Explicit @type + name so this edge resolves even in a document
+    // that, for whatever reason, doesn't carry the Organization node itself.
+    parentOrganization: {
+      "@id": ORG_ID,
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+    // Wikidata as a typed identifier (not just a sameAs link) on this node
+    // too — same convention as Organization.identifier, since it's the same
+    // real-world entity Wikidata describes.
+    identifier: {
+      "@type": "PropertyValue",
+      propertyID: "Wikidata",
+      value: siteConfig.wikidata.split("/").pop(),
+      url: siteConfig.wikidata,
+    },
+    // NOTE: no aggregateRating here either, for the same reason as the
+    // Organization node — see the comment there.
+    //
+    // Social/business profiles, explicitly on the LocalBusiness node so the
+    // physical location itself corroborates against them, not only the
+    // brand. Same list as Organization.sameAs (`orgSameAs`) — it's one real
+    // business behind both nodes, so the profiles don't differ by node.
     sameAs: orgSameAs,
   };
 }
@@ -947,12 +1035,14 @@ export function pageSchemas({
   services?: Service[];
 }) {
   return [
-    // The Organization and WebSite nodes ship on every page rather than only on
-    // the homepage: WebPage.isPartOf/about/publisher reference them by @id, and
-    // a reference whose target isn't defined in the same document is a dangling
-    // edge. Crawlers do consolidate nodes across a site, but making each page's
-    // graph resolve on its own removes the dependency on that happening.
+    // The Organization, LocalBusiness and WebSite nodes ship on every page
+    // rather than only on the homepage: WebPage.isPartOf/about/publisher
+    // reference them by @id, and a reference whose target isn't defined in
+    // the same document is a dangling edge. Crawlers do consolidate nodes
+    // across a site, but making each page's graph resolve on its own removes
+    // the dependency on that happening.
     organizationSchema(services),
+    localBusinessSchema(),
     websiteSchema(),
     webPageSchema({ path, name: `${label} · ${siteConfig.name}`, description }),
     breadcrumbSchema([{ name: label, url: path }]),

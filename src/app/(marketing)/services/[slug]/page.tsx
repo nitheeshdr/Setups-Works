@@ -15,7 +15,7 @@ import { Reveal } from "@/components/motion-primitives";
 import { ServiceCard } from "@/components/cards";
 import { LeadFormModal } from "@/components/lead-form-modal";
 import { CTASection } from "@/components/sections/cta";
-import { JsonLd, breadcrumbSchema, serviceSchema, faqSchema, organizationSchema, websiteSchema } from "@/components/seo/json-ld";
+import { JsonLd, breadcrumbSchema, serviceSchema, faqSchema, organizationSchema, localBusinessSchema, websiteSchema } from "@/components/seo/json-ld";
 import { getServices, getServiceBySlug } from "@/lib/content";
 import { resolveServiceIcon } from "@/lib/service-icons";
 import { processSteps } from "@/data/site-content";
@@ -80,6 +80,7 @@ export default async function ServiceDetailPage({
       <JsonLd
         data={[
           organizationSchema(),
+          localBusinessSchema(),
           websiteSchema(),
           serviceSchema(service),
           breadcrumbSchema([

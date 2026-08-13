@@ -13,7 +13,7 @@ import { PageHeader } from "@/components/page-header";
 import { Container, Section, SectionHeading } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
 import { NewsletterForm } from "@/components/layout/newsletter-form";
-import { JsonLd, productSchema, breadcrumbSchema, organizationSchema, websiteSchema } from "@/components/seo/json-ld";
+import { JsonLd, productSchema, breadcrumbSchema, organizationSchema, localBusinessSchema, websiteSchema } from "@/components/seo/json-ld";
 import { getProducts, getProductBySlug, getTeam } from "@/lib/content";
 
 export async function generateStaticParams() {
@@ -73,6 +73,7 @@ export default async function ProductDetailPage({
       <JsonLd
         data={[
           organizationSchema(),
+          localBusinessSchema(),
           websiteSchema(),
           productSchema(product),
           breadcrumbSchema([

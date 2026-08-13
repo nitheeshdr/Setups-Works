@@ -17,6 +17,7 @@ import {
   JsonLd,
   contactPageSchema,
   organizationSchema,
+  localBusinessSchema,
   websiteSchema,
   breadcrumbSchema,
   faqSchema,
@@ -52,6 +53,7 @@ export default function ContactPage() {
         data={[
           contactPageSchema(),
           organizationSchema(),
+          localBusinessSchema(),
           // contactPageSchema() declares isPartOf #website, so the WebSite node
           // has to be present here for that reference to resolve.
           websiteSchema(),

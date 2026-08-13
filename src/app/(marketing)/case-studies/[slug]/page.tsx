@@ -11,7 +11,7 @@ import { PageHeader } from "@/components/page-header";
 import { Container, Section } from "@/components/section";
 import { Reveal } from "@/components/motion-primitives";
 import { CTASection } from "@/components/sections/cta";
-import { JsonLd, breadcrumbSchema, organizationSchema, websiteSchema, caseStudySchema } from "@/components/seo/json-ld";
+import { JsonLd, breadcrumbSchema, organizationSchema, localBusinessSchema, websiteSchema, caseStudySchema } from "@/components/seo/json-ld";
 import { getPortfolio, getPortfolioBySlug } from "@/lib/content";
 
 export async function generateStaticParams() {
@@ -63,6 +63,7 @@ export default async function CaseStudyDetailPage({
       <JsonLd
         data={[
           organizationSchema(),
+          localBusinessSchema(),
           websiteSchema(),
           // The write-up itself — the only reason this page exists — was
           // previously invisible to a crawler.

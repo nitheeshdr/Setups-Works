@@ -12,6 +12,7 @@ import { FounderCard } from "@/components/founder-card";
 import {
   JsonLd,
   organizationSchema,
+  localBusinessSchema,
   websiteSchema,
   breadcrumbSchema,
 } from "@/components/seo/json-ld";
@@ -36,6 +37,7 @@ export default async function AboutPage() {
       <JsonLd
         data={[
           organizationSchema(),
+          localBusinessSchema(),
           // profilePageSchema() declares isPartOf #website, so the WebSite node
           // has to be present here for that reference to resolve.
           websiteSchema(),
